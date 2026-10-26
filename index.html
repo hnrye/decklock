@@ -6,7 +6,7 @@
 <title>DeckLock</title>
 <meta name="description" content="Sorteador de cartas de desafio para partidas de Deadlock, com decks editáveis.">
 <meta name="theme-color" content="#222021">
-<meta name="decklock-version" content="1.35.1">
+<meta name="decklock-version" content="1.36.9">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pt_BR">
 <meta property="og:site_name" content="DeckLock">
@@ -852,7 +852,7 @@ body.fs #trackingView,body.fs #histbox{display:none!important}
 .almas-side-heading{display:flex;flex-direction:column;gap:4px;padding:4px 3px 1px}
 .almas-side-heading small{font:750 10px/1.3 system-ui,sans-serif;letter-spacing:.14em;color:var(--mute)}
 .almas-side-heading strong{font:650 clamp(19px,2vw,25px)/1.25 Georgia,serif;color:var(--ink)}
-.almas-side-tabs{display:grid;grid-template-columns:1fr 1fr;gap:7px;padding:5px;border:1px solid var(--line);border-radius:12px;background:var(--bg2)}
+.almas-side-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;padding:5px;border:1px solid var(--line);border-radius:12px;background:var(--bg2)}
 .almas-side-tabs button{min-height:43px;border:1px solid transparent;border-radius:9px;background:transparent;color:var(--mute);font:750 13px system-ui,sans-serif;cursor:pointer;transition:background .2s,border-color .2s,color .2s}
 .almas-side-tabs button.active{border-color:color-mix(in srgb,var(--gold) 44%,var(--line));background:color-mix(in srgb,var(--gold) 11%,var(--panel));color:var(--ink);box-shadow:0 3px 12px #0001}
 .almas-side-tabs button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
@@ -935,10 +935,15 @@ body.fs #trackingView,body.fs #histbox{display:none!important}
 .almas-deck-intro strong{font:650 clamp(21px,2.4vw,29px)/1.2 Georgia,serif;color:var(--gold)}
 .almas-deck-intro p{font-size:12px;line-height:1.5;color:var(--mute);margin:3px 0 0;max-width:310px}
 .workspace.almas-deck-mode .almas-card-table:not([hidden]){display:flex;justify-content:center;align-items:center;width:100%;min-height:0;padding:0 4px}
+/* O baralho ocupa imediatamente o espaço das abas, sem o placeholder das outras telas. */
+.workspace.almas-deck-mode #almasSideAnchor[hidden]{display:none!important;height:0!important;min-height:0!important}
+.workspace.almas-deck-mode #almasCardSide:not([hidden]){display:flex!important;align-items:center;gap:9px;margin:3px 0 0!important;padding:3px 4px!important;min-height:0!important}
+.workspace.almas-deck-mode #almasCardSide .almas-card-side-head{margin:0 0 4px!important}
+
 .almas-card-table .scene{width:min(var(--cw),min(305px,100%));max-width:100%}
-.almas-card-table .noimg .body{justify-content:center;text-align:center}
-.almas-card-table .noimg .ct{font-size:1.65em}
-.almas-card-table .noimg .tx{font-size:.98em;line-height:1.46}
+
+
+
 .workspace.almas-deck-mode .almas-card-status:not([hidden]){display:block;width:min(355px,100%);margin:0 auto;color:var(--mute);font-size:12px;text-align:center;line-height:1.5;min-height:36px}
 .almas-card-status .almas-status-primary{display:block;color:var(--ink);font-weight:650}
 .almas-card-status .almas-status-secondary{display:block;font-size:11px;margin-top:3px}
@@ -1043,6 +1048,94 @@ body.season-history-open .footer-shortcuts,body.soul-modal-open .footer-shortcut
 #boostersList .am-choice-meta{font-size:9px!important;line-height:1.15!important}
 #boostersHeading{font-size:13px!important}
 @media(max-width:480px){#gl>.operation>div:first-child b,#specialOps>.operation>div:first-child b{padding-right:120px!important;font-size:11px!important}#boostersList .am-choice{padding:4px!important}}
+
+/* v1.36 — Cards of City returned as a genuine third side tab. */
+.workspace.almas-deck-mode .almas-card-side:not([hidden]){display:grid;gap:10px;justify-items:center;align-content:start;padding:12px 4px 18px;min-height:290px}
+.almas-card-side-head{display:grid;text-align:center;gap:3px}
+.almas-card-side-head strong{font:650 20px/1.3 Georgia,serif;color:var(--ink)}
+.almas-card-side-head small{font:500 11px/1.4 system-ui,sans-serif;color:var(--mute)}
+.workspace.almas-deck-mode #almasCardSide #almasCardTable{display:flex!important;justify-content:center;max-width:100%;min-height:0}
+.workspace.almas-deck-mode #almasCardSide #almasCardStatus{display:block!important;min-height:31px}
+.workspace.almas-deck-mode #almasSideDraw{min-width:170px;min-height:40px;padding:9px 18px}
+.workspace.almas-deck-mode #almasSideDraw:disabled{opacity:.6;cursor:not-allowed}
+
+/* v1.36.7 — aba Cartas alinhada aos painéis do Almas; remove flex-row herdado. */
+.workspace.almas-deck-mode #almasCardSide:not([hidden]){
+  display:flex!important;flex-direction:column!important;align-items:stretch!important;
+  gap:12px!important;margin:2px 0 0!important;padding:14px 12px 18px!important;
+  width:100%;min-height:0!important;border:1px solid color-mix(in srgb,var(--gold) 24%,var(--line));
+  border-radius:11px;background:linear-gradient(160deg,color-mix(in srgb,var(--panel) 72%,var(--bg)),color-mix(in srgb,var(--bg2) 36%,var(--bg)));
+  box-shadow:0 6px 16px #0001;box-sizing:border-box;
+}
+.workspace.almas-deck-mode #almasCardSide .almas-card-side-head{
+  display:flex!important;flex-direction:column;align-items:flex-start!important;text-align:left!important;
+  width:100%!important;gap:3px!important;margin:0!important;padding:0 1px 9px!important;
+  border-bottom:1px solid var(--line);box-sizing:border-box;
+}
+.almas-card-kicker{font:750 9px/1.25 system-ui,sans-serif;letter-spacing:.14em;color:var(--mute)}
+.workspace.almas-deck-mode #almasCardSide .almas-card-side-head strong{
+  color:var(--ink);font:650 19px/1.22 Georgia,serif;
+}
+.workspace.almas-deck-mode #almasCardSide .almas-card-side-head small{
+  color:var(--mute);font:500 11px/1.35 system-ui,sans-serif;
+}
+.workspace.almas-deck-mode #almasCardSide #almasCardTable{
+  display:flex!important;justify-content:center!important;align-items:center!important;
+  width:100%!important;max-width:none!important;min-height:270px!important;
+  margin:0!important;padding:10px 4px!important;box-sizing:border-box;
+  border:1px solid color-mix(in srgb,var(--gold) 19%,var(--line));border-radius:10px;
+  background:radial-gradient(ellipse at 50% 45%,color-mix(in srgb,var(--gold) 7%,transparent),transparent 75%);
+}
+.workspace.almas-deck-mode #almasCardSide #almasCardTable .scene{
+  width:min(218px,calc(100% - 4px));max-width:100%;aspect-ratio:5/7;
+}
+.almas-card-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;max-width:260px;padding:14px}
+.almas-card-placeholder>span{font:40px/1 Georgia,serif;color:var(--gold);opacity:.68}
+.almas-card-placeholder>strong{font:600 17px/1.3 Georgia,serif;color:var(--ink)}
+.almas-card-placeholder>small{font:500 11px/1.5 system-ui,sans-serif;color:var(--mute)}
+.workspace.almas-deck-mode #almasCardSide #almasCardStatus{
+  display:block!important;min-height:0!important;width:100%!important;
+  max-width:none!important;margin:0!important;text-align:center!important;
+  font:500 11px/1.5 system-ui,sans-serif;
+}
+.workspace.almas-deck-mode #almasCardSide #almasCardStatus:empty{display:none!important}
+.workspace.almas-deck-mode #almasCardSide #almasSideDraw{
+  display:block;width:100%!important;min-width:0!important;max-width:none!important;
+  min-height:41px!important;padding:10px 13px!important;margin:0!important;
+  font:750 12px/1.25 system-ui,sans-serif;letter-spacing:.02em;border-radius:8px;
+}
+@media(max-width:540px){.workspace.almas-deck-mode #almasCardSide:not([hidden]){padding:10px!important}}
+
+
+/* v1.36.8 — As Cartas da Cidade usam o próprio cartão e a apresentação do DeckLock. */
+.workspace.almas-deck-mode #almasCardSide:not([hidden]){
+  display:flex!important;flex-direction:column!important;align-items:center!important;
+  gap:15px!important;padding:10px 0 16px!important;margin:0!important;
+  border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;
+}
+.workspace.almas-deck-mode #almasCardSide .almas-card-side-head{
+  width:100%!important;align-items:center!important;text-align:center!important;
+  border:0!important;padding:3px 0 0!important;gap:4px!important;
+}
+.workspace.almas-deck-mode #almasCardSide .almas-card-side-head strong{font:600 19px/1.25 var(--fh)!important;color:var(--gold)!important}
+.workspace.almas-deck-mode #almasCardSide .almas-card-side-head small{font-size:11px;color:var(--mute)}
+.workspace.almas-deck-mode #almasCardSide #almasCardTable{
+  min-height:0!important;width:100%!important;padding:0!important;margin:0!important;
+  border:0!important;border-radius:0!important;background:none!important;box-shadow:none!important;
+}
+.workspace.almas-deck-mode #almasCardSide #almasCardTable .scene{
+  width:min(var(--cw),calc(100% - 12px))!important;max-width:100%!important;
+  aspect-ratio:5/7!important;
+}
+
+
+
+.workspace.almas-deck-mode #almasCardSide #almasCardStatus{width:100%!important;max-width:var(--cw)!important;text-align:center!important}
+.workspace.almas-deck-mode #almasCardSide #almasSideDraw{
+  width:auto!important;min-width:190px!important;max-width:100%!important;
+  border-radius:8px!important;min-height:43px!important;
+  font:700 14px/1.3 var(--fh)!important;letter-spacing:.055em!important;
+}
 </style>
 </head>
 <body>
@@ -1092,15 +1185,20 @@ body.season-history-open .footer-shortcuts,body.soul-modal-open .footer-shortcut
     </div>
     <div id="almasSidePanel" class="almas-side-panel" hidden>
       <div class="almas-side-heading"><small>ALMAS · CENTRAL DE OPERAÇÕES</small><strong>Seu império</strong></div>
-      <nav class="almas-side-tabs" aria-label="Domínio e Loja">
+      <nav class="almas-side-tabs" aria-label="Domínio, Loja e Cartas">
         <button type="button" data-almas-side="a" class="active" aria-pressed="true">Domínio</button>
         <button type="button" data-almas-side="r" aria-pressed="false">Loja</button>
+        <button type="button" data-almas-side="c" aria-pressed="false">Cartas</button>
       </nav>
       <div id="almasSideAnchor" class="almas-side-anchor" aria-label="Conteúdo de Domínio e Loja"></div>
+      <section id="almasCardSide" class="almas-card-side" hidden aria-label="Cartas da Cidade">
+        <div class="almas-card-side-head"><strong>Cartas da Cidade</strong><small>1 carta · 90 s de recarga</small></div>
+        <div id="almasCardTable" class="almas-card-table" aria-label="Carta virada para baixo até o sorteio"></div>
+        <div id="almasCardStatus" class="almas-card-status" role="status"></div>
+        <button type="button" class="primary" id="almasSideDraw">Sortear carta</button>
+      </section>
     </div>
     <div id="almasDeckMode" hidden></div>
-    <div id="almasCardTable" hidden></div>
-    <div id="almasCardStatus" hidden></div>
     <div id="table" role="region" aria-label="Cartas sorteadas"></div>
     <div class="ctrl simple-actions">
       <div class="quick-count" aria-label="Quantidade de cartas por deck">
@@ -2743,6 +2841,273 @@ textarea{width:100%;height:70px;background:var(--am-ink);color:var(--am-text);bo
 #platinumShop .am-platinum-shop-head h3{color:#26374f!important;text-shadow:0 1px 0 rgba(255,255,255,.42)}
 #platinumShop .am-platinum-shop-info strong{color:#1c304b!important}
 #platinumShop .am-platinum-shop-info small{color:#435873!important}
+
+/* v1.35.2 — identidade cromática discreta por categoria da loja. */
+#il>.up[data-shop-category="gun"]{border-color:#ba7543!important}
+#il>.up[data-shop-category="gun"].ready{border-color:#f0a15a!important;box-shadow:inset 0 2px 0 #e6964e55,0 5px 17px #0002!important}
+#il>.up[data-shop-category="gun"].no,#il>.up[data-shop-category="gun"].lock{border-color:#795941!important}
+#il>.up[data-shop-category="spirit"]{border-color:#9c75c6!important}
+#il>.up[data-shop-category="spirit"].ready{border-color:#c59af1!important;box-shadow:inset 0 2px 0 #b184e855,0 5px 17px #0002!important}
+#il>.up[data-shop-category="spirit"].no,#il>.up[data-shop-category="spirit"].lock{border-color:#675778!important}
+#il>.up[data-shop-category="gun"].done{border-color:#b98559!important}
+#il>.up[data-shop-category="spirit"].done{border-color:#9878ba!important}
+
+/* With five normal tabs and only three visible in desktop side-by-side, keep both layouts balanced. */
+.tabs{grid-template-columns:repeat(6,minmax(0,1fr))!important}
+:host(.am-side-layout) .tabs{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+@media(max-width:470px){.tabs .tab{padding-inline:2px!important;font-size:11px!important}}
+.am-legacy-locked{margin:4px 0;padding:15px;border:1px dashed var(--am-line);border-radius:10px;color:var(--am-muted);font:600 12px var(--am-font-ui,system-ui)}
+.am-legacy-locked[hidden]{display:none!important}
+/* v1.36 — Legado on the same standard page background; only individual cards receive surfaces. */
+.am-legacy-view{display:grid;gap:10px;padding:4px 0 16px}
+.am-legacy-view[hidden]{display:none!important}
+.am-legacy-hero{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 2px}
+.am-legacy-hero small,.am-legacy-heading small{display:block;font:750 10px/1.4 var(--am-font-ui,system-ui);letter-spacing:.1em;color:var(--am-muted)}
+.am-legacy-hero h3{margin:3px 0 0;font:700 21px/1.2 Georgia,serif;color:var(--am-text)}
+.am-legacy-hero>span{font-size:11px;font-weight:700;color:var(--am-brass)}
+.am-legacy-module{min-width:0;border:1px solid var(--am-ui-edge,var(--am-line));border-radius:12px;padding:13px;background:linear-gradient(160deg,color-mix(in srgb,var(--am-raised) 87%,var(--am-surface)),var(--am-ui-panel,var(--am-bg)));box-shadow:0 6px 18px #0002}
+.am-legacy-module[hidden]{display:none!important}
+.am-legacy-heading{display:flex;justify-content:space-between;align-items:start;gap:10px}
+.am-legacy-heading h3{font:700 18px/1.3 Georgia,serif;margin:4px 0;color:var(--am-text)}
+.am-legacy-heading p,.am-legacy-note{font:500 11px/1.5 var(--am-font-ui,system-ui);margin:3px 0 8px;color:var(--am-muted)}
+.am-legacy-heading>strong{flex:none;font:800 13px var(--am-font-ui,system-ui);color:var(--am-brass);white-space:nowrap}
+.am-tower-body{display:grid;grid-template-columns:85px minmax(0,1fr);gap:15px;align-items:end}
+.am-tower-art{height:165px;display:flex;flex-direction:column;align-items:center;justify-content:end;filter:drop-shadow(0 8px 7px #0003)}
+.am-tower-spire{font:30px/1 Georgia,serif;color:var(--am-brass);text-shadow:0 0 18px var(--am-brass)}
+.am-tower-bricks{width:55px;display:flex;flex-direction:column-reverse;gap:2px;margin-top:2px}
+.am-tower-bricks i{height:10px;border:1px solid color-mix(in srgb,var(--am-brass) 45%,var(--am-line));border-radius:2px;background:color-mix(in srgb,var(--am-brass) 33%,var(--am-raised));opacity:.30}
+.am-tower-bricks i.lit{opacity:1;background:linear-gradient(90deg,var(--am-raised),color-mix(in srgb,var(--am-brass) 55%,var(--am-raised)));box-shadow:0 0 6px color-mix(in srgb,var(--am-brass) 12%,transparent)}
+.am-tower-base{width:78px;height:9px;background:var(--am-raised);border:1px solid var(--am-brass);border-radius:2px}
+.am-tower-info{display:grid;gap:8px;min-width:0}
+.am-tower-info>strong{font:700 13px/1.4 var(--am-font-ui,system-ui);color:var(--am-text)}
+.am-tower-info>span{font:600 11px/1.4 var(--am-font-ui,system-ui);color:var(--am-muted)}
+.am-tower-info>small{font:500 11px/1.4 var(--am-font-ui,system-ui);color:var(--am-muted)}
+.am-legacy-track{height:8px;background:color-mix(in srgb,var(--am-bg) 72%,var(--am-line));border-radius:99px;overflow:hidden;border:1px solid var(--am-line)}
+.am-legacy-track i{height:100%;width:0%;display:block;border-radius:99px;background:var(--am-brass);transition:width .3s}
+.am-tower-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+.am-tower-actions .btn{padding:6px 4px;min-height:35px;font-size:10px;min-width:0;white-space:normal}
+.am-legacy-details{border-top:1px solid var(--am-line);padding-top:8px;margin-top:8px}
+.am-legacy-details summary{cursor:pointer;color:var(--am-brass);font:700 12px var(--am-font-ui,system-ui)}
+.am-echo-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin:10px 0 0}
+.am-echo-card{display:grid;gap:3px;text-align:left;padding:9px 8px;min-width:0;border:1px solid var(--am-line);border-radius:8px;background:color-mix(in srgb,var(--am-surface) 75%,var(--am-raised));color:var(--am-text);cursor:pointer}
+.am-echo-card>strong{font:750 11px/1.35 var(--am-font-ui,system-ui)}
+.am-echo-card>small{font:500 10px/1.4 var(--am-font-ui,system-ui);color:var(--am-muted)}
+.am-echo-card.owned{border-color:var(--am-brass)}.am-echo-card.equipped{background:color-mix(in srgb,var(--am-brass) 15%,var(--am-raised));box-shadow:inset 0 0 0 1px var(--am-brass)}
+.am-echo-card:disabled{opacity:.6;cursor:not-allowed}
+.am-constellation-sky{height:96px;display:flex;justify-content:space-around;align-items:center;color:var(--am-brass);background:radial-gradient(ellipse at 50% 70%,color-mix(in srgb,var(--am-brass) 14%,transparent),transparent 68%),linear-gradient(180deg,color-mix(in srgb,var(--am-bg) 52%,transparent),transparent);font:24px Georgia,serif;border:1px solid color-mix(in srgb,var(--am-brass) 18%,var(--am-line));border-radius:14px;box-shadow:inset 0 1px 0 rgba(255,255,255,.03)}
+.am-constellation-sky span:nth-child(2n){transform:translateY(-15px);opacity:.48;font-size:12px}
+.am-star-branches{display:grid;gap:10px;margin-top:10px}
+.am-star-branch{display:grid;gap:10px;padding:12px;border:1px solid color-mix(in srgb,var(--am-brass) 22%,var(--am-line));border-radius:12px;background:linear-gradient(160deg,color-mix(in srgb,var(--am-raised) 84%,var(--am-surface)),color-mix(in srgb,var(--am-bg) 85%,var(--am-raised)));box-shadow:0 8px 18px #0001}
+.am-star-branch-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.am-star-branch-head strong{display:flex;align-items:center;gap:8px;font:800 14px/1.2 var(--am-font-ui,system-ui);color:var(--am-text)}
+.am-star-branch-head strong i{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;border:1px solid color-mix(in srgb,var(--am-brass) 46%,var(--am-line));color:var(--am-brass);font-style:normal;background:color-mix(in srgb,var(--am-brass) 9%,var(--am-raised))}
+.am-star-branch-head small{font:650 10px/1.3 var(--am-font-ui,system-ui);letter-spacing:.04em;color:var(--am-muted);text-transform:uppercase}
+.am-star-node-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;position:relative}
+.am-star-node-row:before{content:"";position:absolute;left:12%;right:12%;top:50%;height:2px;transform:translateY(-50%);background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--am-brass) 30%,var(--am-line)),transparent);pointer-events:none}
+.am-star-node{position:relative;z-index:1;border:1px solid var(--am-line);border-radius:10px;min-width:0;padding:10px 6px;display:grid;gap:4px;justify-items:center;align-content:center;color:var(--am-text);background:linear-gradient(180deg,color-mix(in srgb,var(--am-surface) 80%,var(--am-raised)),var(--am-raised));cursor:pointer;transition:transform .16s ease,border-color .18s ease,background .18s ease,box-shadow .18s ease}
+.am-star-node>span{font-size:17px;color:var(--am-brass);text-shadow:0 0 10px color-mix(in srgb,var(--am-brass) 18%,transparent)}
+.am-star-node>small{font:700 10px/1.25 var(--am-font-ui,system-ui);text-align:center}
+.am-star-node.owned{border-color:color-mix(in srgb,var(--am-brass) 75%,var(--am-line));background:linear-gradient(180deg,color-mix(in srgb,var(--am-brass) 18%,var(--am-raised)),color-mix(in srgb,var(--am-brass) 8%,var(--am-bg)));box-shadow:inset 0 0 0 1px rgba(219,186,114,.18),0 6px 16px rgba(0,0,0,.08)}
+.am-star-node.unlocked{border-color:color-mix(in srgb,var(--am-brass) 55%,var(--am-line));background:linear-gradient(180deg,color-mix(in srgb,var(--am-brass) 9%,var(--am-raised)),var(--am-raised))}
+.am-star-node:not(:disabled):hover{transform:translateY(-1px);border-color:var(--am-brass)}
+.am-star-node:disabled{opacity:.56;cursor:not-allowed}
+@media(max-width:420px){.am-star-node-row{grid-template-columns:1fr}.am-star-node-row:before{display:none}}
+
+/* v1.36.2 — Torre com mais identidade, Constelação mais temática e Ecos encadeados na Loja. */
+.am-tower-view{display:grid;gap:12px;padding:4px 0 18px}
+.am-tower-view[hidden],.am-tower-world[hidden]{display:none!important}
+.am-tower-view>.am-legacy-hero>strong{font:800 14px var(--am-font-ui);color:var(--am-brass);background:linear-gradient(180deg,color-mix(in srgb,var(--am-brass) 15%,var(--am-bg)),color-mix(in srgb,var(--am-brass) 6%,var(--am-bg)));border:1px solid color-mix(in srgb,var(--am-brass) 28%,var(--am-line));border-radius:999px;padding:6px 10px;box-shadow:0 4px 12px #0001}
+.am-tower-world{display:grid;grid-template-columns:minmax(185px,.95fr) minmax(0,1.15fr);gap:14px;align-items:stretch}
+.am-tower-scene{position:relative;isolation:isolate;overflow:hidden;min-height:320px;border:1px solid color-mix(in srgb,var(--am-brass) 42%,var(--am-line));border-radius:16px;background:radial-gradient(circle at 50% 22%,rgba(222,194,122,.18),transparent 32%),radial-gradient(circle at 50% 100%,rgba(222,194,122,.09),transparent 38%),linear-gradient(180deg,color-mix(in srgb,var(--am-bg) 76%,transparent),color-mix(in srgb,var(--am-raised) 78%,var(--am-bg)))}
+.am-tower-sky-orb{position:absolute;width:138px;height:138px;left:50%;top:18px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(circle,#f4e5b770,#d0b06d25 52%,transparent 72%);filter:blur(4px)}
+.am-tower-skyline{position:absolute;bottom:24px;width:52px;height:108px;opacity:.2;border:1px solid color-mix(in srgb,var(--am-brass) 32%,var(--am-line));background:linear-gradient(90deg,var(--am-bg),var(--am-raised));clip-path:polygon(0 22%,22% 22%,22% 0,45% 22%,63% 22%,63% 47%,100% 47%,100% 100%,0 100%)}
+.skyline-l{left:-9px}.skyline-r{right:-10px;transform:scaleX(-1)}
+.am-tower-monument{position:absolute;z-index:1;bottom:38px;left:50%;transform:translateX(-50%);width:138px;display:grid;justify-items:center;filter:drop-shadow(0 12px 18px #0005)}
+.am-tower-top{font:38px/1 Georgia,serif;color:var(--am-brass);text-shadow:0 0 14px color-mix(in srgb,var(--am-brass) 64%,transparent);margin-bottom:-3px;animation:amTowerGlow 5s ease-in-out infinite}
+.am-tower-stack{display:flex;flex-direction:column-reverse;width:96px;gap:2px}
+.am-tower-stack i{position:relative;display:block;height:15px;border:1px solid color-mix(in srgb,var(--am-brass) 35%,var(--am-line));border-radius:2px 2px 0 0;background:linear-gradient(90deg,var(--am-bg) 0%,color-mix(in srgb,var(--am-raised) 75%,var(--am-brass)) 50%,var(--am-bg) 100%);opacity:.24}
+.am-tower-stack i:before,.am-tower-stack i:after{content:"";position:absolute;top:4px;bottom:3px;width:3px;background:color-mix(in srgb,var(--am-brass) 26%,transparent)}
+.am-tower-stack i:before{left:19px}.am-tower-stack i:after{right:19px}
+.am-tower-stack i.lit{opacity:1;border-color:color-mix(in srgb,var(--am-brass) 75%,var(--am-line));box-shadow:0 0 9px color-mix(in srgb,var(--am-brass) 18%,transparent);background:linear-gradient(90deg,var(--am-raised),color-mix(in srgb,var(--am-brass) 43%,var(--am-raised)),var(--am-raised))}
+.am-tower-stack i.rising{opacity:1;background:linear-gradient(90deg,color-mix(in srgb,var(--am-brass) 37%,var(--am-raised)) var(--floor-progress),var(--am-raised) var(--floor-progress));}
+.am-tower-foundation{height:14px;width:136px;border:1px solid color-mix(in srgb,var(--am-brass) 72%,var(--am-line));border-radius:4px;background:linear-gradient(90deg,var(--am-bg),color-mix(in srgb,var(--am-brass) 65%,var(--am-raised)),var(--am-bg))}
+.am-tower-ground{position:absolute;bottom:29px;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--am-brass),transparent);opacity:.55}
+.am-tower-scene-label{position:absolute;bottom:8px;left:0;right:0;text-align:center;font:800 10px var(--am-font-ui);letter-spacing:.18em;color:var(--am-muted)}
+.am-tower-monument.tower-veteran{filter:drop-shadow(0 5px 20px color-mix(in srgb,var(--am-brass) 20%,transparent))}
+@keyframes amTowerGlow{50%{opacity:.64;transform:scale(.92)}}
+.am-tower-console{border:1px solid color-mix(in srgb,var(--am-brass) 28%,var(--am-ui-edge));border-radius:16px;background:linear-gradient(165deg,color-mix(in srgb,var(--am-raised) 90%,var(--am-surface)),color-mix(in srgb,var(--am-bg) 82%,var(--am-raised)));padding:14px;display:flex;flex-direction:column;gap:12px;justify-content:center;min-width:0;box-shadow:0 8px 18px #0001}
+.am-tower-statgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.am-tower-statgrid>div{display:grid;gap:6px;padding:10px;border-radius:11px;border:1px solid var(--am-line);min-width:0;background:linear-gradient(180deg,color-mix(in srgb,var(--am-bg) 44%,transparent),color-mix(in srgb,var(--am-raised) 22%,transparent))}
+.am-tower-statgrid small{font:700 9px/1.3 var(--am-font-ui);color:var(--am-muted);letter-spacing:.06em}
+.am-tower-statgrid strong{font:800 clamp(12px,1.5vw,18px)/1.25 var(--am-font-ui);color:var(--am-brass);overflow-wrap:anywhere}
+.am-tower-progress-header{display:flex;justify-content:space-between;color:var(--am-text);font:700 12px var(--am-font-ui)}
+.am-tower-progress-header span{color:var(--am-brass)}
+.am-tower-progress{height:12px}.am-tower-progress i{background:linear-gradient(90deg,color-mix(in srgb,var(--am-brass) 65%,var(--am-bg)),var(--am-brass));box-shadow:0 0 10px color-mix(in srgb,var(--am-brass) 30%,transparent)}
+.am-tower-console>small{font:500 11px/1.35 var(--am-font-ui);color:var(--am-muted)}
+.am-tower-console .am-tower-footnote{font-size:10px}
+.am-tower-actions .btn{min-height:39px;font-size:11px}
+.am-tower-menu{display:flex;gap:6px;padding:4px;border:1px solid color-mix(in srgb,var(--am-brass) 22%,var(--am-line));border-radius:12px;background:linear-gradient(180deg,color-mix(in srgb,var(--am-raised) 48%,transparent),transparent)}
+.am-tower-menu button{flex:1;min-height:38px;background:transparent;color:var(--am-muted);border:1px solid transparent;border-radius:9px;font:800 12px var(--am-font-ui);cursor:pointer}
+.am-tower-menu button.active{color:var(--am-text);border-color:color-mix(in srgb,var(--am-brass) 36%,var(--am-line));background:linear-gradient(180deg,color-mix(in srgb,var(--am-brass) 16%,var(--am-raised)),color-mix(in srgb,var(--am-brass) 5%,var(--am-bg)))}
+.am-tower-menu button:disabled{opacity:.35;cursor:default}
+.am-tower-subview[hidden]{display:none!important}
+.am-tower-milestone-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.am-tower-mark{display:grid;gap:5px;border:1px solid var(--am-line);border-radius:12px;padding:12px 11px;background:linear-gradient(180deg,color-mix(in srgb,var(--am-raised) 80%,var(--am-surface)),color-mix(in srgb,var(--am-bg) 88%,var(--am-raised)));color:var(--am-text)}
+.am-tower-mark .topline{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.am-tower-mark .topline span{font-size:14px;color:var(--am-brass)}
+.am-tower-mark .topline strong{font:800 11px var(--am-font-ui)}
+.am-tower-mark b{font:700 13px/1.25 Fraunces,Georgia,serif;color:var(--am-text)}
+.am-tower-mark small{font:500 10px/1.45 var(--am-font-ui);color:var(--am-muted)}
+.am-tower-mark.complete{border-color:color-mix(in srgb,var(--am-brass) 50%,var(--am-line));background:linear-gradient(180deg,color-mix(in srgb,var(--am-brass) 15%,var(--am-raised)),color-mix(in srgb,var(--am-brass) 5%,var(--am-bg)))}
+.am-tower-record-list{display:grid;gap:7px}.am-tower-record{display:flex;justify-content:space-between;gap:8px;padding:11px 12px;border:1px solid var(--am-line);border-radius:10px;color:var(--am-text);background:linear-gradient(180deg,color-mix(in srgb,var(--am-raised) 82%,var(--am-surface)),var(--am-bg))}.am-tower-record small,.am-tower-empty{color:var(--am-muted);font:500 11px var(--am-font-ui)}
+.am-echo-shop{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:10px 12px;margin:3px 0 9px;border:1px solid color-mix(in srgb,#5db8a7 42%,var(--am-ui-edge));border-radius:12px;background:linear-gradient(135deg,color-mix(in srgb,#5db8a7 14%,var(--am-raised)),color-mix(in srgb,#5db8a7 4%,var(--am-ui-panel)))}
+.am-echo-shop[hidden]{display:none!important}.am-echo-shop-label{display:flex;align-items:center;gap:9px}.am-echo-shop-label>div{display:grid;gap:3px}.am-echo-shop-label strong{font:800 12px var(--am-font-ui);letter-spacing:.04em}.am-echo-shop-label small{font:600 10px var(--am-font-ui);color:var(--am-muted)}.am-echo-shop-glyph{font:29px Georgia,serif;color:#6fd3c0}
+.am-echo-shop .btn{min-height:36px;font-size:11px}.am-echo-shop .btn.active{border-color:#6fd3c0;background:color-mix(in srgb,#6fd3c0 22%,var(--am-raised));color:var(--am-text)}
+.am-echo-shop>small{flex:1 1 100%;font:500 11px/1.4 var(--am-font-ui);color:var(--am-muted)}.am-echo-shop>small[hidden]{display:none}
+#il>.up{position:relative}
+#il>.up.am-echo-select{border-style:solid!important;border-color:color-mix(in srgb,#6fd3c0 48%,var(--am-line))!important;background:linear-gradient(145deg,color-mix(in srgb,#6fd3c0 12%,var(--am-raised)),var(--am-ui-panel))!important}
+#il>.up.am-echo-select.ready{border-color:#7be2cf!important;box-shadow:inset 0 0 0 1px rgba(123,226,207,.18),0 8px 18px rgba(0,0,0,.08)!important}
+#il>.up.am-echo-owned{border-color:color-mix(in srgb,#6fd3c0 62%,var(--am-line))!important;background:linear-gradient(150deg,color-mix(in srgb,#6fd3c0 15%,var(--am-raised)),color-mix(in srgb,#6fd3c0 4%,var(--am-bg)))!important;box-shadow:inset 0 0 0 1px rgba(96,210,192,.18),0 4px 12px #0002!important}
+#il>.up.am-echo-select .r small,#il>.up.am-echo-owned .r small{color:#83d9ca!important}
+#il>.up.am-echo-select .r em,#il>.up.am-echo-owned .r em{font-size:13px!important}
+.am-echo-seal{position:absolute;right:10px;bottom:8px;display:inline-flex;align-items:center;gap:4px;padding:3px 7px;border-radius:999px;border:1px solid color-mix(in srgb,#6fd3c0 55%,var(--am-line));background:linear-gradient(180deg,color-mix(in srgb,#6fd3c0 18%,var(--am-raised)),color-mix(in srgb,#6fd3c0 5%,var(--am-bg)));font:800 9px/1 var(--am-font-ui);letter-spacing:.08em;color:#dffaf4;box-shadow:0 4px 12px rgba(69,163,146,.14)}
+.am-echo-seal[hidden]{display:none!important}
+@media(max-width:540px){.am-tower-world{grid-template-columns:1fr}.am-tower-scene{min-height:255px}.am-tower-stack i{height:12px}.am-tower-milestone-grid{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.am-tower-top{animation:none}}
+/* v1.36.3: progresso das operações especiais e monumento evolutivo. */
+.am-tower-scene{background:radial-gradient(circle at 50% 28%,rgba(222,194,122,var(--tower-radiance,.08)),transparent 38%),linear-gradient(180deg,color-mix(in srgb,var(--am-bg) 73%,transparent),color-mix(in srgb,var(--am-raised) 78%,var(--am-bg)))}
+.am-tower-monument{width:var(--tower-width,138px);padding-bottom:var(--tower-height,0px);transition:width .4s ease,padding-bottom .4s ease}
+.am-tower-crowns{display:flex;flex-direction:column-reverse;align-items:center;gap:2px;width:100%;max-height:90px;overflow:hidden;margin-bottom:5px}
+.am-tower-crowns i{height:3px;width:calc(58% + var(--tower-glow,.2)*23%);border:1px solid color-mix(in srgb,var(--am-brass) 75%,var(--am-line));border-radius:8px;background:linear-gradient(90deg,transparent,var(--am-brass),transparent);opacity:calc(.32 + var(--tower-glow,.2)*.6);box-shadow:0 0 8px color-mix(in srgb,var(--am-brass) 20%,transparent)}
+#il>.up.am-echo-owned .am-echo-seal{color:#dffaf4}
+#il>.up.am-echo-select:not(.am-echo-owned) .am-echo-seal{color:#dffaf4}
+#il>.up.am-echo-owned{padding-bottom:26px!important}
+
+
+/* v1.36.4 — barras corretas de Caixas/Sinner e redesign isométrico da Torre. */
+
+.am-tower-view{gap:14px}
+.am-tower-world{grid-template-columns:minmax(240px,1.15fr) minmax(260px,.95fr);gap:16px;align-items:stretch}
+.am-tower-scene{min-height:360px;overflow:hidden;border-radius:18px;border:1px solid color-mix(in srgb,var(--am-brass) 36%,var(--am-line));background:
+  radial-gradient(circle at 50% 22%,rgba(232,205,145,var(--tower-radiance,.18)),transparent 26%),
+  linear-gradient(180deg,color-mix(in srgb,#16202f 46%,var(--am-bg)),color-mix(in srgb,var(--am-raised) 84%,var(--am-bg)) 48%,color-mix(in srgb,#111820 24%,var(--am-bg)));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.03),0 12px 28px rgba(0,0,0,.08)}
+.am-tower-sky-orb{width:156px;height:156px;top:12px;background:radial-gradient(circle,rgba(253,233,184,.38),rgba(231,198,113,.12) 48%,transparent 68%);filter:blur(3px)}
+.am-tower-skyline{display:none}
+.am-tower-ground{bottom:22px;height:34px;background:linear-gradient(180deg,transparent,rgba(0,0,0,.18));opacity:1}
+.am-tower-scene:after{content:"";position:absolute;left:50%;bottom:10px;width:240px;height:64px;transform:translateX(-50%) skewX(-32deg);background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(0,0,0,.14));border:1px solid color-mix(in srgb,var(--am-brass) 16%,var(--am-line));border-radius:8px}
+.am-tower-monument{position:absolute;left:50%;bottom:40px;transform:translateX(-50%) scale(var(--tower-scale,1));transform-origin:bottom center;width:auto;padding:0;display:grid;justify-items:center;filter:drop-shadow(0 16px 22px rgba(0,0,0,.28)) drop-shadow(0 0 22px rgba(230,198,116,var(--tower-aura,.16)))}
+.am-tower-monument:before,.am-tower-monument:after{content:"";position:absolute;bottom:8px;width:32px;height:96px;background:linear-gradient(180deg,#43321f,#786346);border:1px solid color-mix(in srgb,var(--am-brass) 25%,#58452c);transform:skewY(-32deg);opacity:0;transition:opacity .25s ease}
+.am-tower-monument:before{right:100%;margin-right:10px}.am-tower-monument:after{left:100%;margin-left:10px;transform:skewY(32deg)}
+.am-tower-monument.tower-grand:before,.am-tower-monument.tower-grand:after{opacity:.92}
+.am-tower-monument.tower-eternal:before,.am-tower-monument.tower-eternal:after{height:126px;width:38px}
+.am-tower-crowns{display:flex;gap:5px;margin-bottom:6px}
+.am-tower-crowns i{display:block;width:12px;height:12px;transform:rotate(45deg);background:linear-gradient(135deg,#fff3cd,#d8b35e 72%,#8e6d2c);border:1px solid color-mix(in srgb,var(--am-brass) 72%,#745523);box-shadow:0 0 10px rgba(230,198,116,.18)}
+.am-tower-top{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;font:700 14px/1 Georgia,serif;color:#fff2c8;background:radial-gradient(circle,#fff3d4 0%,#d9b96c 56%,#8c6724 100%);border:1px solid color-mix(in srgb,var(--am-brass) 78%,#6a4e19);box-shadow:0 0 18px rgba(238,209,131,.34);margin-bottom:4px;animation:amTowerGlow 3.6s ease-in-out infinite}
+.am-tower-stack{display:flex;flex-direction:column-reverse;align-items:center;gap:2px;position:relative;z-index:1}
+.am-tower-stack i{display:block;position:relative;flex:none;height:13px;width:104px;border:0;background:linear-gradient(90deg,#5a4731,#8d734b 55%,#45321f);transform:skewX(-32deg);box-shadow:none;border-radius:1px;opacity:.24;transition:opacity .2s ease,filter .2s ease,transform .2s ease}
+.am-tower-stack i:before{content:"";position:absolute;left:-10px;top:5px;bottom:0;width:10px;background:linear-gradient(180deg,#3b2d1d,#5f492d);transform:skewY(58deg);transform-origin:right top;border-left:1px solid rgba(0,0,0,.22)}
+.am-tower-stack i:after{content:"";position:absolute;left:0;right:0;top:-8px;height:8px;background:linear-gradient(90deg,#c6a067,#f2d58d 60%,#b58b4f);transform:skewX(58deg);transform-origin:left bottom;opacity:.9}
+.am-tower-stack i.lit{opacity:1;filter:drop-shadow(0 0 4px rgba(223,187,110,.18))}
+.am-tower-stack i.elite:after{background:linear-gradient(90deg,#d9c085,#fff0c4 62%,#d1a95a)}
+.am-tower-stack i.rising{opacity:1;background:linear-gradient(90deg,#5a4731,#8d734b 55%,#45321f)}
+.am-tower-stack i.rising:after{background:linear-gradient(90deg,#d1b076 var(--floor-progress),#6d5738 var(--floor-progress))}
+.am-tower-foundation{display:block;width:154px;height:22px;margin-top:2px;border-radius:3px;background:linear-gradient(90deg,#4a3824,#8f7246 52%,#412f1e);transform:skewX(-32deg);position:relative}
+.am-tower-foundation:before{content:"";position:absolute;left:-16px;top:8px;width:16px;height:100%;background:linear-gradient(180deg,#302315,#584229);transform:skewY(58deg)}
+.am-tower-foundation:after{content:"";position:absolute;left:0;right:0;top:-10px;height:10px;background:linear-gradient(90deg,#d8b16e,#f3db9c 55%,#c79d5a);transform:skewX(58deg)}
+.am-tower-scene-label{bottom:18px;font:800 10px/1 var(--am-font-ui);letter-spacing:.22em;color:#e4c989;text-shadow:0 1px 0 rgba(0,0,0,.5)}
+.am-tower-console{background:linear-gradient(165deg,color-mix(in srgb,var(--am-raised) 92%,var(--am-surface)),color-mix(in srgb,var(--am-bg) 86%,var(--am-raised)));border-color:color-mix(in srgb,var(--am-brass) 32%,var(--am-ui-edge));box-shadow:0 12px 24px rgba(0,0,0,.06)}
+@media(max-width:700px){.am-tower-world{grid-template-columns:1fr}.am-tower-scene{min-height:310px}.am-tower-monument{bottom:34px;transform:translateX(-50%) scale(.93)}.am-tower-scene:after{width:200px}}
+
+/* v1.36.5 — Torre do Patrono: fachada minimalista sem perspectiva, cubos ou ornamentos. */
+.am-tower-world{grid-template-columns:minmax(180px,.88fr) minmax(0,1.12fr);gap:12px}
+.am-tower-scene{min-height:278px;border:1px solid var(--am-ui-edge)!important;border-radius:12px!important;background:linear-gradient(180deg,color-mix(in srgb,var(--am-raised) 66%,var(--am-bg)),color-mix(in srgb,var(--am-bg) 92%,var(--am-raised)))!important;box-shadow:none!important}
+.am-tower-scene:after,.am-tower-sky-orb,.am-tower-skyline,.am-tower-ground,.am-tower-crowns{display:none!important}
+.am-tower-monument,.am-tower-monument.tower-grand,.am-tower-monument.tower-eternal{position:absolute;left:50%;bottom:43px;transform:translateX(-50%)!important;width:118px!important;display:flex;flex-direction:column;align-items:center;gap:0;filter:none!important;padding:0!important}
+.am-tower-monument:before,.am-tower-monument:after{display:none!important}
+.am-tower-top{position:relative;display:block;box-sizing:border-box;width:86px!important;height:11px!important;margin:0!important;border:1px solid color-mix(in srgb,var(--am-brass) 55%,var(--am-line))!important;border-bottom:0!important;border-radius:0!important;background:linear-gradient(90deg,color-mix(in srgb,var(--am-brass) 24%,var(--am-raised)),color-mix(in srgb,var(--am-brass) 42%,var(--am-raised)))!important;box-shadow:none!important;animation:none!important;font-size:0!important;filter:none!important}
+.am-tower-stack{width:86px!important;max-width:86px;display:flex!important;flex-direction:column-reverse!important;align-items:stretch!important;gap:2px!important;transform:none!important}
+.am-tower-stack i{display:block!important;box-sizing:border-box;height:12px!important;width:100%!important;position:relative;transform:none!important;clip-path:none!important;border:1px solid color-mix(in srgb,var(--am-brass) 28%,var(--am-line))!important;border-radius:2px!important;background:color-mix(in srgb,var(--am-raised) 74%,var(--am-bg))!important;box-shadow:none!important;opacity:.33!important;filter:none!important;transition:background .25s,opacity .25s!important}
+.am-tower-stack i:before,.am-tower-stack i:after{display:none!important}
+.am-tower-stack i.lit{opacity:1!important;background:linear-gradient(90deg,color-mix(in srgb,var(--am-brass) 22%,var(--am-raised)),color-mix(in srgb,var(--am-brass) 39%,var(--am-raised)))!important;border-color:color-mix(in srgb,var(--am-brass) 55%,var(--am-line))!important}
+.am-tower-stack i.rising{opacity:1!important;background:linear-gradient(90deg,color-mix(in srgb,var(--am-brass) 35%,var(--am-raised)) var(--floor-progress),color-mix(in srgb,var(--am-raised) 72%,var(--am-bg)) var(--floor-progress))!important}
+.am-tower-foundation{width:115px!important;height:9px!important;margin-top:2px;display:block!important;border:1px solid color-mix(in srgb,var(--am-brass) 42%,var(--am-line))!important;border-radius:3px!important;background:color-mix(in srgb,var(--am-brass) 18%,var(--am-raised))!important;transform:none!important}
+.am-tower-foundation:before,.am-tower-foundation:after{display:none!important}
+.am-tower-scene-label{position:absolute;bottom:14px;left:0;right:0;color:var(--am-muted)!important;font:700 10px/1.2 var(--am-font-ui)!important;letter-spacing:.08em!important;text-shadow:none!important;text-align:center}
+.am-tower-console{border-radius:12px;box-shadow:none;gap:10px;padding:12px}
+@media(max-width:580px){.am-tower-world{grid-template-columns:1fr}.am-tower-scene{min-height:258px}.am-tower-monument{bottom:42px}}
+
+/* v1.36.7 — única geometria para todos os blocos da Torre (sem transforms herdados). */
+#towerWorld .am-tower-scene{position:relative;min-height:300px!important;border-radius:10px!important;overflow:hidden!important;
+  background:linear-gradient(180deg,color-mix(in srgb,var(--am-raised) 75%,var(--am-bg)),var(--am-bg))!important}
+#towerWorld .am-tower-simple{position:absolute;left:50%;bottom:44px;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;justify-content:end;gap:0;
+  width:116px;max-width:calc(100% - 24px);height:auto;box-sizing:border-box;
+  filter:none;transition:none}
+#towerWorld .am-tower-simple-roof{display:block;box-sizing:border-box;width:94px;max-width:100%;height:11px;
+  border:1px solid color-mix(in srgb,var(--am-brass) 55%,var(--am-line));border-bottom:0;
+  border-radius:0;background:color-mix(in srgb,var(--am-brass) 27%,var(--am-raised))}
+#towerWorld .am-tower-simple-floors{display:flex;flex-direction:column-reverse;gap:2px;align-items:stretch;
+  box-sizing:border-box;width:94px;max-width:100%;padding:0;margin:0;min-height:0}
+#towerWorld .am-tower-simple-floor{position:relative;display:block;flex:none;box-sizing:border-box;
+  width:100%;min-width:0;max-width:100%;height:12px;padding:0;margin:0;
+  background:color-mix(in srgb,var(--am-raised) 72%,var(--am-bg));
+  border:1px solid color-mix(in srgb,var(--am-brass) 25%,var(--am-line));border-radius:0;
+  opacity:.34;transform:none;clip-path:none;box-shadow:none;filter:none}
+#towerWorld .am-tower-simple-floor.lit{opacity:1;
+  background:linear-gradient(90deg,color-mix(in srgb,var(--am-brass) 22%,var(--am-raised)),color-mix(in srgb,var(--am-brass) 38%,var(--am-raised)));
+  border-color:color-mix(in srgb,var(--am-brass) 52%,var(--am-line))}
+#towerWorld .am-tower-simple-floor.lit.accent{background:color-mix(in srgb,var(--am-brass) 47%,var(--am-raised))}
+#towerWorld .am-tower-simple-floor.rising{opacity:1;
+  background:linear-gradient(90deg,color-mix(in srgb,var(--am-brass) 48%,var(--am-raised)) var(--floor-progress),
+  color-mix(in srgb,var(--am-raised) 72%,var(--am-bg)) var(--floor-progress))}
+#towerWorld .am-tower-simple-base{display:block;box-sizing:border-box;width:116px;max-width:100%;height:11px;
+  margin-top:2px;border:1px solid color-mix(in srgb,var(--am-brass) 42%,var(--am-line));
+  border-radius:0;background:color-mix(in srgb,var(--am-brass) 17%,var(--am-raised));}
+#towerWorld .am-tower-simple-floor:before,#towerWorld .am-tower-simple-floor:after,
+#towerWorld .am-tower-simple-roof:before,#towerWorld .am-tower-simple-roof:after,
+#towerWorld .am-tower-simple-base:before,#towerWorld .am-tower-simple-base:after{display:none!important;content:none!important}
+
+
+/* v1.36.8 — Torre de 50 blocos por ciclo e UI do legado. */
+#towerWorld .am-tower-scene{min-height:730px!important;display:block!important}
+#towerWorld .am-tower-simple{bottom:45px!important;width:142px!important;max-width:calc(100% - 30px)!important;
+  border-left:3px solid var(--am-brass);border-right:3px solid var(--am-brass);
+  padding:0 7px 2px;box-sizing:border-box}
+#towerWorld .am-tower-simple-floors{width:112px!important;max-width:100%!important;gap:2px!important}
+#towerWorld .am-tower-simple-floor{height:10px!important;border-radius:1px!important;
+  border-color:color-mix(in srgb,var(--tower-color,var(--am-brass)) 35%,var(--am-line))!important;
+  background:color-mix(in srgb,var(--tower-color,var(--am-brass)) 7%,var(--am-raised))!important;opacity:.28!important}
+#towerWorld .am-tower-simple-floor.lit{opacity:1!important;
+  border-color:color-mix(in srgb,var(--tower-color,var(--am-brass)) 75%,var(--am-line))!important;
+  background:color-mix(in srgb,var(--tower-color,var(--am-brass)) 28%,var(--am-raised))!important}
+#towerWorld .am-tower-simple-floor.rising{opacity:1!important;
+  background:linear-gradient(90deg,color-mix(in srgb,var(--tower-color,var(--am-brass)) 60%,var(--am-raised)) var(--floor-progress),color-mix(in srgb,var(--tower-color,var(--am-brass)) 7%,var(--am-raised)) var(--floor-progress))!important}
+#towerWorld .am-tower-simple-roof{width:112px!important;height:10px!important;
+  background:color-mix(in srgb,var(--tower-color,var(--am-brass)) 36%,var(--am-raised))!important}
+#towerWorld .am-tower-simple-base{width:130px!important;max-width:100%!important;height:10px!important;
+  background:color-mix(in srgb,var(--tower-color,var(--am-brass)) 22%,var(--am-raised))!important}
+#il>.up.am-echo-select:not(.am-echo-owned){
+  border:1px dashed color-mix(in srgb,#7adcca 55%,var(--am-line))!important;
+  background:linear-gradient(150deg,color-mix(in srgb,#73c6b8 5%,var(--am-raised)),var(--am-bg))!important;
+  box-shadow:none!important}
+#il>.up.am-echo-select:not(.am-echo-owned).ready{border-style:solid!important;border-color:#8ae0d1!important}
+#il>.up.am-echo-owned{border:1px solid color-mix(in srgb,#78cfbd 80%,var(--am-line))!important;
+  background:linear-gradient(145deg,color-mix(in srgb,#73d1c2 21%,var(--am-raised)),color-mix(in srgb,#73d1c2 7%,var(--am-bg)))!important;
+  box-shadow:inset 0 0 0 1px color-mix(in srgb,#a2e8db 30%,transparent)!important}
+#il>.up.am-echo-owned .am-echo-seal{font-size:9px!important;letter-spacing:.04em!important;color:#d8f7f0!important}
+.am-tower-ritual-notice{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:9px;
+  padding:11px 12px;margin:10px 0;border:1px solid color-mix(in srgb,var(--am-brass) 42%,var(--am-line));
+  background:color-mix(in srgb,var(--am-brass) 8%,var(--am-bg));border-radius:9px;
+  font:550 12px/1.5 var(--am-font-ui);color:var(--am-text)}
+.am-tower-ritual-notice[hidden]{display:none!important}
+.am-tower-ritual-notice .btn{font-size:11px;min-height:33px;white-space:nowrap}
+#dockRate{color:hsl(var(--rate-hue,151),48%,var(--rate-light,64%))!important;
+  text-shadow:0 0 14px hsl(var(--rate-hue,151) 60% var(--rate-light,64%) / .14);transition:color .4s ease}
+#comboStatus.combo-ribbon{display:grid!important}
+.am-investment-recommendation{flex-wrap:wrap!important}
+#investmentNewBuy{border-color:color-mix(in srgb,var(--am-brass) 30%,var(--am-line));font-size:11px;flex:0 0 auto}
+@media(max-width:650px){#towerWorld .am-tower-scene{min-height:690px!important}#towerWorld .am-tower-simple{bottom:40px!important}}
 </style>
 
 <div class="wrap">
@@ -2769,16 +3134,16 @@ textarea{width:100%;height:70px;background:var(--am-ink);color:var(--am-text);bo
       </div>
     </div>
   </div>
-  <div id="comboStatus" class="combo-ribbon" hidden aria-live="off">
+  <div id="comboStatus" class="combo-ribbon" aria-live="off">
     <div class="combo-ribbon-head"><span id="comboLabel"></span><span id="comboMult"></span></div>
     <div class="combo-track"><i id="comboBar"></i></div>
   </div>
-  <div class="am-goal-strip"><strong>Próxima meta</strong><span id="nextGoal" aria-live="off"></span></div>
   <nav class="tabs">
     <button class="tab" data-t="p"><span>Coleta</span></button>
     <button class="tab" data-t="a"><span>Domínio</span></button>
     <button class="tab" data-t="r"><span>Loja</span></button>
     <button class="tab" data-t="l"><span>Ritual</span></button>
+    <button class="tab" data-t="t"><span>Torre</span></button>
   </nav>
   <div class="am-tab-head"><div class="tab-guide" id="tabGuide" role="note"><strong id="tabGuideTitle"></strong><span id="tabGuideText"></span></div><button type="button" id="guideReopen" class="am-guide-reopen" aria-label="Rever tutorial desta aba" title="Rever tutorial">i</button></div>
   <div class="am-guide-overlay" id="gameGuide" hidden role="dialog" aria-modal="true" aria-labelledby="gameGuideTitle">
@@ -2831,10 +3196,10 @@ textarea{width:100%;height:70px;background:var(--am-ink);color:var(--am-text);bo
 
   <section id="ta" hidden>
     <div class="seg" id="qs" role="group" aria-label="Quantidade por investimento"><button class="btn" data-q="1" aria-pressed="true">Investir x1</button><button class="btn" data-q="10" aria-pressed="false">x10</button><button class="btn" data-q="100" aria-pressed="false">x100</button><button class="btn" data-q="max" aria-pressed="false">Máx.</button></div>
-    <div class="am-investment-recommendation"><p class="investment-tip" id="investmentTip" aria-live="off"></p><button type="button" class="btn" id="investmentBestBuy" hidden>Comprar sugestão</button></div>
+    <div class="am-investment-recommendation"><p class="investment-tip" id="investmentTip" aria-live="off"></p><button type="button" class="btn" id="investmentBestBuy" hidden>Comprar sugestão</button><button type="button" class="btn" id="investmentNewBuy" hidden>Nova operação</button></div>
     <p class="purchase-feedback" id="purchaseFeedback" role="status" aria-live="polite"></p>
     <div class="am-domain-special">
-      <div class="am-section-title"><strong>Mecânicas especiais</strong><small>Rotas de Caixas: lotes a cada 45 s · Sinner: tributo a cada 12 cliques e bônus no clique base</small></div>
+      <div class="am-section-title"><strong>Mecânicas especiais</strong><small>Caixas a cada 45 s · Sinner a cada 12 cliques</small></div>
       <div id="specialOps" class="am-op-grid"></div>
     </div>
     <div class="am-section-title"><strong>Operações de Domínio</strong><small>Novas operações aparecem ao alcançar 100% do custo inicial em Souls obtidas na run. Descobertas persistem após o Ritual.</small></div>
@@ -2862,6 +3227,40 @@ textarea{width:100%;height:70px;background:var(--am-ink);color:var(--am-text);bo
       <div class="am-platinum-shop-info"><strong id="ticketShopPrice">—</strong><button class="btn pri" type="button" id="ticketBuy">Comprar ticket</button><small id="ticketShopBalance"></small><small id="ticketShopHint"></small><small id="ticketCoverageHint" class="am-ticket-coverage" hidden></small></div></div>
     </section>
     <div class="am-base-shop" aria-label="Itens e melhorias permanentes da run"><label id="amAutoItemsRow" class="am-autobuy-row" hidden><input type="checkbox" id="amAutoItems"> Compra automática <small>Arma → Espírito → Vitalidade</small></label><div id="il"></div></div>
+  </section>
+
+
+  <section id="tt" hidden class="am-tower-view">
+    <div class="am-legacy-hero"><div><small>OBRA INFINITA · PATRIMÔNIO PERMANENTE</small><h3>Torre do Patrono</h3></div><strong id="towerTier">Nv. 0</strong></div>
+    <p class="am-legacy-locked" id="towerLocked" hidden>Disponível no elo Ritualista.</p>
+    <div id="towerWorld" class="am-tower-world">
+      <div class="am-tower-scene" role="img" aria-label="Torre do Patrono em construção">
+        <div class="am-tower-simple" id="towerMonument" aria-hidden="true">
+          <span class="am-tower-simple-roof"></span>
+          <div class="am-tower-simple-floors" id="towerBricks"></div>
+          <span class="am-tower-simple-base"></span>
+        </div>
+        <span class="am-tower-scene-label" id="towerSceneLabel">FUNDAÇÃO</span>
+      </div>
+      <div class="am-tower-console">
+        <div class="am-tower-statgrid"><div><small>EFEITO PERMANENTE</small><strong id="towerBonus">+0%</strong></div><div><small>PRÓXIMA ETAPA</small><strong id="towerNeed">—</strong></div></div>
+        <div class="am-tower-progress-header"><strong>Construção</strong><span id="towerPercent">0%</span></div>
+        <div class="am-legacy-track am-tower-progress"><i id="towerBar"></i></div>
+        <small id="towerProgress">—</small>
+        <div class="am-tower-actions"><button type="button" class="btn" id="towerSmall">Depositar 10%</button><button type="button" class="btn" id="towerHalf">50%</button><button type="button" class="btn pri" id="towerAll">Máximo</button></div>
+        <small class="am-tower-footnote">Depósitos preservados após o Ritual. Cada etapa custa mais que a anterior.</small>
+      </div>
+    </div>
+
+  </section>
+  <section id="tg" hidden class="am-legacy-view">
+    <div class="am-legacy-hero"><div><small>CAMINHOS DO PATRONO</small><h3>Constelação Eternus</h3></div><span id="legacyRankBadge"></span></div>
+    <p class="am-legacy-locked" id="legacyLocked" hidden>Desbloqueie os caminhos no Eternus.</p>
+    <section class="am-legacy-module" id="starPanel">
+      <div class="am-legacy-heading"><div><small>TRÊS CAMINHOS · BÔNUS PERMANENTES</small><h3>Estrelas do Patrono</h3><p>Desbloqueie nós com Souls e Favor.</p></div><strong id="starCount">0 ★</strong></div>
+      <div class="am-constellation-sky" id="starSky" aria-hidden="true"><span>✦</span><span>✧</span><span>✦</span><span>✧</span><span>✦</span><span>✧</span><span>✦</span></div>
+      <div class="am-star-branches" id="starBranches"></div>
+    </section>
   </section>
 
   <section id="tl" hidden>
@@ -2900,6 +3299,7 @@ textarea{width:100%;height:70px;background:var(--am-ink);color:var(--am-text);bo
         </div>
         <div id="lg" class="ritual-short-details" hidden></div>
         <div class="ritual-state" id="ritualState" role="status" aria-live="polite"></div>
+        <div class="am-tower-ritual-notice" id="towerRitualNotice" hidden><span>Você tem Souls para concluir uma etapa da Torre antes do Ritual.</span><button type="button" class="btn" id="towerBeforeRitual">Ir para a Torre</button></div>
         <button class="btn pri" id="asc" type="button">Concluir Ritual</button>
       </div>
       <div class="ritual-menu" role="group" aria-label="Outras opções do Ritual">
@@ -3188,7 +3588,7 @@ if(testModeButton){
 const KEY="deadlock-deck-v3";
 /* Reset único: quem tem dados salvos sem "epoch" (versões antigas) volta ao início UMA vez.
    Os dados antigos são guardados em BKEY antes. Só aumente RESET_EPOCH se quiser forçar outro reset. */
-const RESET_EPOCH=3,APP_VERSION="1.35.1",BKEY="deadlock-deck-v3:backup";
+const RESET_EPOCH=3,APP_VERSION="1.36.9",BKEY="deadlock-deck-v3:backup";
 // Reset único de estados criados antes da v1.9.4. Futuras atualizações não reiniciam
 // os dados sem uma migração explícita; o backup deve ser confirmado antes do reset.
 const RESET_BEFORE_VERSION="1.9.4",INTRO_KEY="deadlock-deck-v3:intro-hidden";
@@ -3649,28 +4049,29 @@ let almasDeckBusy=false,almasDeckVisible=false;
 const inAlmasDeckMode=()=>document.getElementById("workspace")?.classList.contains("almas-deck-mode")===true;
 const almasCardApi=()=>window.decklockAlmasCard;
 function almasCardLabelTime(ms){const sec=Math.ceil(Math.max(0,ms)/1000);return String(Math.floor(sec/60)).padStart(2,"0")+":"+String(sec%60).padStart(2,"0")}
-function showAlmasCard(id,animate=false){
+// Usa a própria montagem de cartas do DeckLock: verso configurado, proporção 5:7
+// e a mesma animação 3D. A carta só é virada quando o sorteio acontece.
+function showAlmasCard(id,faceUp=false){
   const spot=document.getElementById("almasCardTable");
   const card=ALMAS_CARD_POOL.find(c=>c.id===id)||null;
   const group={name:"Almas",deck:{id:"almas-experimental"},cards:[card]};
-  const scene=cardEl(group,0,true);spot.replaceChildren(scene);
-  if(card){
-    if(animate){void scene.offsetWidth;reveal(scene,0,0)}
-    else{scene.querySelector(".card").classList.add("up");scene.classList.add("live")}
-  }
+  const scene=cardEl(group,0,true);
+  spot.replaceChildren(scene);
+  if(card&&faceUp){scene.querySelector(".card").classList.add("up");scene.classList.add("live")}
   requestAnimationFrame(()=>fit(scene));
+  return scene;
 }
 function syncAlmasCardUi(){
   if(!inAlmasDeckMode())return;
   const info=almasCardApi()?.status();
   if(!info)return;
   const remaining=Math.max(0,info.readyAt-Date.now());
-  const action=document.getElementById("bDraw"),status=document.getElementById("almasCardStatus");
+  const action=document.getElementById("almasSideDraw"),status=document.getElementById("almasCardStatus");
   action.disabled=remaining>0||almasDeckBusy;
-  action.textContent=almasDeckBusy?"Revelando…":remaining>0?"Nova carta em "+almasCardLabelTime(remaining):"Revelar carta";
+  action.textContent=almasDeckBusy?"Sorteando…":remaining>0?"Nova carta em "+almasCardLabelTime(remaining):"Sortear carta";
   status.replaceChildren();
   const primary=document.createElement("span");primary.className="almas-status-primary";
-  primary.textContent=remaining>0?"Próxima carta em "+almasCardLabelTime(remaining):"Uma carta está disponível";
+  primary.textContent=remaining>0?"A cidade se prepara para a próxima carta.":"Uma carta está disponível";
   status.append(primary);
   if(info.result){const note=document.createElement("span");note.className="almas-status-secondary";note.textContent="Última carta: "+info.result;status.append(note)}
 }
@@ -3679,8 +4080,8 @@ function setAlmasDeckMode(enabled){
   almasDeckVisible=willShow;
   box.classList.toggle("almas-deck-mode",willShow);
   document.getElementById("almasSidePanel").hidden=!willShow;
-  for(const id of ["almasDeckMode","almasCardTable","almasCardStatus"])
-    document.getElementById(id).hidden=true;
+  document.getElementById("almasDeckMode").hidden=true;
+  document.getElementById("almasCardSide").hidden=!willShow || document.querySelector('[data-almas-side="c"]')?.getAttribute("aria-pressed")!=="true";
   window.decklockAlmasSide?.setEnabled(willShow);
   if(!willShow){document.getElementById("bDraw").disabled=busy;syncCount()}
 }
@@ -3698,13 +4099,26 @@ async function drawAlmasCard(){
   // Salva a recompensa e o cooldown de maneira atômica no Almas, nunca no DeckLock.
   const result=api.play(choice.id);
   if(!result.ok){if(result.message)toast(result.message);syncAlmasCardUi();return}
-  almasDeckBusy=true;syncAlmasCardUi();
-  showAlmasCard(choice.id,true);
+  almasDeckBusy=true;syncAlmasCardUi();sfx("shuffle");
+  const previous=document.querySelector("#almasCardTable .scene");
+  if(previous?.querySelector(".card.up")){
+    // Mesmo fluxo do DeckLock: recolhe primeiro a carta anterior para o verso.
+    previous.querySelector(".card").classList.remove("up");
+    previous.classList.remove("live");
+    await sleep(flipMs()+(S.cfg.quick?0:24));
+  }
+  const scene=showAlmasCard(choice.id); // começa com o verso à mostra
+  void scene.offsetWidth;
+  if(!S.cfg.quick)await sleep(16);
+  reveal(scene,0,0); // a mesma virada, raridade, áudio e efeitos do DeckLock
   if(result.message)toast(result.message);
   const endDelay=animationEnabled()?flipMs()+180:100;
   await sleep(endDelay);
   almasDeckBusy=false;syncAlmasCardUi();
 }
+// Tal como a tela inicial do DeckLock, há um baralho fechado antes do 1º sorteio.
+showAlmasCard(null);
+document.getElementById("almasSideDraw").addEventListener("click",drawAlmasCard);
 setInterval(()=>{if(inAlmasDeckMode())syncAlmasCardUi()},1000);
 
 const sel=()=>S.decks.filter(d=>S.active.includes(d.id));
@@ -5627,7 +6041,7 @@ function initAlmasMortas(root){
     while(result.length<3){const choices=pool.filter(c=>!result.includes(c.id));result.push(choices[Math.floor(Math.random()*choices.length)].id)}
     return result;
   }
-  var S={f:0,life:0,own:Array(GEN.length).fill(0),items:[],legacy:0,spent:0,perk:Array(PRK.length).fill(0),boss:0,bossT:Date.now()+120000,stance:0,clicks:0,ts:Date.now(),rituals:0,bestRitualGain:0,lastRitualGain:0,rewardBoost:null,pendingReward:null,contracts:[],contractStats:{purchases:0},contractClaims:0,contractHistory:[],contractBoost:null,rankCredit:null,rankFormat:1,tutorialSeen:null,masteryXp:null,records:null,unlockedOps:null,tickets:null,pendingPlatinum:null,ticketBoughtRun:0,ticketPriceAnchor:null,beatNext:Date.now()+420000,beatState:null,beatWins:0,beatPlays:0,extraStats:null,itemSchema:1,cacheT:Date.now()+45000,doctrinesOwned:[],doctrineSpent:0,doctrineActive:"none",doctrineRefunded:true,tactic:"none",tacticChangedAt:0,booster:null,boosterReadyAt:0,streetNext:Date.now()+240000,streetPending:false,streetCount:0,streetOffers:[],streetLastPick:"",streetEffect:null,fund:null,fundReadyAt:0,fundCompleted:0,postRitualPhase:"",postBlessingChosen:false,brawlNext:Date.now()+600000,brawl:null,brawlWins:0,brawlMatches:0};
+  var S={f:0,life:0,own:Array(GEN.length).fill(0),items:[],legacy:0,spent:0,perk:Array(PRK.length).fill(0),boss:0,bossT:Date.now()+120000,stance:0,clicks:0,ts:Date.now(),rituals:0,bestRitualGain:0,lastRitualGain:0,rewardBoost:null,pendingReward:null,contracts:[],contractStats:{purchases:0},contractClaims:0,contractHistory:[],contractBoost:null,rankCredit:null,rankFormat:1,tutorialSeen:null,masteryXp:null,records:null,unlockedOps:null,tickets:null,pendingPlatinum:null,ticketBoughtRun:0,ticketPriceAnchor:null,towerLevel:0,towerProgress:0,towerStageCost:null,towerHistory:[],echoOwned:[],echoEquipped:[],constellation:[0,0,0],beatNext:Date.now()+420000,beatState:null,beatWins:0,beatPlays:0,extraStats:null,itemSchema:1,cacheT:Date.now()+45000,doctrinesOwned:[],doctrineSpent:0,doctrineActive:"none",doctrineRefunded:true,tactic:"none",tacticChangedAt:0,booster:null,boosterReadyAt:0,streetNext:Date.now()+240000,streetPending:false,streetCount:0,streetOffers:[],streetLastPick:"",streetEffect:null,fund:null,fundReadyAt:0,fundCompleted:0,postRitualPhase:"",postBlessingChosen:false,brawlNext:Date.now()+600000,brawl:null,brawlWins:0,brawlMatches:0};
   // Habilitar no endereço: ?almas-dev=1. A partida real nunca é usada pelo console.
   const ALMAS_DEV = new URLSearchParams(window.location.search).get("almas-dev")==="1" || window.__almasDevMode===true;
   var KEY=ALMAS_DEV?"almasmortas_v1_dev":"almasmortas_v1";
@@ -5784,6 +6198,15 @@ function initAlmasMortas(root){
     S.items=Array.isArray(S.items)?S.items.map(Boolean):[];
     if(S.itemSchema!==2){const before=S.items.slice();S.items=Array.from({length:18},(_,id)=>id%6<4?!!before[Math.floor(id/6)*4+id%6]:false);S.itemSchema=2;}
     S.items=S.items.slice(0,18);while(S.items.length<18)S.items.push(false);
+    // v1.36: progress across rituals, including imports and legacy saves.
+    S.towerLevel=Math.floor(nonneg(S.towerLevel,1000000));
+    S.towerProgress=nonneg(S.towerProgress,1e300);
+    S.towerStageCost=Number.isFinite(S.towerStageCost)&&S.towerStageCost>0?Math.min(S.towerStageCost,1e298):null;
+    if(S.towerStageCost!==null)S.towerProgress=Math.min(S.towerProgress,Math.max(0,S.towerStageCost-1));
+    S.towerHistory=Array.isArray(S.towerHistory)?S.towerHistory.filter(e=>e&&Number.isInteger(e.level)&&e.level>0&&typeof e.at==="number"&&Number.isFinite(e.at)).slice(-16):[];
+    S.echoOwned=Array.from({length:18},(_,i)=>S.echoOwned?.[i]===true);
+    S.echoEquipped=Array.isArray(S.echoEquipped)?[...new Set(S.echoEquipped.filter(i=>Number.isInteger(i)&&i>=0&&i<18&&S.echoOwned[i]))].slice(0,3):[];
+    S.constellation=Array.from({length:3},(_,i)=>Math.min(3,Math.floor(nonneg(S.constellation?.[i],3))));
     while(S.own.length<GEN.length)S.own.push(0);
     while(S.perk.length<PRK.length)S.perk.push(0);
     S.contractClaims=Math.floor(nonneg(S.contractClaims,1e8));
@@ -5874,7 +6297,7 @@ function initAlmasMortas(root){
   }
   try{var raw=localStorage.getItem(KEY);if(raw){var p=JSON.parse(raw);if(p&&typeof p==="object"&&!Array.isArray(p)&&Number.isFinite(p.f)&&p.f>=0){
     // Não copiar propriedades inesperadas nem __proto__ de importações corrompidas.
-    for(const k of ["rankFormat","itemSchema","unlockedOps","tickets","pendingPlatinum","ticketBoughtRun","ticketPriceAnchor","beatNext","beatState","beatWins","beatPlays","extraStats","tutorialSeen","f","life","own","items","legacy","spent","perk","boss","bossT","stance","clicks","ts","soundOn","cosmetics","cosmeticSpent","achievements","rituals","bestRitualGain","lastRitualGain","events","ritualPath","nextPath","rewardBoost","pendingReward","contracts","contractStats","contractClaims","contractHistory","contractBoost","rankCredit","masteryXp","records","cacheT","doctrinesOwned","doctrineSpent","doctrineActive","doctrineRefunded","tactic","tacticChangedAt","booster","boosterReadyAt","streetNext","streetPending","streetCount","streetOffers","streetLastPick","streetEffect","fund","fundReadyAt","fundCompleted","postRitualPhase","postBlessingChosen","brawlNext","brawl","brawlWins","brawlMatches","almasCardReadyAt","almasCardLast","almasCardResult","almasCardBuff"])
+    for(const k of ["rankFormat","itemSchema","unlockedOps","tickets","pendingPlatinum","ticketBoughtRun","ticketPriceAnchor","towerLevel","towerProgress","towerStageCost","towerHistory","echoOwned","echoEquipped","constellation","beatNext","beatState","beatWins","beatPlays","extraStats","tutorialSeen","f","life","own","items","legacy","spent","perk","boss","bossT","stance","clicks","ts","soundOn","cosmetics","cosmeticSpent","achievements","rituals","bestRitualGain","lastRitualGain","events","ritualPath","nextPath","rewardBoost","pendingReward","contracts","contractStats","contractClaims","contractHistory","contractBoost","rankCredit","masteryXp","records","cacheT","doctrinesOwned","doctrineSpent","doctrineActive","doctrineRefunded","tactic","tacticChangedAt","booster","boosterReadyAt","streetNext","streetPending","streetCount","streetOffers","streetLastPick","streetEffect","fund","fundReadyAt","fundCompleted","postRitualPhase","postBlessingChosen","brawlNext","brawl","brawlWins","brawlMatches","almasCardReadyAt","almasCardLast","almasCardResult","almasCardBuff"])
       if(Object.prototype.hasOwnProperty.call(p,k))S[k]=p[k];
   }}}catch(e){}
   norm();
@@ -6163,10 +6586,146 @@ function initAlmasMortas(root){
   function cardBonusActive(kind){return !!(S.almasCardBuff&&S.almasCardBuff.type===kind&&Date.now()<S.almasCardBuff.until)}
   // Coleção PLATINUM: cada operação distinta com ao menos um ticket
   // acrescenta 0,75% à produção automática global (máximo de +12%).
+
+  // Legacy v1.36: stable, low-inflation multipliers. Tower contributes forever, with diminishing return.
+  const STAR_PATHS=[
+    {name:"Gun",sign:"♠",rate:.06,tag:"impacto manual"},
+    {name:"Spirit",sign:"✧",rate:.045,tag:"ritmo de produção"},
+    {name:"Vitalidade",sign:"✚",rate:.045,tag:"fôlego offline"}
+  ];
+  const towerCost=()=>{
+    if(S.towerStageCost!==null&&S.towerStageCost>0)return S.towerStageCost;
+    // 50 floors per cycle. Around 50 floors per Ritual from Ritualista to Eternus
+    // are achievable when directing a meaningful part of a run's Souls here.
+    const cycle=Math.floor(S.towerLevel/50),floor=S.towerLevel%50;
+    const cost=ritualTarget()*.0018*Math.pow(1.038,floor)*Math.pow(1.22,cycle);
+    return Math.min(1e298,Math.max(1,Math.ceil(cost)));
+  };
+  function legacyTowerMult(){return 1+.0085*Math.log2(1+S.towerLevel)}
+  function echoValue(i){return [0.02,0.025,0.03,0.035,0.04,0.045][i%6]}
+  function echoCategoryBonus(category){return S.echoOwned.reduce((m,owned,i)=>m+(owned&&Math.floor(i/6)===category?echoValue(i):0),0)}
+  function legacyGunMult(){return 1+echoCategoryBonus(0)}
+  function legacySpiritMult(){return 1+echoCategoryBonus(2)}
+  function legacyVitalMult(){return 1+echoCategoryBonus(1)}
+  const constellationStarGate=[0,2,5];
+  const constellationFavorCost=[2,3,5];
+  function constellationCost(branch,tier){return Math.min(1e299,Math.ceil(ritualTarget()*[4,14,35][tier]*(1+branch*.25)))}
+  const favorAvailable=()=>Math.max(0,S.legacy-S.spent-(S.cosmeticSpent||0));
+  function drawTower(){
+    const ritualist=rankInfo(rankSteps()).i>=5;
+    $("towerLocked").hidden=ritualist;
+    $("towerWorld").hidden=!ritualist;
+    if(!ritualist)return;
+    const cost=towerCost(),left=Math.max(0,cost-S.towerProgress),pct=Math.max(0,Math.min(1,S.towerProgress/cost));
+    $("towerTier").textContent="Nv. "+fmt(S.towerLevel);
+    $("towerBonus").textContent="+"+((legacyTowerMult()-1)*100).toFixed(2).replace(".",",")+"%";
+    $("towerNeed").textContent=fmt(cost)+" Souls";
+    $("towerProgress").textContent=fmt(S.towerProgress)+" / "+fmt(cost)+" · faltam "+fmt(left);
+    $("towerPercent").textContent=(pct*100).toFixed(1).replace(".",",")+"%";
+    $("towerBar").style.width=(pct*100).toFixed(3)+"%";
+    [$("towerSmall"),$("towerHalf"),$("towerAll")].forEach(b=>b.disabled=S.f<1);
+    // Cada ciclo mostra 50 quadrados. Em 50/100/... inicia-se uma nova camada cromática.
+    const palette=["#c9af78","#84bdb4","#a9a2ce","#c68f98","#c6ac73","#92b9d6","#98ba92","#bca3c5","#ce9e82","#9cb6b0"];
+    const cycle=Math.floor(S.towerLevel/50),filled=S.towerLevel%50;
+    const bricks=$("towerBricks");
+    if(bricks.children.length!==50){
+      bricks.replaceChildren();
+      for(let n=0;n<50;n++){
+        const floor=document.createElement("span");floor.className="am-tower-simple-floor";
+        bricks.append(floor);
+      }
+    }
+    const accent=palette[cycle%palette.length];
+    bricks.style.setProperty("--tower-color",accent);
+    [...bricks.children].forEach((floor,index)=>{
+      const lit=index<filled,building=index===filled&&pct>0;
+      floor.className="am-tower-simple-floor"+(lit?" lit":"")+(building?" rising":"");
+      floor.style.setProperty("--floor-progress",building?(pct*100).toFixed(2)+"%":"0%");
+      floor.setAttribute("aria-label","Bloco "+(index+1)+" de 50"+(lit?" concluído":""));
+    });
+    const towerArt=$("towerMonument");
+    towerArt.style.setProperty("--tower-color",accent);
+    towerArt.style.borderImage="linear-gradient(180deg,"+Array.from({length:Math.max(2,Math.min(12,cycle+1))},(_,i)=>palette[Math.min(i,cycle)%palette.length]).join(",")+") 1";
+    $("towerSceneLabel").textContent="CICLO "+(cycle+1)+" · "+filled+" / 50 BLOCOS";
+  }
+  function drawLegacy(){
+    const rank=rankInfo(rankSteps()),eternus=rank.i>=10;
+    $("legacyRankBadge").textContent=rankLabel(rank);
+    $("legacyLocked").hidden=eternus;
+    $("starPanel").hidden=!eternus;
+    if(eternus){
+      $("starCount").textContent=rank.stars+" ★";
+      const list=$("starBranches");
+      if(list.children.length!==3){list.replaceChildren();STAR_PATHS.forEach((p,branch)=>{
+        const row=document.createElement("div");row.className="am-star-branch";
+        const head=document.createElement("div");head.className="am-star-branch-head";
+        head.innerHTML="<strong><i>"+p.sign+"</i>"+p.name+"</strong><small>"+p.tag+"</small>";
+        const nodeRow=document.createElement("div");nodeRow.className="am-star-node-row";
+        row.append(head,nodeRow);
+        for(let tier=0;tier<3;tier++){
+          const b=document.createElement("button");b.type="button";b.className="am-star-node";b.dataset.branch=String(branch);b.dataset.tier=String(tier);
+          b.innerHTML="<span>✦</span><small></small>";nodeRow.append(b);
+          b.addEventListener("click",()=>{
+            if(S.constellation[branch]!==tier||rankInfo(rankSteps()).stars<constellationStarGate[tier])return;
+            const price=constellationCost(branch,tier),favor=constellationFavorCost[tier];
+            if(S.f<price||favorAvailable()<favor){toast("Souls ou Favor insuficientes.");return}
+            if(transact(()=>{S.f-=price;S.spent+=favor;S.constellation[branch]++})){
+              drawAll();toast("Constelação: "+STAR_PATHS[branch].name+" · nó "+(tier+1));soulTone("milestone");
+            }
+          });
+        }
+        list.append(row);
+      })}
+      list.querySelectorAll(".am-star-node").forEach(b=>{
+        const branch=+b.dataset.branch,tier=+b.dataset.tier,owned=S.constellation[branch]>tier,canUnlock=S.constellation[branch]===tier&&rank.stars>=constellationStarGate[tier];
+        const price=constellationCost(branch,tier),favor=constellationFavorCost[tier];
+        b.classList.toggle("owned",owned);
+        b.classList.toggle("unlocked",!owned&&canUnlock);
+        b.disabled=owned||!canUnlock||S.f<price||favorAvailable()<favor;
+        b.querySelector("small").textContent=owned?"Ativo":rank.stars<constellationStarGate[tier]?"★ "+constellationStarGate[tier]:fmt(price)+" · "+favor+" F";
+        b.title=STAR_PATHS[branch].name+" +"+(STAR_PATHS[branch].rate*100)+"% · "+fmt(price)+" Souls + "+favor+" Favor · requer "+constellationStarGate[tier]+" estrelas Eternus";
+      });
+    }
+  }
+  function echoCost(i){
+    const ci=Math.floor(i/6),tier=i%6,total=S.echoOwned.filter(Boolean).length;
+    const base=Math.max(ritualTarget()*(7.5+ci*3+tier*1.8),ITM[ci][tier][1]*15);
+    return Math.min(1e298,Math.ceil(base*Math.pow(1.34,total)));
+  }
+  function canEchoShop(){return rankInfo(rankSteps()).i>=5&&S.items.filter(Boolean).length>=18}
+  function echoUpgradesActive(){return canEchoShop()}
+  function purchaseEcho(id){
+    if(!canEchoShop()||!Number.isInteger(id)||id<0||id>=18||S.echoOwned[id])return;
+    const price=echoCost(id);
+    if(!Number.isFinite(price)||S.f<price){toast("Souls insuficientes para gravar este Eco.");return}
+    if(transact(()=>{S.f-=price;S.echoOwned[id]=true;S.echoEquipped=[...new Set([...S.echoEquipped,id])];})){
+      soulTone("milestone");toast("Item melhorado permanentemente: "+ITM[Math.floor(id/6)][id%6][0]);drawAll();
+    }
+  }
+  function depositTower(fraction){
+    if(rankInfo(rankSteps()).i<5)return;
+    const cost=towerCost(),left=Math.max(0,cost-S.towerProgress);
+    const amount=Math.floor(Math.min(S.f,left,fraction===1?left:Math.max(1,cost*fraction)));
+    if(amount<=0){toast("Souls insuficientes para contribuir.");return}
+    if(transact(()=>{
+      S.f-=amount;S.towerStageCost=cost;S.towerProgress+=amount;
+      if(S.towerProgress+Math.max(1,cost*1e-12)>=cost){
+        S.towerLevel++;S.towerProgress=0;S.towerStageCost=null;
+        S.towerHistory.push({level:S.towerLevel,at:Date.now()});S.towerHistory=S.towerHistory.slice(-16);
+      }
+    })){
+      const leveled=S.towerProgress===0;
+      drawAll();if(leveled){toast("Torre do Patrono elevada ao nível "+S.towerLevel);soulTone("milestone");showSoulBurst("milestone","✦")}
+    }
+  }
+  $("towerSmall").addEventListener("click",()=>depositTower(.1));
+  $("towerHalf").addEventListener("click",()=>depositTower(.5));
+  $("towerAll").addEventListener("click",()=>depositTower(1));
+
   function platinumCoverageBonus(){
     return 1 + .0075 * Math.min(16,S.tickets.filter(level=>level>=1).length);
   }
-  function pMul(levels=S.own){var m=gm()*platinumCoverageBonus()*(1+.1*S.perk[2])*(1+.025*S.perk[5])*operationSynergy(levels);for(var t=0;t<6;t++)if(S.items[12+t])m*=1.25;if(S.stance===1)m*=1.25;if(S.stance===5)m*=1.12;if(S.stance===3)m*=.95;if(rewardActive("auto"))m*=BOSS_BALANCE.autoMult;if(contractBoostActive("auto"))m*=1.15;if(extActive(S.booster,"production"))m*=1.12;if(extActive(S.streetEffect,"production"))m*=1.15;if(cardBonusActive("auto"))m*=1.10;return m}
+  function pMul(levels=S.own){var m=gm()*legacyTowerMult()*legacySpiritMult()*platinumCoverageBonus()*(1+.1*S.perk[2])*(1+.025*S.perk[5])*operationSynergy(levels);for(var t=0;t<6;t++)if(S.items[12+t])m*=1.25;if(S.stance===1)m*=1.25;if(S.stance===5)m*=1.12;if(S.stance===3)m*=.95;if(rewardActive("auto"))m*=BOSS_BALANCE.autoMult;if(contractBoostActive("auto"))m*=1.15;if(extActive(S.booster,"production"))m*=1.12;if(extActive(S.streetEffect,"production"))m*=1.15;if(cardBonusActive("auto"))m*=1.10;return m}
   function cpsFor(levels,xps=S.masteryXp){let value=0;for(let i=0;i<GEN.length;i++)value+=levels[i]*GEN[i][3]*gMul(i,levels[i],xps[i]);return value*pMul(levels)*1.30}
   // Contribuição por operação: mesma expressão usada por cpsFor, inclusive os bônus globais.
   // Somar todos os valores equivale a cps() (salvo arredondamento da interface).
@@ -6175,7 +6734,7 @@ function initAlmasMortas(root){
     return levels[i]*GEN[i][3]*gMul(i,levels[i],xps[i])*pMul(levels)*1.30;
   }
   function cps(){return cpsFor(S.own)}
-  function cMul(){var m=gm()*(1+.18*S.perk[1]);for(var t=0;t<6;t++)if(S.items[t])m*=WM[t];if(S.stance===0)m*=1.35;if(S.stance===3)m*=1.25;if(S.stance===5)m*=.92;if(rewardActive("click"))m*=BOSS_BALANCE.clickMult;if(contractBoostActive("click"))m*=1.25;if(buff.t>0)m*=4;if(cardBonusActive("click"))m*=1.15;if(extActive(S.streetEffect,"click"))m*=1.20;return m}
+  function cMul(){var m=gm()*legacyTowerMult()*legacyGunMult()*(1+.18*S.perk[1]);for(var t=0;t<6;t++)if(S.items[t])m*=WM[t];if(S.stance===0)m*=1.35;if(S.stance===3)m*=1.25;if(S.stance===5)m*=.92;if(rewardActive("click"))m*=BOSS_BALANCE.clickMult;if(contractBoostActive("click"))m*=1.25;if(buff.t>0)m*=4;if(cardBonusActive("click"))m*=1.15;if(extActive(S.streetEffect,"click"))m*=1.20;return m}
   function clickVal(){
     // Production-derived clicks are added *after* manual multipliers, avoiding runaway feedback.
     // Even a fast player cannot convert more than ~35% of passive Souls/s through clicks.
@@ -6416,7 +6975,7 @@ function initAlmasMortas(root){
   function fundPayout(){
     if(!S.fund)return 0;
     const completed=Math.max(0,S.contractClaims-S.fund.claims);
-    const rate=Math.min(2.00,.90+.18*completed);
+    const rate=Math.min(3.50,1.50+.35*completed);
     return Math.floor(S.fund.deposit*(1+rate));
   }
   function drawFund(){
@@ -6426,7 +6985,7 @@ function initAlmasMortas(root){
       const secs=Math.max(0,Math.ceil((S.fund.due-now)/1000));
       const value=fundPayout();
       status.textContent=secs?"Retorno em "+Math.ceil(secs/60)+" min · "+secs%60+" s":"Financiamento concluído";
-      gain.textContent="Retorno: "+fmt(value)+" Souls";
+      gain.textContent="Retorno: "+fmt(value)+" Souls · lucro "+fmt(Math.max(0,value-S.fund.deposit));
       bar.style.width=(Math.min(1,Math.max(0,(now-S.fund.start)/(S.fund.due-S.fund.start)))*100).toFixed(1)+"%";
       button.textContent=secs?"Financiamento em andamento":"Resgatar "+fmt(value)+" Souls";
       button.disabled=secs>0;
@@ -6486,8 +7045,7 @@ function initAlmasMortas(root){
   function drawCombo(){
     const count=currentCombo(),el=$("comboStatus");
     if(!el)return;
-    el.hidden=count<2;
-    if(el.hidden)return;
+    el.hidden=false;
     $("comboLabel").textContent=ct("combo")+" "+count+"/100";
     $("comboMult").textContent="x"+(1+Math.min(COMBO_CAP,count-1)*.02).toFixed(2).replace(".",soulLang==="en"?".":",");
     $("comboBar").style.width=Math.min(100,(count/COMBO_CAP)*100)+"%";
@@ -6527,7 +7085,7 @@ function initAlmasMortas(root){
     return{b:b,n:b.querySelector(".n"),s:b.querySelector("small")};
   }
   var gR=[],iR=[];
-  let recommendedInvestment=null;
+  let recommendedInvestment=null,recommendedNewInvestment=null;
   function purchaseInvestment(i,n){
     if(!Number.isInteger(i)||i<0||i>=GEN.length||!Number.isInteger(n)||n<1||n>4000-S.own[i])return false;
     const c=costN(i,n);
@@ -6546,6 +7104,10 @@ function initAlmasMortas(root){
     const pressed=gR[i]?.b;if(pressed){pressed.classList.remove("am-purchase-flash");void pressed.offsetWidth;pressed.classList.add("am-purchase-flash");setTimeout(()=>pressed.classList.remove("am-purchase-flash"),550)}
     save();drawAll();return true;
   }
+  $("investmentNewBuy").addEventListener("click",()=>{
+    const best=recommendedNewInvestment;
+    if(best&&best.n===1&&S.unlockedOps[best.i]&&ritualistOperationUnlocked(best.i)&&S.f>=costN(best.i,1))purchaseInvestment(best.i,1);
+  });
   $("investmentBestBuy").addEventListener("click",()=>{
     const best=recommendedInvestment;
     if(!best||!S.unlockedOps[best.i]||!ritualistOperationUnlocked(best.i)||S.f<costN(best.i,best.n)){drawAll();return}
@@ -6569,10 +7131,12 @@ function initAlmasMortas(root){
   CAT.forEach(function(c,ci){
     var h=document.createElement("div");h.className="cat";h.textContent=c;$("il").appendChild(h);
     ITM[ci].forEach(function(it,t){var id=ci*6+t;iR[id]=row($("il"),it[0],it[2],function(){
+      if(canEchoShop()){purchaseEcho(id);return;}
       if(S.items[id]||(t>0&&!S.items[id-1]))return;
       if(S.f<it[1]){toast("Souls insuficientes.");return}
       S.f-=it[1];S.items[id]=true;S.extraStats.items++;
-      toast(it[0]+" · "+pt("after"));save();drawAll()})});
+      toast(it[0]+" · "+pt("after"));save();drawAll()});iR[id].b.dataset.shopCategory=ci===0?"gun":ci===2?"spirit":"vitality";
+      const ecoSeal=document.createElement("span");ecoSeal.className="am-echo-seal";ecoSeal.textContent="MELHORADO";ecoSeal.hidden=true;iR[id].b.append(ecoSeal);iR[id].echoSeal=ecoSeal;});
   });
 
   function nextObjective(){
@@ -6598,8 +7162,8 @@ function initAlmasMortas(root){
     if(goal)return goal.label+(goal.missing?" · "+tx("missing")+" "+fmt(goal.missing)+" Souls":" · "+tx("ready"));
     return tx("ritualReady")+": "+fmt(Math.max(0,ritualTarget()-S.records.runSouls))+" Souls";
   }
-  const GUIDE_TEXT={welcome:"Bem-vindo à Segunda Era. Toque no emblema para coletar Souls. Conclua contratos, financie operações e faça Rituais para ganhar Favor e subir de elo. Você pode rever os guias pelo botão i.",p:"COLETA: clique no emblema, conclua contratos, desafie o Mid-Boss e o Pulso. O Consórcio rende mais quanto mais contratos você cumprir.",a:"DOMÍNIO: compre níveis para ganhar Souls/s. Os investimentos surgem conforme você produz Souls; marque uma operação para aplicar um PLATINUM permanente.",r:"LOJA: itens de Arma aumentam o clique, Vitalidade melhora a produção offline e Espírito fortalece a renda. Os itens reiniciam após cada Ritual.",l:"RITUAL: ao cumprir as metas, reinicie a run para ganhar Favor e progredir no elo. Após o Ritual, escolha uma Bênção e uma Tática.",firstInvestment:"Você desbloqueou seu primeiro investimento! Comprar níveis aumenta a renda automática. Mais adiante, o PLATINUM dobra permanentemente a produção de uma operação."};
-  const GUIDE_TITLES={welcome:"Uma nova jornada",p:"Coleta de Souls",a:"Domínio da Cidade",r:"A Loja",l:"O Ritual do Patrono",firstInvestment:"Primeiro investimento"};
+  const GUIDE_TEXT={welcome:"Bem-vindo à Segunda Era. Toque no emblema para coletar Souls. Conclua contratos, financie operações e faça Rituais para ganhar Favor e subir de elo. Você pode rever os guias pelo botão i.",p:"COLETA: clique no emblema, conclua contratos, desafie o Mid-Boss e o Pulso. O Consórcio rende mais quanto mais contratos você cumprir.",a:"DOMÍNIO: compre níveis para ganhar Souls/s. Os investimentos surgem conforme você produz Souls; marque uma operação para aplicar um PLATINUM permanente.",r:"LOJA: itens de Arma aumentam o clique, Vitalidade melhora a produção offline e Espírito fortalece a renda. Os itens reiniciam após cada Ritual.",l:"RITUAL: ao cumprir as metas, reinicie a run para ganhar Favor e progredir no elo. Após o Ritual, escolha uma Bênção e uma Tática.",t:"TORRE: invista quantas Souls quiser em etapas permanentes. O custo de cada nova etapa aumenta e a construção sobrevive ao Ritual.",g:"CONSTELAÇÃO: no Eternus, estrelas liberam nós permanentes por categoria. Para ativá-los, use Souls e Favor.",firstInvestment:"Você desbloqueou seu primeiro investimento! Comprar níveis aumenta a renda automática. Mais adiante, o PLATINUM dobra permanentemente a produção de uma operação."};
+  const GUIDE_TITLES={welcome:"Uma nova jornada",p:"Coleta de Souls",a:"Domínio da Cidade",r:"A Loja",l:"O Ritual do Patrono",t:"A Torre do Patrono",g:"Constelação Eternus",firstInvestment:"Primeiro investimento"};
   let priorGuideFocus=null,currentGuideId="";
   function showGameGuide(id){
     if(!GUIDE_TEXT[id])return;
@@ -6624,14 +7188,18 @@ function initAlmasMortas(root){
   function drawHead(){
     S.records.runPeakCps=Math.max(S.records.runPeakCps,cps());
     $("f").textContent=fmt(Math.floor(S.f));
-    $("dockRate").textContent=fmt(cps())+" Souls/s";
+    const rate=Math.max(0,cps());
+    $("dockRate").textContent=fmt(rate)+" Souls/s";
+    // Log scale: distinguishes early/midgame and reaches its maximum at 1 tri Souls/s.
+    const intensity=Math.min(1,Math.log10(1+rate)/Math.log10(1+1e12));
+    $("dockRate").style.setProperty("--rate-hue",(151-112*intensity).toFixed(1));
+    $("dockRate").style.setProperty("--rate-light",(64+15*intensity).toFixed(1)+"%");
     $("ps").textContent=fmt(cps())+" Souls/s · "+fmt(clickVal())+" Souls/clique";
     const active=S.rewardBoost&&Date.now()<S.rewardBoost.until;
     const bonus=active?" · "+tx(S.rewardBoost.type)+" "+Math.ceil((S.rewardBoost.until-Date.now())/1000)+"s":"";
     const contractBonus=S.contractBoost&&Date.now()<S.contractBoost.until
       ?" · "+ct("bonus")+" "+(S.contractBoost.type==="auto"?"Souls/s +15%":"clique +25%")+" "+Math.ceil((S.contractBoost.until-Date.now())/1000)+"s":"";
     $("bf").textContent=(buff.t>0?"Fervor Espiritual · cliques x4 por "+Math.ceil(buff.t)+" s":"")+bonus+contractBonus;
-    $("nextGoal").textContent=nextObjective();
     drawCombo();
     drawBeat();
     drawRank();
@@ -6659,7 +7227,6 @@ function initAlmasMortas(root){
       r.b.querySelector("b").textContent=unlocked?GEN[i][0].split(" · ").pop():"Operação desconhecida";
       r.b.querySelector(".d").textContent=unlocked?"":i>=12&&!ritualistOperationUnlocked(i)?"Disponível a partir do elo Ritualista.":"Descubra ao obter "+fmt(GEN[i][2])+" Souls nesta run.";
       if(!unlocked){r.n.textContent="?";r.s.textContent="Ainda não descoberta";r.b.title="";if(r.production)r.production.hidden=true;return}
-      // Atualizado em cada render, inclusive após compras, tickets, bônus e retorno à aba.
       const currentProduction=operationCps(i);
       if(r.production){r.production.hidden=false;r.production.dataset.zero=String(S.own[i]===0);r.productionValue.textContent=fmt(currentProduction);}
 
@@ -6706,9 +7273,9 @@ function initAlmasMortas(root){
       return {passive:passive+cache,active:passive+cache+3*click+trib};
     }
     const currentRates=projectedRates(baselineCps,S.own[2],S.own[3]);
-    let bestPassive=null,bestActive=null;
+    let bestPassive=null,bestActive=null,bestNew=null;
     for(let i=0;i<GEN.length;i++){
-      if(!S.unlockedOps[i])continue;
+      if(!S.unlockedOps[i]||!ritualistOperationUnlocked(i))continue;
       const available=maxN(i);
       if(!available)continue;
       const level=S.own[i],xp=S.masteryXp[i];
@@ -6721,6 +7288,10 @@ function initAlmasMortas(root){
         const nextSyn=oldSyn+(i>=0&&level<50&&nextLv>=50?.015:0)+(level<100&&nextLv>=100?.025:0);
         const passive=(oldBase-oldPart+nextPart)*fixedPMult*nextSyn*1.30;
         const rates=projectedRates(passive,i===2?nextLv:S.own[2],i===3?nextLv:S.own[3]);
+        if(level===0&&n===1&&rates.passive>currentRates.passive){
+          const candidate={i,n,price,roi:price/(rates.passive-currentRates.passive),delta:rates.passive-currentRates.passive};
+          if(!bestNew||candidate.roi<bestNew.roi)bestNew=candidate;
+        }
         for(const kind of ["passive","active"]){
           const delta=rates[kind]-currentRates[kind];
           if(delta<=1e-9)continue;
@@ -6734,6 +7305,7 @@ function initAlmasMortas(root){
       }
     }
     recommendedInvestment=bestPassive||bestActive;
+    recommendedNewInvestment=bestNew&&(bestNew.i!==recommendedInvestment?.i||recommendedInvestment.n!==1)?bestNew:null;
     const label=choice=>GEN[choice.i][0]+" · x"+choice.n+" (~"+timeLabel(choice.roi)+")";
     $("investmentTip").textContent=bestPassive
       ?"Melhor retorno automático (incluindo caixas): "+label(bestPassive)+
@@ -6741,6 +7313,12 @@ function initAlmasMortas(root){
       :bestActive?"Melhor retorno com 3 cliques/s: "+label(bestActive):pt("noInvestment");
     $("investmentBestBuy").hidden=!recommendedInvestment;
     if(recommendedInvestment){$("investmentBestBuy").disabled=S.f<costN(recommendedInvestment.i,recommendedInvestment.n);$("investmentBestBuy").textContent="Comprar sugestão x"+recommendedInvestment.n;}
+    $("investmentNewBuy").hidden=!recommendedNewInvestment;
+    if(recommendedNewInvestment){
+      $("investmentNewBuy").disabled=S.f<recommendedNewInvestment.price;
+      $("investmentNewBuy").textContent="Nova: "+GEN[recommendedNewInvestment.i][0].split(" · ").pop();
+      $("investmentNewBuy").title="Melhor nova operação por retorno automático · "+fmt(recommendedNewInvestment.price)+" Souls · retorno ~"+timeLabel(recommendedNewInvestment.roi);
+    }
     drawTickets();
     // Os marcos de maestria ficam no próprio investimento.
   }
@@ -6896,11 +7474,33 @@ function initAlmasMortas(root){
     return changed;
   }
   function drawIt(){
-    $("amAutoItemsRow").hidden=rankInfo(rankSteps()).i<5;
+    const ritualist=rankInfo(rankSteps()).i>=5;
+    const echoBuyMode=canEchoShop();
+    $("amAutoItemsRow").hidden=!ritualist;
     autoItemsToggle.checked=!!S.autoItems;
-    iR.forEach(function(r,id){var ci=Math.floor(id/6),t=id%6,it=ITM[ci][t],own=S.items[id],lock=t>0&&!S.items[id-1];
-      r.b.classList.toggle("done",own);r.b.classList.toggle("lock",lock&&!own);r.b.classList.toggle("no",!own&&!lock&&S.f<it[1]);r.b.classList.toggle("ready",!own&&!lock&&S.f>=it[1]);
-      r.n.textContent=own?"✓":fmt(it[1]);r.s.textContent="";const effect=r.b.querySelector(".d");if(effect)effect.textContent=it[2];r.b.title=it[0]+" · "+it[2]+" · "+(own?"Adquirido":lock?"Bloqueado":S.f<it[1]?"Faltam "+fmt(it[1]-S.f)+" Souls":"Disponível")});
+    $("il").classList.toggle("am-echo-buying",echoBuyMode);
+    iR.forEach(function(r,id){
+      const ci=Math.floor(id/6),t=id%6,it=ITM[ci][t],own=S.items[id],lock=t>0&&!S.items[id-1];
+      const eco=!!S.echoOwned[id],echoUnlocked=echoBuyMode;
+      const price=echoUnlocked?echoCost(id):it[1];
+      const affordable=S.f>=price;
+      const canBuy=echoUnlocked?!eco&&affordable:!own&&!lock&&affordable;
+      r.b.classList.toggle("am-echo-owned",eco);
+      r.b.classList.toggle("am-echo-select",echoUnlocked);
+      r.b.classList.toggle("done",echoUnlocked?eco:own);
+      r.b.classList.toggle("lock",!echoUnlocked&&lock&&!own);
+      r.b.classList.toggle("no",!canBuy&&!(echoUnlocked?eco:own));
+      r.b.classList.toggle("ready",canBuy);
+      // Não desabilitar o botão comprado: o title precisa funcionar no hover.
+      // purchaseEcho já bloqueia uma segunda aquisição.
+      r.b.disabled=false;
+      r.b.setAttribute("aria-disabled",String(echoUnlocked&&eco));
+      if(r.echoSeal){r.echoSeal.hidden=!(eco||echoUnlocked);r.echoSeal.textContent=eco?"MELHORADO":"MELHORAR"}
+      r.n.textContent=echoUnlocked?(eco?"ADQUIRIDO":fmt(price)):(own?"✓":fmt(price));
+      r.s.textContent="";
+      const effect=r.b.querySelector(".d");if(effect)effect.textContent=it[2];
+      r.b.title=it[0]+" · "+it[2]+(echoUnlocked?" · Melhorado permanente de "+(echoValue(id)*100).toFixed(1)+"% · "+(eco?"Já melhorado":fmt(price)+" Souls"):" · "+(eco?"Melhoria permanente ativa · ":"")+(own?"Adquirido":lock?"Bloqueado":affordable?"Disponível":"Faltam "+fmt(it[1]-S.f)+" Souls"));
+    });
   }
   const BEAT_LENGTH=3,BEAT_COOLDOWN=7*60000,BEAT_SWEEP=1350,BEAT_TAP_GAP=230;
   // A cada marca o ponteiro acelera ~6%, sem saltar na transição de velocidade.
@@ -7147,16 +7747,18 @@ function initAlmasMortas(root){
     return (dict[key]||key).replace(/\{(\w+)\}/g,(_,k)=>fields[k]??"");
   };
   const BALANCE_GUIDE={
-    "pt-BR":{p:["Coleta","Clique no elo, conclua contratos e desafie o Mid-Boss. A produção também avança sozinha."],a:["Domínio","Gaste Souls em investimentos para aumentar Souls/s. Caixas rendem caches extras; Sinner melhora cliques com limite."],r:["Loja","Arma: cliques · Vitalidade: offline · Espírito: produção."],l:["Ritual","Ao atingir a meta de Souls e níveis, reinicie a run, ganhe Favor e avance uma divisão."],levels:"Compre mais {missing} níveis no Domínio (mínimo: {target}).",rule:"Requer {target} Souls nesta run e {levels} níveis comprados. Favor: +1 na meta, +3 com 10×, +5 com 100×."},
-    en:{p:["Collection","Click the emblem, complete contracts and fight the Mid-Boss. Production also runs automatically."],a:["Domain","Invest Souls for passive Souls/s. Crate Routes find extra caches; Sinner offers limited click bonuses."],r:["Shop","Weapon: clicks · Vitality: offline · Spirit: production."],l:["Ritual","Reach the run's Souls goal and buy the required levels. Each Ritual raises one rank; Favor persists."],levels:"Buy {missing} more Domain levels (minimum: {target}).",rule:"Requires {target} Souls this run and {levels} purchased levels. Favor: +1 at goal, +3 at 10×, +5 at 100×."},
-    es:{p:["Recolección","Pulsa el emblema, cumple contratos y vence al Mid-Boss. También hay producción automática."],a:["Dominio","Invierte Souls para ganar Souls/s. Las cajas dan botín extra; Sinner potencia clics con un límite."],r:["Tienda","Arma: clics · Vitalidad: sin conexión · Espíritu: producción."],l:["Ritual","Alcanza la meta de la partida y compra los niveles necesarios. Cada Ritual sube un rango; conserva Favor."],levels:"Compra {missing} niveles más en Dominio (mínimo: {target}).",rule:"Requiere {target} Souls en esta partida y {levels} niveles. Favor: +1 en la meta, +3 a 10×, +5 a 100×."},
-    fr:{p:["Collecte","Cliquez sur l'emblème, remplissez des contrats et battez le Mid-Boss. La production continue seule."],a:["Domaine","Investissez pour des Souls/s. Les caisses donnent des bonus; Sinner renforce modérément les clics."],r:["Boutique","Arme : clics · Vitalité : hors ligne · Esprit : production."],l:["Rituel","Atteignez le seuil de Souls de la partie et achetez les niveaux requis. Chaque Rituel monte le rang."],levels:"Achetez {missing} niveaux de plus au Domaine (minimum : {target}).",rule:"Nécessite {target} Souls cette partie et {levels} niveaux. Faveur : +1 au seuil, +3 à 10×, +5 à 100×."},
+    "pt-BR":{p:["Coleta","Clique no elo, conclua contratos e desafie o Mid-Boss. A produção também avança sozinha."],a:["Domínio","Gaste Souls em investimentos para aumentar Souls/s. Caixas rendem caches extras; Sinner melhora cliques com limite."],r:["Loja","Arma: cliques · Vitalidade: offline · Espírito: produção."],l:["Ritual","Ao atingir a meta de Souls e níveis, reinicie a run, ganhe Favor e avance uma divisão."],g:["Legado","Invista na Torre, grave Ecos e evolua a Constelação Eternus."],levels:"Compre mais {missing} níveis no Domínio (mínimo: {target}).",rule:"Requer {target} Souls nesta run e {levels} níveis comprados. Favor: +1 na meta, +3 com 10×, +5 com 100×."},
+    en:{p:["Collection","Click the emblem, complete contracts and fight the Mid-Boss. Production also runs automatically."],a:["Domain","Invest Souls for passive Souls/s. Crate Routes find extra caches; Sinner offers limited click bonuses."],r:["Shop","Weapon: clicks · Vitality: offline · Spirit: production."],l:["Ritual","Reach the run's Souls goal and buy the required levels. Each Ritual raises one rank; Favor persists."],g:["Legacy","Fund the Tower, inscribe Item Echoes and expand Eternus Constellation."],levels:"Buy {missing} more Domain levels (minimum: {target}).",rule:"Requires {target} Souls this run and {levels} purchased levels. Favor: +1 at goal, +3 at 10×, +5 at 100×."},
+    es:{p:["Recolección","Pulsa el emblema, cumple contratos y vence al Mid-Boss. También hay producción automática."],a:["Dominio","Invierte Souls para ganar Souls/s. Las cajas dan botín extra; Sinner potencia clics con un límite."],r:["Tienda","Arma: clics · Vitalidad: sin conexión · Espíritu: producción."],l:["Ritual","Alcanza la meta de la partida y compra los niveles necesarios. Cada Ritual sube un rango; conserva Favor."],g:["Legado","Construye la Torre, graba Ecos y mejora la Constelación Eternus."],levels:"Compra {missing} niveles más en Dominio (mínimo: {target}).",rule:"Requiere {target} Souls en esta partida y {levels} niveles. Favor: +1 en la meta, +3 a 10×, +5 a 100×."},
+    fr:{p:["Collecte","Cliquez sur l'emblème, remplissez des contrats et battez le Mid-Boss. La production continue seule."],a:["Domaine","Investissez pour des Souls/s. Les caisses donnent des bonus; Sinner renforce modérément les clics."],r:["Boutique","Arme : clics · Vitalité : hors ligne · Esprit : production."],l:["Rituel","Atteignez le seuil de Souls de la partie et achetez les niveaux requis. Chaque Rituel monte le rang."],g:["Héritage","Financez la Tour, enregistrez des Échos et progressez dans la Constellation Eternus."],levels:"Achetez {missing} niveaux de plus au Domaine (minimum : {target}).",rule:"Nécessite {target} Souls cette partie et {levels} niveaux. Faveur : +1 au seuil, +3 à 10×, +5 à 100×."},
     de:{p:["Sammeln","Klicke das Abzeichen an, erfülle Aufträge und besiege den Mid-Boss. Die Produktion läuft auch automatisch."],a:["Gebiet","Investiere Souls für Souls/s. Kisten geben Boni; Sinner bietet begrenzte Klickvorteile."],r:["Shop","Waffen: Klicks · Vitalität: offline · Geist: Produktion."],l:["Ritual","Erreiche das Souls-Ziel pro Durchlauf und kaufe die nötigen Stufen. Jedes Ritual erhöht den Rang."],levels:"Kaufe noch {missing} Gebietsstufen (Minimum: {target}).",rule:"Erfordert {target} Souls in diesem Durchlauf und {levels} Stufen. Gunst: +1 am Ziel, +3 bei 10×, +5 bei 100×."}
   };
   function ritualInstruction(key,values={}){const guide=BALANCE_GUIDE[soulLang]||BALANCE_GUIDE["pt-BR"];return guide[key].replace(/\{(.*?)\}/g,(_,k)=>values[k]??"")}
   function updateTabGuide(t){
     const guide=BALANCE_GUIDE[soulLang]||BALANCE_GUIDE["pt-BR"];
-    $("tabGuideTitle").textContent=guide[t][0];$("tabGuideText").textContent=guide[t][1];
+    const fallback=t==="t"?["Torre","Construa andares com Souls. O progresso atravessa Rituais."]:t==="g"?["Constelação","Use estrelas Eternus, Souls e Favor para liberar novos caminhos."]:BALANCE_GUIDE["pt-BR"].p;
+    const pair=guide[t]||BALANCE_GUIDE["pt-BR"][t]||fallback;
+    $("tabGuideTitle").textContent=pair[0];$("tabGuideText").textContent=pair[1];
     $("ritualExplain").textContent=ritualInstruction("rule",{target:fmt(ritualTarget()),levels:fmt(ritualLevelsNeeded())});
     if(!S.tutorialSeen[t]&&!eraCeremony){showGameGuide(t)}
     else if($("gameGuide").hidden)$("tabGuide").hidden=false;
@@ -7265,7 +7867,7 @@ function initAlmasMortas(root){
     items.forEach(([key,value])=>{const row=document.createElement("div"),label=document.createElement("small"),number=document.createElement("b");
       row.className="record";label.textContent=key;number.textContent=value;row.append(label,number);list.append(row)});
   }
-  function offEff(){return Math.min(1,(.5+.05*S.perk[4]+.1*vit()))}
+  function offEff(){return Math.min(1,(.5+.05*S.perk[4]+.1*vit())*legacyVitalMult())}
   function drawAffinityShortcut(){
     const current=(STY[S.stance]?.[0]||"Seven").split(" · ")[0];
     const shortcut=$("affinityShortcut");
@@ -7277,21 +7879,28 @@ function initAlmasMortas(root){
   // Domínio e Loja compartilham a própria instância do jogo, sem duplicar estado.
   let almasSideEnabled=false,almasSideTab="a";
   function sideSwitch(t){
-    if(t!=="a"&&t!=="r")return;
+    if(t!=="a"&&t!=="r"&&t!=="c")return;
     almasSideTab=t;
     if(almasSideEnabled){$("ta").hidden=t!=="a";$("tr").hidden=t!=="r";}
+    const anchorSide=document.getElementById("almasSideAnchor");if(anchorSide)anchorSide.hidden=almasSideEnabled&&t==="c";
+    const cardSide=document.getElementById("almasCardSide");if(cardSide){cardSide.hidden=!almasSideEnabled||t!=="c";
+      if(t==="c"){
+        if(!document.getElementById("almasCardTable").children.length&&typeof showAlmasCard==="function")showAlmasCard(null);
+        if(typeof syncAlmasCardUi==="function")syncAlmasCardUi();
+      }
+    }
     document.querySelectorAll("[data-almas-side]").forEach(b=>{
       const active=b.dataset.almasSide===t;
       b.classList.toggle("active",active);
       b.setAttribute("aria-pressed",String(active));
     });
-    if(t==="a"){drawAl();drawTickets()}else{drawIt();drawBoosters();drawTickets()}
+    if(t==="a"){drawAl();drawTickets()}else if(t==="r"){drawIt();drawBoosters();drawTickets()}
     requestAnimationFrame(positionAlmasSide);
   }
   function positionAlmasSide(){
-    if(!almasSideEnabled)return;
+    if(!almasSideEnabled||almasSideTab==="c")return;
     const anchor=document.getElementById("almasSideAnchor");if(!anchor)return;
-    const activeTab=$(almasSideTab==="a"?"ta":"tr");
+    const activeTab=almasSideTab==="c"?document.getElementById("almasCardSide"):$(almasSideTab==="a"?"ta":"tr");
     if(activeTab){
       const wanted=Math.max(100,Math.ceil(activeTab.scrollHeight+6));
       if(Math.abs(anchor.offsetHeight-wanted)>2)anchor.style.height=wanted+"px";
@@ -7327,11 +7936,16 @@ function initAlmasMortas(root){
   document.getElementById("main")?.addEventListener("scroll",positionAlmasSide,{passive:true});
   const sideAnchor=document.getElementById("almasSideAnchor");
   if(sideAnchor&&typeof ResizeObserver!=="undefined")new ResizeObserver(positionAlmasSide).observe(sideAnchor);
-  function drawAll(){if(S.pendingReward)chooseBossReward(["auto","click","souls"][Math.floor(Math.random()*3)],true);drawHead();drawAffinityShortcut();drawExpansionStatus();if(tab_==="a"){drawAl();drawTickets()}else if(tab_==="r"){drawIt();drawBoosters();drawTickets()}else if(tab_==="p"){drawBoss();drawContracts();drawFund()}else if(tab_==="l"){drawLeg()}if(almasSideEnabled){if(almasSideTab==="a"){drawAl();drawTickets()}else{drawIt();drawBoosters();drawTickets()}requestAnimationFrame(positionAlmasSide)}}
+  function drawTowerRitualNotice(){
+    const notice=$("towerRitualNotice");
+    if(notice)notice.hidden=!(rankInfo(rankSteps()).i>=5&&S.f>=Math.max(1,towerCost()-S.towerProgress));
+  }
+  $("towerBeforeRitual").addEventListener("click",()=>tab("t"));
+  function drawAll(){drawTowerRitualNotice();if(S.pendingReward)chooseBossReward(["auto","click","souls"][Math.floor(Math.random()*3)],true);drawHead();drawAffinityShortcut();drawExpansionStatus();if(tab_==="a"){drawAl();drawTickets()}else if(tab_==="r"){drawIt();drawBoosters();drawTickets()}else if(tab_==="p"){drawBoss();drawContracts();drawFund()}else if(tab_==="l"){drawLeg()}else if(tab_==="t"){drawTower()}if(almasSideEnabled){if(almasSideTab==="a"){drawAl();drawTickets()}else if(almasSideTab==="r"){drawIt();drawBoosters();drawTickets()}requestAnimationFrame(positionAlmasSide)}}
 
   function tab(t){
-    if(almasSideEnabled&&(t==="a"||t==="r")){sideSwitch(t);return}
-    const oldTab=tab_;tab_=t;["p","a","r","l"].forEach(function(k){$("t"+k).hidden=almasSideEnabled&&(k==="a"||k==="r")?k!==almasSideTab:k!==t});
+    if(t==="g")t="t";if(almasSideEnabled&&(t==="a"||t==="r")){sideSwitch(t);return}
+    const oldTab=tab_;tab_=t;["p","a","r","l","t","g"].forEach(function(k){$("t"+k).hidden=almasSideEnabled&&(k==="a"||k==="r")?k!==almasSideTab:k!==t});
     if(oldTab!==t){
       // Feedback sonoro discreto apenas em trocas reais, nunca ao iniciar a interface.
       soulTone("tab");
@@ -7514,7 +8128,9 @@ function initAlmasMortas(root){
   function openRitualConfirmation(check){
     const overlay=$("ritualConfirmOverlay");
     $("ritualConfirmTitle").textContent=ritualCheckMessage("title");
-    $("ritualConfirmText").textContent=ritualCheckMessage("question")+(S.fund?" Seu financiamento ativo será perdido neste Ritual.":"");
+    const canBuild=rankInfo(rankSteps()).i>=5&&S.f>=Math.max(1,towerCost()-S.towerProgress);
+    $("ritualConfirmText").textContent=ritualCheckMessage("question")+(S.fund?" Seu financiamento ativo será perdido neste Ritual.":"")+
+      (canBuild?" Você tem Souls suficientes para concluir mais um andar da Torre antes de reiniciar.":"");
     $("ritualConfirmGain").textContent=ritualCheckMessage("gain",{gain:fmt(check.gain),rank:ritualRankTarget()});
     $("ritualCancel").textContent=ritualCheckMessage("cancel");
     $("ritualAccept").textContent=ritualCheckMessage("confirm");
@@ -7641,7 +8257,7 @@ function initAlmasMortas(root){
     var o=payload?.format==="almas-backup-v3"||payload?.format==="almas-backup-v2"?payload.save:payload;
       if(!o||typeof o!=="object"||Array.isArray(o)||!Number.isFinite(o.f)||o.f<0||!Array.isArray(o.own)||!Array.isArray(o.items))throw 0;
       // Um código importado também passa pela migração e validação.
-      const validKeys=["rankFormat","itemSchema","unlockedOps","tickets","pendingPlatinum","ticketBoughtRun","ticketPriceAnchor","beatNext","beatState","beatWins","beatPlays","extraStats","tutorialSeen","f","life","own","items","legacy","spent","perk","boss","bossT","stance","clicks","ts","soundOn","cosmetics","cosmeticSpent","achievements","rituals","bestRitualGain","lastRitualGain","events","ritualPath","nextPath","rewardBoost","pendingReward","contracts","contractStats","contractClaims","contractHistory","contractBoost","rankCredit","masteryXp","records","cacheT","doctrinesOwned","doctrineSpent","doctrineActive","doctrineRefunded","tactic","tacticChangedAt","booster","boosterReadyAt","streetNext","streetPending","streetCount","streetOffers","streetLastPick","streetEffect","fund","fundReadyAt","fundCompleted","postRitualPhase","postBlessingChosen","brawlNext","brawl","brawlWins","brawlMatches","almasCardReadyAt","almasCardLast","almasCardResult","almasCardBuff"];
+      const validKeys=["rankFormat","itemSchema","unlockedOps","tickets","pendingPlatinum","ticketBoughtRun","ticketPriceAnchor","towerLevel","towerProgress","towerStageCost","towerHistory","echoOwned","echoEquipped","constellation","beatNext","beatState","beatWins","beatPlays","extraStats","tutorialSeen","f","life","own","items","legacy","spent","perk","boss","bossT","stance","clicks","ts","soundOn","cosmetics","cosmeticSpent","achievements","rituals","bestRitualGain","lastRitualGain","events","ritualPath","nextPath","rewardBoost","pendingReward","contracts","contractStats","contractClaims","contractHistory","contractBoost","rankCredit","masteryXp","records","cacheT","doctrinesOwned","doctrineSpent","doctrineActive","doctrineRefunded","tactic","tacticChangedAt","booster","boosterReadyAt","streetNext","streetPending","streetCount","streetOffers","streetLastPick","streetEffect","fund","fundReadyAt","fundCompleted","postRitualPhase","postBlessingChosen","brawlNext","brawl","brawlWins","brawlMatches","almasCardReadyAt","almasCardLast","almasCardResult","almasCardBuff"];
       const imported={};for(const k of validKeys)if(Object.prototype.hasOwnProperty.call(o,k))imported[k]=o[k];
       S={...S,...imported,rankCredit:imported.rankCredit??null,rankFormat:imported.rankFormat??1,itemSchema:imported.itemSchema??1,unlockedOps:imported.unlockedOps??null,tickets:imported.tickets??null,pendingPlatinum:imported.pendingPlatinum??null,ticketBoughtRun:imported.ticketBoughtRun??0,ticketPriceAnchor:imported.ticketPriceAnchor??null,beatNext:imported.beatNext??Date.now()+420000,beatState:imported.beatState??null,beatWins:imported.beatWins??0,beatPlays:imported.beatPlays??0,extraStats:imported.extraStats??null,tutorialSeen:imported.tutorialSeen??{},masteryXp:imported.masteryXp??null,records:imported.records??null,contracts:imported.contracts??[],contractStats:imported.contractStats??{purchases:0},contractClaims:imported.contractClaims??0,contractHistory:imported.contractHistory??[],contractBoost:imported.contractBoost??null,doctrinesOwned:imported.doctrinesOwned??[],doctrineSpent:imported.doctrineSpent??null,doctrineActive:imported.doctrineActive??"none",doctrineRefunded:imported.doctrineRefunded??false,tactic:imported.tactic??"none",tacticChangedAt:imported.tacticChangedAt??0,booster:imported.booster??null,boosterReadyAt:imported.boosterReadyAt??0,streetNext:imported.streetNext??Date.now()+240000,streetPending:imported.streetPending??false,streetCount:imported.streetCount??null,streetOffers:imported.streetOffers??[],streetLastPick:imported.streetLastPick??"",streetEffect:imported.streetEffect??null,fund:imported.fund??null,fundReadyAt:imported.fundReadyAt??0,fundCompleted:imported.fundCompleted??0,postRitualPhase:imported.postRitualPhase??"",postBlessingChosen:imported.postBlessingChosen??false,brawlNext:imported.brawlNext??Date.now()+600000,brawl:imported.brawl??null,brawlWins:imported.brawlWins??0,brawlMatches:imported.brawlMatches??0};norm();ensureContracts();combo.count=0;
       S.cosmetics={...shopData().cosmetics,...(S.cosmetics||{})};
@@ -7657,7 +8273,7 @@ function initAlmasMortas(root){
   $("wipe").addEventListener("click",function(){
     var b=$("wipe");
     if(b.dataset.arm){try{localStorage.removeItem(KEY)}catch(e){}
-      S={f:0,life:0,own:[0,0,0,0,0,0,0,0],items:[],legacy:0,spent:0,perk:Array(PRK.length).fill(0),boss:0,bossT:Date.now()+120000,stance:0,clicks:0,ts:Date.now(),achievements:[],events:[],rituals:0,bestRitualGain:0,lastRitualGain:0,rewardBoost:null,pendingReward:null,contracts:[],contractStats:{purchases:0},contractClaims:0,contractHistory:[],contractBoost:null,rankCredit:0,rankFormat:2,tutorialSeen:{},masteryXp:Array(GEN.length).fill(0),records:null,unlockedOps:null,tickets:null,pendingPlatinum:null,ticketBoughtRun:0,ticketPriceAnchor:null,beatNext:Date.now()+420000,beatState:null,beatWins:0,beatPlays:0,extraStats:null,itemSchema:2,cacheT:Date.now()+45000,doctrinesOwned:[],doctrineSpent:0,doctrineActive:"none",doctrineRefunded:true,tactic:"none",tacticChangedAt:0,booster:null,boosterReadyAt:0,streetNext:Date.now()+240000,streetPending:false,streetCount:0,streetOffers:[],streetLastPick:"",streetEffect:null,fund:null,fundReadyAt:0,fundCompleted:0,postRitualPhase:"",postBlessingChosen:false,brawlNext:Date.now()+600000,brawl:null,brawlWins:0,brawlMatches:0,soundOn:S.soundOn,cosmetics:shopLedger().cosmetics||{},cosmeticSpent:shopLedger().cosmeticSpent||0};norm();ensureContracts();combo.count=0;renderedRankKey="";resetRitualConfirmation();last=Date.now();window.dispatchEvent(new Event("decklock:economy"));
+      S={f:0,life:0,own:[0,0,0,0,0,0,0,0],items:[],legacy:0,spent:0,perk:Array(PRK.length).fill(0),boss:0,bossT:Date.now()+120000,stance:0,clicks:0,ts:Date.now(),achievements:[],events:[],rituals:0,bestRitualGain:0,lastRitualGain:0,rewardBoost:null,pendingReward:null,contracts:[],contractStats:{purchases:0},contractClaims:0,contractHistory:[],contractBoost:null,rankCredit:0,rankFormat:2,tutorialSeen:{},masteryXp:Array(GEN.length).fill(0),records:null,unlockedOps:null,tickets:null,pendingPlatinum:null,ticketBoughtRun:0,ticketPriceAnchor:null,towerLevel:0,towerProgress:0,towerStageCost:null,towerHistory:[],echoOwned:[],echoEquipped:[],constellation:[0,0,0],beatNext:Date.now()+420000,beatState:null,beatWins:0,beatPlays:0,extraStats:null,itemSchema:2,cacheT:Date.now()+45000,doctrinesOwned:[],doctrineSpent:0,doctrineActive:"none",doctrineRefunded:true,tactic:"none",tacticChangedAt:0,booster:null,boosterReadyAt:0,streetNext:Date.now()+240000,streetPending:false,streetCount:0,streetOffers:[],streetLastPick:"",streetEffect:null,fund:null,fundReadyAt:0,fundCompleted:0,postRitualPhase:"",postBlessingChosen:false,brawlNext:Date.now()+600000,brawl:null,brawlWins:0,brawlMatches:0,soundOn:S.soundOn,cosmetics:shopLedger().cosmetics||{},cosmeticSpent:shopLedger().cosmeticSpent||0};norm();ensureContracts();combo.count=0;renderedRankKey="";resetRitualConfirmation();last=Date.now();window.dispatchEvent(new Event("decklock:economy"));
       b.dataset.arm="";b.textContent="Apagar";tab("p");drawEvents();toast("Progresso apagado.");return}
     b.dataset.arm="1";b.textContent="Certeza?";clearTimeout(wt);wt=setTimeout(function(){b.dataset.arm="";b.textContent="Apagar"},3500);
   });
