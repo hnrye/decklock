@@ -6,7 +6,7 @@
 <title>DeckLock</title>
 <meta name="description" content="Sorteador de cartas de desafio para partidas de Deadlock, com decks editáveis.">
 <meta name="theme-color" content="#222021">
-<meta name="decklock-version" content="1.38.9">
+<meta name="decklock-version" content="1.39.2">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pt_BR">
 <meta property="og:site_name" content="DeckLock">
@@ -1195,6 +1195,39 @@ body.season-history-open .footer-shortcuts,body.soul-modal-open .footer-shortcut
 .almas-mini-stage--holliday{background:linear-gradient(180deg,color-mix(in srgb,#d5bd8b 14%,var(--bg2)),color-mix(in srgb,#42301d 24%,var(--panel)));border-color:color-mix(in srgb,#e8c98a 38%,var(--edge))}
 .almas-mini-stage--seven{background:linear-gradient(180deg,color-mix(in srgb,#78b5ff 15%,var(--bg2)),color-mix(in srgb,#1a2348 28%,var(--panel)));border-color:color-mix(in srgb,#8bb7ff 40%,var(--edge))}
 @media(max-width:700px){.almas-hero-offers{gap:6px}.almas-hero-option{min-width:0;max-width:none}.almas-hero-option .face .body h2{font-size:11px!important}.almas-hero-option .face .body p{font-size:8px!important}}
+
+/* Estúdio de decks — layout em painéis, controles legíveis e prévia fixa. */
+dialog.deck-editor-dialog{width:min(1180px,97vw);max-height:95vh;border-radius:17px;background:var(--bg);box-shadow:0 30px 90px #0009}
+.deck-editor-dialog .top{padding:15px 22px;gap:9px}
+.deck-editor-heading{display:grid;gap:3px;min-width:200px}
+.deck-editor-heading small{font-size:10px;letter-spacing:.18em;color:var(--mute);font-weight:800}
+.deck-editor-heading strong{font-family:var(--fh);font-size:24px;color:var(--gold)}
+.deck-editor-heading span{font-size:12px;color:var(--mute)}
+.deck-editor-toolbar{background:color-mix(in srgb,var(--panel) 65%,var(--bg));align-items:center}
+.deck-editor-label{font:800 10px system-ui;letter-spacing:.12em;color:var(--mute)}
+.deck-editor-toolbar #edDeck{width:min(270px,100%)!important;flex:1;min-width:150px;font-weight:700}
+.deck-editor-toolbar button,.deck-editor-dialog .top button{min-height:36px;padding:7px 11px;border-radius:8px}
+.deck-editor-toolbar #bAdd{background:color-mix(in srgb,var(--gold) 20%,var(--panel));border-color:var(--gold);font-weight:750}
+.deck-editor-dialog .ed{grid-template-columns:minmax(240px,29%) minmax(0,1fr);min-height:560px;background:var(--bg)}
+.deck-editor-dialog .ed-side{padding:18px 14px;gap:12px;background:color-mix(in srgb,var(--panel) 53%,var(--bg));border-right:1px solid var(--line);grid-template-rows:auto auto minmax(0,1fr) auto;max-height:68vh}
+.ed-side-top{display:flex;justify-content:space-between;gap:8px;align-items:center}.ed-side-top strong{font:750 14px system-ui;color:var(--ink)}.ed-side-top small{font-size:11px;color:var(--mute)}
+.deck-editor-dialog #edQ{padding:11px;border-radius:9px}
+.deck-editor-dialog .ed-list{max-height:none;min-height:120px;align-content:start;gap:7px;overflow:auto;padding-right:4px}
+.deck-editor-dialog .ed-list button{white-space:normal;text-overflow:clip;line-height:1.35;min-height:48px;padding:11px 12px;border-radius:9px;text-align:left;border:1px solid var(--line);background:var(--bg2);color:var(--ink);transition:background .15s,border-color .15s}
+.deck-editor-dialog .ed-list button:hover{border-color:color-mix(in srgb,var(--gold) 55%,var(--line));background:var(--panel)}
+.deck-editor-dialog .ed-list button.sel{border-color:var(--gold);box-shadow:inset 3px 0 0 var(--gold);background:color-mix(in srgb,var(--gold) 13%,var(--bg2))}
+.ed-side-hint{font-size:11px;line-height:1.5;color:var(--mute);margin:0}
+.deck-editor-dialog .ed-form{grid-template-columns:minmax(0,1fr) minmax(195px,34%);gap:22px;padding:24px;max-height:68vh;overflow:auto}
+.deck-editor-dialog .ed-form .fields{gap:14px;min-width:0}
+.deck-editor-dialog .ed-form .fields>label{font-weight:700;font-size:12px;color:var(--ink)}
+.deck-editor-dialog .ed-form input:not([type=checkbox]),.deck-editor-dialog .ed-form textarea,.deck-editor-dialog .ed-form select{padding:11px;border-radius:9px;font-size:14px}
+.deck-editor-dialog .ed-form textarea{min-height:145px;line-height:1.55}
+.deck-editor-dialog .ed-form .chk{padding:10px;background:var(--panel);border:1px solid var(--line);border-radius:8px}
+.deck-editor-dialog #prev{position:sticky;top:0;align-self:start;min-width:0;padding:14px;border-radius:12px;border:1px solid var(--line);background:var(--panel);box-shadow:0 12px 30px #0002}
+.deck-editor-dialog #prev::before{content:'PRÉVIA DA CARTA';display:block;font:800 10px system-ui;letter-spacing:.12em;color:var(--mute);margin:0 0 12px}
+.deck-editor-dialog #prev .scene{width:100%;max-width:290px;margin:0 auto}
+@media(max-width:820px){.deck-editor-dialog .ed{grid-template-columns:1fr}.deck-editor-dialog .ed-side{max-height:260px;grid-template-rows:auto auto minmax(90px,1fr) auto;border-right:0;border-bottom:1px solid var(--line)}.deck-editor-dialog .ed-form{max-height:none;padding:16px;grid-template-columns:minmax(0,1fr) minmax(130px,36%);gap:12px}.deck-editor-toolbar .grow{display:none}}
+@media(max-width:500px){.deck-editor-dialog .ed-form{grid-template-columns:1fr}.deck-editor-dialog #prev{position:static;grid-row:1}.deck-editor-dialog #prev .scene{max-width:190px}.deck-editor-heading strong{font-size:20px}.deck-editor-dialog .top{padding:12px}.deck-editor-dialog .ed-side{padding:12px}}
 </style>
 </head>
 <body>
@@ -3251,6 +3284,7 @@ textarea{width:100%;height:70px;background:var(--am-ink);color:var(--am-text);bo
 @keyframes am-auto-spark{0%{filter:drop-shadow(0 0 0px #8acfff)}45%{filter:drop-shadow(0 0 15px #81baff) drop-shadow(0 0 8px #c6eaff);transform:scale(1.035)}100%{filter:drop-shadow(0 0 0 #8acfff);transform:scale(1)}}
 @media(max-width:650px){#towerWorld .am-tower-actions{grid-template-columns:1fr}.am-auto-orb-item.up{flex-wrap:wrap}.am-auto-orb-item .btn{width:100%}}
 @media(prefers-reduced-motion:reduce){#orb.am-auto-spark{animation:none!important}}
+
 </style>
 
 <div class="wrap">
@@ -3578,17 +3612,17 @@ textarea{width:100%;height:70px;background:var(--am-ink);color:var(--am-text);bo
   </div>
 </dialog>
 
-<dialog id="dlg" aria-label="Editor de decks">
+<dialog id="dlg" class="deck-editor-dialog" aria-label="Editor de decks">
   <div class="top">
-    <strong class="grow">Editor de decks</strong>
+    <div class="deck-editor-heading grow"><small>DECKLOCK · ESTÚDIO</small><strong>Editor de decks</strong><span>Crie, organize e visualize as cartas do seu baralho.</span></div>
     <button id="bExp">Salvar tudo em arquivo</button>
     <button id="bImp">Importar arquivo</button>
     <button id="bClose">Fechar</button>
     <input type="file" id="fileJson" accept="application/json,.json" hidden>
     <input type="file" id="fileImg" accept="image/*" hidden>
   </div>
-  <div class="top">
-    <select id="edDeck" aria-label="Deck" style="width:auto"></select>
+  <div class="top deck-editor-toolbar">
+    <span class="deck-editor-label">DECK ATUAL</span><select id="edDeck" aria-label="Deck" style="width:auto"></select>
     <button id="bDNew">Novo deck</button>
     <button id="bDRen">Renomear</button>
     <button id="bDDel" class="danger">Excluir deck</button>
@@ -3597,7 +3631,7 @@ textarea{width:100%;height:70px;background:var(--am-ink);color:var(--am-text);bo
     <button id="bReset" class="danger">Remover todos os decks</button>
   </div>
   <div class="ed">
-    <div class="ed-side"><input type="search" id="edQ" placeholder="Buscar carta…" aria-label="Buscar carta"><div class="ed-list" id="edList"></div></div>
+    <div class="ed-side"><div class="ed-side-top"><strong>Cartas do deck</strong><small id="edCount">0 cartas</small></div><input type="search" id="edQ" placeholder="Buscar pelo título ou categoria…" aria-label="Buscar carta"><div class="ed-list" id="edList"></div><p class="ed-side-hint">Selecione uma carta para editar. Todas as alterações são salvas automaticamente.</p></div>
     <div class="ed-form" id="edForm"></div>
   </div>
 </dialog>
@@ -3717,7 +3751,7 @@ if(testModeButton){
 const KEY="deadlock-deck-v3";
 /* Reset único: quem tem dados salvos sem "epoch" (versões antigas) volta ao início UMA vez.
    Os dados antigos são guardados em BKEY antes. Só aumente RESET_EPOCH se quiser forçar outro reset. */
-const RESET_EPOCH=3,APP_VERSION="1.38.9",BKEY="deadlock-deck-v3:backup";
+const RESET_EPOCH=3,APP_VERSION="1.39.2",BKEY="deadlock-deck-v3:backup";
 // Reset único de estados criados antes da v1.9.4. Futuras atualizações não reiniciam
 // os dados sem uma migração explícita; o backup deve ser confirmado antes do reset.
 const RESET_BEFORE_VERSION="1.9.4",INTRO_KEY="deadlock-deck-v3:intro-hidden";
@@ -4905,6 +4939,7 @@ function renderEd(){
 function renderList(){
   const d=curD()||{cards:[]},list=$("#edList"),q=ed.q.toLowerCase();list.innerHTML="";
   const cs=d.cards.filter(c=>!q||(c.title+" "+c.cat).toLowerCase().includes(q));
+  const edCount=$("edCount");if(edCount)edCount.textContent=d.cards.length+" carta"+(d.cards.length===1?"":"s")+(q?" · "+cs.length+" encontradas":"");
   cs.forEach(c=>{const b=el("button",c.id===ed.c?"sel":"",(c.fav?"★ ":"")+(typeof localizedExampleTitle==="function"?localizedExampleTitle(c):(c.title||"(sem título)"))+(c.off?" (fora)":""));b.onclick=()=>{ed.c=c.id;renderList();renderForm()};list.append(b)});
   if(!cs.length)list.append(el("p","empty",S.decks.length?(d.cards.length?"Nada encontrado.":"Deck vazio."):"Nenhum deck ainda."));
 }
