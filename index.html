@@ -6,7 +6,7 @@
 <title>DeckLock</title>
 <meta name="description" content="Sorteador de cartas de desafio para partidas de Deadlock, com decks editáveis.">
 <meta name="theme-color" content="#222021">
-<meta name="decklock-version" content="1.38.5">
+<meta name="decklock-version" content="1.38.7">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pt_BR">
 <meta property="og:site_name" content="DeckLock">
@@ -3730,7 +3730,7 @@ if(testModeButton){
 const KEY="deadlock-deck-v3";
 /* Reset único: quem tem dados salvos sem "epoch" (versões antigas) volta ao início UMA vez.
    Os dados antigos são guardados em BKEY antes. Só aumente RESET_EPOCH se quiser forçar outro reset. */
-const RESET_EPOCH=3,APP_VERSION="1.38.5",BKEY="deadlock-deck-v3:backup";
+const RESET_EPOCH=3,APP_VERSION="1.38.7",BKEY="deadlock-deck-v3:backup";
 // Reset único de estados criados antes da v1.9.4. Futuras atualizações não reiniciam
 // os dados sem uma migração explícita; o backup deve ser confirmado antes do reset.
 const RESET_BEFORE_VERSION="1.9.4",INTRO_KEY="deadlock-deck-v3:intro-hidden";
@@ -5937,7 +5937,7 @@ function initAlmasMortas(root){
     $("rankPromotion").hidden=true;window.dispatchEvent(new CustomEvent("decklock:modal",{detail:{open:false}}));
     if(priorRankFocus&&priorRankFocus.isConnected&&priorRankFocus.getClientRects().length)priorRankFocus.focus();
     else $("orb").focus();
-    if(S.postRitualPhase)renderPostRitual();
+    // Melhorias já aplicadas no Ritual; nenhuma segunda tela é necessária.
   }
   $("rankPromotionClose").addEventListener("click",closeRankPromotion);
   $("rankPromotion").addEventListener("click",e=>{if(e.target===$("rankPromotion"))closeRankPromotion()});
@@ -6114,7 +6114,7 @@ function initAlmasMortas(root){
     while(result.length<3){const choices=pool.filter(c=>!result.includes(c.id));result.push(choices[Math.floor(Math.random()*choices.length)].id)}
     return result;
   }
-  var S={f:0,life:0,own:Array(GEN.length).fill(0),items:[],legacy:0,spent:0,perk:Array(PRK.length).fill(0),boss:0,bossT:Date.now()+120000,stance:0,clicks:0,ts:Date.now(),rituals:0,bestRitualGain:0,lastRitualGain:0,rewardBoost:null,pendingReward:null,contracts:[],contractStats:{purchases:0},contractClaims:0,contractHistory:[],contractBoost:null,rankCredit:null,rankFormat:1,tutorialSeen:null,masteryXp:null,records:null,unlockedOps:null,tickets:null,pendingPlatinum:null,ticketBoughtRun:0,ticketPriceAnchor:null,towerLevel:0,towerProgress:0,towerStageCost:null,towerHistory:[],echoOwned:[],echoEquipped:[],constellation:[0,0,0],beatNext:Date.now()+420000,beatState:null,beatWins:0,beatPlays:0,extraStats:null,itemSchema:1,cacheT:Date.now()+45000,doctrinesOwned:[],doctrineSpent:0,doctrineActive:"none",doctrineRefunded:true,tactic:"none",tacticChangedAt:0,booster:null,boosterReadyAt:0,streetNext:Date.now()+240000,streetPending:false,streetCount:0,streetOffers:[],streetLastPick:"",streetEffect:null,fund:null,funds:[],autoOrb:false,autoOrbLevel:0,lastAutoPerks:[],fundReadyAt:0,fundCompleted:0,postRitualPhase:"",postBlessingChosen:false,brawlNext:Date.now()+600000,brawl:null,brawlWins:0,brawlMatches:0,heroState:null};
+  var S={f:0,life:0,own:Array(GEN.length).fill(0),items:[],legacy:0,spent:0,perk:Array(PRK.length).fill(0),boss:0,bossT:Date.now()+120000,stance:0,clicks:0,ts:Date.now(),rituals:0,bestRitualGain:0,lastRitualGain:0,rewardBoost:null,pendingReward:null,contracts:[],contractStats:{purchases:0},contractClaims:0,contractHistory:[],contractBoost:null,rankCredit:null,rankFormat:1,tutorialSeen:null,masteryXp:null,records:null,unlockedOps:null,tickets:null,pendingPlatinum:null,ticketBoughtRun:0,ticketPriceAnchor:null,towerLevel:0,towerProgress:0,towerStageCost:null,towerHistory:[],towerPlatinumClaimed:0,echoOwned:[],echoEquipped:[],constellation:[0,0,0],beatNext:Date.now()+420000,beatState:null,beatWins:0,beatPlays:0,extraStats:null,itemSchema:1,cacheT:Date.now()+45000,doctrinesOwned:[],doctrineSpent:0,doctrineActive:"none",doctrineRefunded:true,tactic:"none",tacticChangedAt:0,booster:null,boosterReadyAt:0,streetNext:Date.now()+240000,streetPending:false,streetCount:0,streetOffers:[],streetLastPick:"",streetEffect:null,fund:null,funds:[],autoOrb:false,autoOrbLevel:0,lastAutoPerks:[],fundReadyAt:0,fundCompleted:0,postRitualPhase:"",postBlessingChosen:false,brawlNext:Date.now()+600000,brawl:null,brawlWins:0,brawlMatches:0,heroState:null};
   // Habilitar no endereço: ?almas-dev=1. A partida real nunca é usada pelo console.
   const ALMAS_DEV = new URLSearchParams(window.location.search).get("almas-dev")==="1" || window.__almasDevMode===true;
   var KEY=ALMAS_DEV?"almasmortas_v1_dev":"almasmortas_v1";
@@ -6307,9 +6307,19 @@ function initAlmasMortas(root){
     }
     // Saves antigos mantêm o ticket único; novos saves armazenam uma pilha.
     if(S.pendingPlatinum&&typeof S.pendingPlatinum==="object"){
-      const count=Math.floor(nonneg(S.pendingPlatinum.count??1,1000));
+      const count=Math.floor(nonneg(S.pendingPlatinum.count??1,1000000));
       S.pendingPlatinum=count>0?{count,cost:nonneg(S.pendingPlatinum.cost,1e18)}:null;
     }else S.pendingPlatinum=null;
+    // Um ticket Platinum a cada cinco ciclos de 50 andares (250 níveis).
+    // Registra os ciclos já premiados para evitar crédito duplicado em recarga,
+    // importação e compra de múltiplos andares; inclui progresso anterior.
+    const earnedTowerPlatinum=Math.floor(S.towerLevel/250);
+    S.towerPlatinumClaimed=Math.min(earnedTowerPlatinum,Math.floor(nonneg(S.towerPlatinumClaimed,1000000)));
+    if(earnedTowerPlatinum>S.towerPlatinumClaimed){
+      const reward=earnedTowerPlatinum-S.towerPlatinumClaimed;
+      S.pendingPlatinum={count:(S.pendingPlatinum?.count||0)+reward,cost:S.pendingPlatinum?.cost||0};
+      S.towerPlatinumClaimed=earnedTowerPlatinum;
+    }
     S.beatNext=nonneg(S.beatNext,Date.now()+365*864e5)||Date.now()+420000;
     S.beatWins=Math.floor(nonneg(S.beatWins,1e7));S.beatPlays=Math.floor(nonneg(S.beatPlays,1e7));
     S.beatState=S.beatState&&typeof S.beatState==="object"&&Number.isFinite(S.beatState.start)&&S.beatState.start>0&&Date.now()-S.beatState.start<24000
@@ -6369,7 +6379,7 @@ function initAlmasMortas(root){
     S.funds=[];S.fund=null;
     S.fundReadyAt=0;S.beatState=null;
     S.autoOrbLevel=Math.min(24,Math.max(0,Math.floor(Number(S.autoOrbLevel)|| (S.autoOrb?1:0))));S.autoOrb=S.autoOrbLevel>0;S.lastAutoPerks=Array.isArray(S.lastAutoPerks)?S.lastAutoPerks.filter(i=>Number.isInteger(i)&&i>=0&&i<PRK.length).slice(0,3):[];
-    S.postRitualPhase=S.postRitualPhase==="blessing"?"blessing":"";
+    S.postRitualPhase="";S.postBlessingChosen=false;
     S.postBlessingChosen=S.postBlessingChosen===true;
     S.tutorialSeen=(S.tutorialSeen&&typeof S.tutorialSeen==="object"&&!Array.isArray(S.tutorialSeen))?S.tutorialSeen:{};
     S.almasCardReadyAt=Math.min(nonneg(S.almasCardReadyAt,Date.now()+365*86400000),Date.now()+90*1000);
@@ -6383,7 +6393,7 @@ function initAlmasMortas(root){
   }
   try{var raw=localStorage.getItem(KEY);if(raw){var p=JSON.parse(raw);if(p&&typeof p==="object"&&!Array.isArray(p)&&Number.isFinite(p.f)&&p.f>=0){
     // Não copiar propriedades inesperadas nem __proto__ de importações corrompidas.
-    for(const k of ["rankFormat","itemSchema","unlockedOps","tickets","pendingPlatinum","ticketBoughtRun","ticketPriceAnchor","towerLevel","towerProgress","towerStageCost","towerHistory","echoOwned","echoEquipped","constellation","beatNext","beatState","beatWins","beatPlays","extraStats","tutorialSeen","f","life","own","items","legacy","spent","perk","boss","bossT","stance","clicks","ts","soundOn","cosmetics","cosmeticSpent","achievements","rituals","bestRitualGain","lastRitualGain","events","ritualPath","nextPath","rewardBoost","pendingReward","contracts","contractStats","contractClaims","contractHistory","contractBoost","rankCredit","masteryXp","records","cacheT","doctrinesOwned","doctrineSpent","doctrineActive","doctrineRefunded","tactic","tacticChangedAt","booster","boosterReadyAt","streetNext","streetPending","streetCount","streetOffers","streetLastPick","streetEffect","fund","funds","autoOrb","autoOrbLevel","lastAutoPerks","fundReadyAt","fundCompleted","postRitualPhase","postBlessingChosen","brawlNext","brawl","brawlWins","brawlMatches","almasCardReadyAt","almasCardLast","almasCardResult","almasCardBuff","heroState"])
+    for(const k of ["rankFormat","itemSchema","unlockedOps","tickets","pendingPlatinum","ticketBoughtRun","ticketPriceAnchor","towerLevel","towerProgress","towerStageCost","towerHistory","towerPlatinumClaimed","echoOwned","echoEquipped","constellation","beatNext","beatState","beatWins","beatPlays","extraStats","tutorialSeen","f","life","own","items","legacy","spent","perk","boss","bossT","stance","clicks","ts","soundOn","cosmetics","cosmeticSpent","achievements","rituals","bestRitualGain","lastRitualGain","events","ritualPath","nextPath","rewardBoost","pendingReward","contracts","contractStats","contractClaims","contractHistory","contractBoost","rankCredit","masteryXp","records","cacheT","doctrinesOwned","doctrineSpent","doctrineActive","doctrineRefunded","tactic","tacticChangedAt","booster","boosterReadyAt","streetNext","streetPending","streetCount","streetOffers","streetLastPick","streetEffect","fund","funds","autoOrb","autoOrbLevel","lastAutoPerks","fundReadyAt","fundCompleted","postRitualPhase","postBlessingChosen","brawlNext","brawl","brawlWins","brawlMatches","almasCardReadyAt","almasCardLast","almasCardResult","almasCardBuff","heroState"])
       if(Object.prototype.hasOwnProperty.call(p,k))S[k]=p[k];
   }}}catch(e){}
   norm();
@@ -6726,7 +6736,7 @@ function initAlmasMortas(root){
     towerArt.style.borderImage="none";
     towerArt.style.removeProperty("--tower-color");
     bricks.style.removeProperty("--tower-color");
-    $("towerSceneLabel").textContent="CICLO "+(cycle+1)+" · "+filled+" / 50 BLOCOS";
+    $("towerSceneLabel").textContent="CICLO "+(cycle+1)+" · "+filled+" / 50 BLOCOS · PLATINUM A CADA 5 CICLOS";
   }
   function drawLegacy(){
     const list=$("pl");if(list)list.replaceChildren();
@@ -6765,6 +6775,7 @@ function initAlmasMortas(root){
     if(!spendAll&&!batch50&&S.f<firstLeft){toast("Souls insuficientes para pagar este andar.");return}
     if(S.f<1){toast("Você não tem Souls para investir.");return}
     let constructed=0,invested=0;
+    const platinumBefore=S.towerPlatinumClaimed||0;
     const ok=transact(()=>{
       // Comprar um andar exatamente ou investir tudo de uma vez.
       // Em "gastar tudo", cada andar seguinte utiliza seu custo exponencial;
@@ -6792,7 +6803,10 @@ function initAlmasMortas(root){
       S.f=available;
     });
     if(ok){
+      // transact chama norm(), creditando cada marco de 250 níveis uma vez.
+      const gainedPlatinum=Math.max(0,(S.towerPlatinumClaimed||0)-platinumBefore);
       drawAll();
+      if(gainedPlatinum)toast("Torre do Patrono: +"+gainedPlatinum+" PLATINUM por "+(gainedPlatinum*5)+" ciclos concluídos!");
       if(constructed){
         toast("Torre: "+constructed+" andar"+(constructed===1?"":"es")+" construído"+(constructed===1?"":"s")+".");
         soulTone("milestone");showSoulBurst("milestone","✦");
@@ -7515,7 +7529,7 @@ function initAlmasMortas(root){
       slot.innerHTML='<div class="am-auto-orb-copy"><strong>Mão do Patrono</strong><small id="autoOrbDesc"></small><span id="autoOrbLevelText"></span></div><button class="btn" id="autoOrbBuy" type="button"></button>';
       const shop=$("tr");if(shop)shop.prepend(slot);
       slot.querySelector("button").addEventListener("click",()=>{
-        if(rankInfo(rankSteps()).i<4||S.autoOrbLevel>=AUTO_ORB_CAP||S.f<autoOrbPrice())return;
+        if((rankInfo(rankSteps()).i<4&&S.autoOrbLevel===0)||S.autoOrbLevel>=AUTO_ORB_CAP||S.f<autoOrbPrice())return;
         const cost=autoOrbPrice();
         if(transact(()=>{S.f-=cost;S.autoOrbLevel++;S.autoOrb=true})){
           toast("Mão do Patrono nível "+S.autoOrbLevel+" · intervalo "+autoOrbInterval()+" ms");drawAll();
@@ -7524,9 +7538,9 @@ function initAlmasMortas(root){
     }
     // O item permanece no topo mesmo após mudanças de abas ou rerenderizações.
     const shop=$("tr");if(shop&&shop.firstElementChild!==slot)shop.prepend(slot);
-    slot.hidden=rankInfo(rankSteps()).i<4;
+    slot.hidden=rankInfo(rankSteps()).i<4&&S.autoOrbLevel===0;
     slot.classList.toggle("am-auto-owned",S.autoOrbLevel>0);
-    $("autoOrbDesc").textContent=S.autoOrbLevel?"Clique automático a cada "+autoOrbInterval()+" ms. Evolua até 50 ms.":"Automatiza o clique no emblema. Exclusivo Mystic.";
+    $("autoOrbDesc").textContent=S.autoOrbLevel?"Clique permanente a cada "+autoOrbInterval()+" ms. Evolua até 50 ms.":"Cliques permanentes no emblema. Desbloqueia no Mystic.";
     $("autoOrbLevelText").textContent="NÍVEL "+S.autoOrbLevel+" / "+AUTO_ORB_CAP;
     const b=$("autoOrbBuy");b.disabled=S.autoOrbLevel>=AUTO_ORB_CAP||S.f<autoOrbPrice();
     b.textContent=S.autoOrbLevel>=AUTO_ORB_CAP?"MÁXIMO · 50 ms":(S.autoOrbLevel?"Melhorar · ":"Comprar · ")+fmt(autoOrbPrice())+" Souls";
@@ -8251,14 +8265,14 @@ function initAlmasMortas(root){
     S.records.runStart=Date.now();S.records.runSouls=0;S.records.runPeakCps=0;S.records.runClicks=0;S.records.runPurchases=0;S.records.runBossWins=0;S.records.runBrawlWins=0;S.records.runSamples=[];
     // Uma divisão por Ritual. Não alteramos rankCredit já salvo.
     S.rituals++;S.bestRitualGain=Math.max(S.bestRitualGain,g);S.lastRitualGain=g;
-    S.legacy+=g;grantAutomaticPerks(Math.min(3,Math.max(1,g)));S.postRitualPhase="blessing";S.postBlessingChosen=false;
+    S.legacy+=g;grantAutomaticPerks(Math.min(3,Math.max(1,g)));S.postRitualPhase="";S.postBlessingChosen=false;
     S.rewardBoost=null;S.pendingReward=null;S.almasCardBuff=null;
     S.booster=null;S.boosterReadyAt=0;S.streetEffect=null;S.streetPending=false;S.streetCount=0;S.streetOffers=[];S.streetLastPick="";S.streetNext=Date.now()+240000;
     S.fund=null;S.funds=[];S.fundReadyAt=Date.now()+180000;
     S.contracts=[]; // renova os contratos para a renda da nova run, preservando os concluídos.
     S.tactic="none";S.tacticChangedAt=0;
     soulTone("ritual");S.f=500*S.perk[0];logEvent("ritual",g);
-    S.own=Array(GEN.length).fill(0);S.items=[];S.autoOrb=false;S.autoOrbLevel=0;S.itemSchema=2;S.ticketBoughtRun=0;S.ticketPriceAnchor=null;S.beatState=null;S.cacheT=Date.now()+45000;norm();ensureContracts();
+    S.own=Array(GEN.length).fill(0);S.items=[];S.itemSchema=2;S.ticketBoughtRun=0;S.ticketPriceAnchor=null;S.beatState=null;S.cacheT=Date.now()+45000;norm();ensureContracts();
     buff.t=0;combo.count=0;boss.on=false;S.bossT=Date.now()+120000;
     const justUnlocked=syncAchievements();justUnlocked.forEach(name=>logEvent("achievement",0,name));
     if(!save(true)){
@@ -8279,7 +8293,7 @@ function initAlmasMortas(root){
     var o=payload?.format==="almas-backup-v3"||payload?.format==="almas-backup-v2"?payload.save:payload;
       if(!o||typeof o!=="object"||Array.isArray(o)||!Number.isFinite(o.f)||o.f<0||!Array.isArray(o.own)||!Array.isArray(o.items))throw 0;
       // Um código importado também passa pela migração e validação.
-      const validKeys=["rankFormat","itemSchema","unlockedOps","tickets","pendingPlatinum","ticketBoughtRun","ticketPriceAnchor","towerLevel","towerProgress","towerStageCost","towerHistory","echoOwned","echoEquipped","constellation","beatNext","beatState","beatWins","beatPlays","extraStats","tutorialSeen","f","life","own","items","legacy","spent","perk","boss","bossT","stance","clicks","ts","soundOn","cosmetics","cosmeticSpent","achievements","rituals","bestRitualGain","lastRitualGain","events","ritualPath","nextPath","rewardBoost","pendingReward","contracts","contractStats","contractClaims","contractHistory","contractBoost","rankCredit","masteryXp","records","cacheT","doctrinesOwned","doctrineSpent","doctrineActive","doctrineRefunded","tactic","tacticChangedAt","booster","boosterReadyAt","streetNext","streetPending","streetCount","streetOffers","streetLastPick","streetEffect","fund","funds","autoOrb","lastAutoPerks","fundReadyAt","fundCompleted","postRitualPhase","postBlessingChosen","brawlNext","brawl","brawlWins","brawlMatches","almasCardReadyAt","almasCardLast","almasCardResult","almasCardBuff","heroState"];
+      const validKeys=["rankFormat","itemSchema","unlockedOps","tickets","pendingPlatinum","ticketBoughtRun","ticketPriceAnchor","towerLevel","towerProgress","towerStageCost","towerHistory","towerPlatinumClaimed","echoOwned","echoEquipped","constellation","beatNext","beatState","beatWins","beatPlays","extraStats","tutorialSeen","f","life","own","items","legacy","spent","perk","boss","bossT","stance","clicks","ts","soundOn","cosmetics","cosmeticSpent","achievements","rituals","bestRitualGain","lastRitualGain","events","ritualPath","nextPath","rewardBoost","pendingReward","contracts","contractStats","contractClaims","contractHistory","contractBoost","rankCredit","masteryXp","records","cacheT","doctrinesOwned","doctrineSpent","doctrineActive","doctrineRefunded","tactic","tacticChangedAt","booster","boosterReadyAt","streetNext","streetPending","streetCount","streetOffers","streetLastPick","streetEffect","fund","funds","autoOrb","lastAutoPerks","fundReadyAt","fundCompleted","postRitualPhase","postBlessingChosen","brawlNext","brawl","brawlWins","brawlMatches","almasCardReadyAt","almasCardLast","almasCardResult","almasCardBuff","heroState"];
       const imported={};for(const k of validKeys)if(Object.prototype.hasOwnProperty.call(o,k))imported[k]=o[k];
       S={...S,...imported,rankCredit:imported.rankCredit??null,rankFormat:imported.rankFormat??1,itemSchema:imported.itemSchema??1,unlockedOps:imported.unlockedOps??null,tickets:imported.tickets??null,pendingPlatinum:imported.pendingPlatinum??null,ticketBoughtRun:imported.ticketBoughtRun??0,ticketPriceAnchor:imported.ticketPriceAnchor??null,beatNext:imported.beatNext??Date.now()+420000,beatState:imported.beatState??null,beatWins:imported.beatWins??0,beatPlays:imported.beatPlays??0,extraStats:imported.extraStats??null,tutorialSeen:imported.tutorialSeen??{},masteryXp:imported.masteryXp??null,records:imported.records??null,contracts:imported.contracts??[],contractStats:imported.contractStats??{purchases:0},contractClaims:imported.contractClaims??0,contractHistory:imported.contractHistory??[],contractBoost:imported.contractBoost??null,doctrinesOwned:imported.doctrinesOwned??[],doctrineSpent:imported.doctrineSpent??null,doctrineActive:imported.doctrineActive??"none",doctrineRefunded:imported.doctrineRefunded??false,tactic:imported.tactic??"none",tacticChangedAt:imported.tacticChangedAt??0,booster:imported.booster??null,boosterReadyAt:imported.boosterReadyAt??0,streetNext:imported.streetNext??Date.now()+240000,streetPending:imported.streetPending??false,streetCount:imported.streetCount??null,streetOffers:imported.streetOffers??[],streetLastPick:imported.streetLastPick??"",streetEffect:imported.streetEffect??null,fund:imported.fund??null,funds:imported.funds??[],autoOrb:imported.autoOrb??false,autoOrbLevel:imported.autoOrbLevel??0,lastAutoPerks:imported.lastAutoPerks??[],fundReadyAt:imported.fundReadyAt??0,fundCompleted:imported.fundCompleted??0,postRitualPhase:imported.postRitualPhase??"",postBlessingChosen:imported.postBlessingChosen??false,brawlNext:imported.brawlNext??Date.now()+600000,brawl:imported.brawl??null,brawlWins:imported.brawlWins??0,brawlMatches:imported.brawlMatches??0,heroState:imported.heroState??null};norm();ensureContracts();combo.count=0;
       S.cosmetics={...shopData().cosmetics,...(S.cosmetics||{})};
@@ -8295,7 +8309,7 @@ function initAlmasMortas(root){
   $("wipe").addEventListener("click",function(){
     var b=$("wipe");
     if(b.dataset.arm){try{localStorage.removeItem(KEY)}catch(e){}
-      S={f:0,life:0,own:[0,0,0,0,0,0,0,0],items:[],legacy:0,spent:0,perk:Array(PRK.length).fill(0),boss:0,bossT:Date.now()+120000,stance:0,clicks:0,ts:Date.now(),achievements:[],events:[],rituals:0,bestRitualGain:0,lastRitualGain:0,rewardBoost:null,pendingReward:null,contracts:[],contractStats:{purchases:0},contractClaims:0,contractHistory:[],contractBoost:null,rankCredit:0,rankFormat:2,tutorialSeen:{},masteryXp:Array(GEN.length).fill(0),records:null,unlockedOps:null,tickets:null,pendingPlatinum:null,ticketBoughtRun:0,ticketPriceAnchor:null,towerLevel:0,towerProgress:0,towerStageCost:null,towerHistory:[],echoOwned:[],echoEquipped:[],constellation:[0,0,0],beatNext:Date.now()+420000,beatState:null,beatWins:0,beatPlays:0,extraStats:null,itemSchema:2,cacheT:Date.now()+45000,doctrinesOwned:[],doctrineSpent:0,doctrineActive:"none",doctrineRefunded:true,tactic:"none",tacticChangedAt:0,booster:null,boosterReadyAt:0,streetNext:Date.now()+240000,streetPending:false,streetCount:0,streetOffers:[],streetLastPick:"",streetEffect:null,fund:null,funds:[],autoOrb:false,lastAutoPerks:[],fundReadyAt:0,fundCompleted:0,postRitualPhase:"",postBlessingChosen:false,brawlNext:Date.now()+600000,brawl:null,brawlWins:0,brawlMatches:0,soundOn:S.soundOn,cosmetics:shopLedger().cosmetics||{},cosmeticSpent:shopLedger().cosmeticSpent||0};norm();ensureContracts();combo.count=0;renderedRankKey="";resetRitualConfirmation();last=Date.now();window.dispatchEvent(new Event("decklock:economy"));
+      S={f:0,life:0,own:[0,0,0,0,0,0,0,0],items:[],legacy:0,spent:0,perk:Array(PRK.length).fill(0),boss:0,bossT:Date.now()+120000,stance:0,clicks:0,ts:Date.now(),achievements:[],events:[],rituals:0,bestRitualGain:0,lastRitualGain:0,rewardBoost:null,pendingReward:null,contracts:[],contractStats:{purchases:0},contractClaims:0,contractHistory:[],contractBoost:null,rankCredit:0,rankFormat:2,tutorialSeen:{},masteryXp:Array(GEN.length).fill(0),records:null,unlockedOps:null,tickets:null,pendingPlatinum:null,ticketBoughtRun:0,ticketPriceAnchor:null,towerLevel:0,towerProgress:0,towerStageCost:null,towerHistory:[],towerPlatinumClaimed:0,echoOwned:[],echoEquipped:[],constellation:[0,0,0],beatNext:Date.now()+420000,beatState:null,beatWins:0,beatPlays:0,extraStats:null,itemSchema:2,cacheT:Date.now()+45000,doctrinesOwned:[],doctrineSpent:0,doctrineActive:"none",doctrineRefunded:true,tactic:"none",tacticChangedAt:0,booster:null,boosterReadyAt:0,streetNext:Date.now()+240000,streetPending:false,streetCount:0,streetOffers:[],streetLastPick:"",streetEffect:null,fund:null,funds:[],autoOrb:false,lastAutoPerks:[],fundReadyAt:0,fundCompleted:0,postRitualPhase:"",postBlessingChosen:false,brawlNext:Date.now()+600000,brawl:null,brawlWins:0,brawlMatches:0,soundOn:S.soundOn,cosmetics:shopLedger().cosmetics||{},cosmeticSpent:shopLedger().cosmeticSpent||0};norm();ensureContracts();combo.count=0;renderedRankKey="";resetRitualConfirmation();last=Date.now();window.dispatchEvent(new Event("decklock:economy"));
       b.dataset.arm="";b.textContent="Apagar";tab("p");drawEvents();toast("Progresso apagado.");return}
     b.dataset.arm="1";b.textContent="Certeza?";clearTimeout(wt);wt=setTimeout(function(){b.dataset.arm="";b.textContent="Apagar"},3500);
   });
