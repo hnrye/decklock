@@ -6,7 +6,7 @@
 <title>DeckLock</title>
 <meta name="description" content="Sorteador de cartas de desafio para partidas de Deadlock, com decks editáveis.">
 <meta name="theme-color" content="#222021">
-<meta name="decklock-version" content="1.38.7">
+<meta name="decklock-version" content="1.38.9">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pt_BR">
 <meta property="og:site_name" content="DeckLock">
@@ -3549,34 +3549,21 @@ textarea{width:100%;height:70px;background:var(--am-ink);color:var(--am-text);bo
 <div id="live" class="sr" role="status" aria-live="polite" aria-atomic="true"></div>
 <div id="ver"></div>
 <dialog id="dlgWhatsNew" aria-labelledby="whatsNewTitle">
-  <div class="whatsnew-top"><div><small>DECKLOCK & ALMAS · ATUALIZAÇÃO 1.32.8</small><strong id="whatsNewTitle">Novidades da Cidade</strong></div><button class="whatsnew-close" id="whatsNewClose" type="button" aria-label="Fechar novidades">×</button></div>
+  <div class="whatsnew-top"><div><small>DECKLOCK & ALMAS · ATUALIZAÇÃO 1.38.9</small><strong id="whatsNewTitle">Novidades</strong></div><button class="whatsnew-close" id="whatsNewClose" type="button" aria-label="Fechar novidades">×</button></div>
   <div class="whatsnew-content">
-    <p class="whatsnew-lead">Novos caminhos, novos poderes e uma cidade em constante transformação. Conheça as novidades desta atualização.</p>
-    <section class="whatsnew-section"><h3>Novidades do Almas</h3><ul class="whatsnew-items">
-      <li><strong>PLATINUM I, II e III</strong><span>Melhore cada operação permanentemente até x2,5 de produção.</span></li>
-      <li><strong>Quatro novos investimentos</strong><span>Kelvin, Bebop, Yamato e Infernus chegam ao elo Ritualista.</span></li>
-      <li><strong>Pulso do Patrono</strong><span>Um evento especial, mais rápido, com três tentativas e recompensas maiores.</span></li>
-      <li><strong>Confrontos e financiamento (histórico)</strong><span>Buff automático após vencer o Mid-Boss e melhorias no Consórcio das Ruas.</span></li>
-      <li><strong>Cartas da Cidade</strong><span>Novas cartas lendárias e acontecimentos especiais.</span></li>
+    <p class="whatsnew-lead">Confira as principais mudanças no Almas.</p>
+    <section class="whatsnew-section"><h3>Progressão</h3><ul class="whatsnew-items">
+      <li><strong>Rituais</strong><span>Melhorias permanentes são recebidas automaticamente, sem tela de escolha.</span></li>
+      <li><strong>Torre do Patrono</strong><span>Custos maiores, bônus ampliados e opção de comprar 50 andares.</span></li>
+      <li><strong>Platinum</strong><span>Ganhe 1 ticket a cada 250 andares da Torre.</span></li>
     </ul></section>
-    <section class="whatsnew-section"><h3>Progressão e Rituais</h3><ul class="whatsnew-items">
-      <li><strong>Jornada aprimorada</strong><span>Investimentos, recompensas e evolução mais equilibrados.</span></li>
-      <li><strong>Favor do Patrono</strong><span>Ganhe até cinco pontos por Ritual e guarde o Favor para usar quando quiser.</span></li>
-      <li><strong>Legado Permanente</strong><span>Progressão e apresentação mais claras.</span></li>
+    <section class="whatsnew-section"><h3>Jogabilidade</h3><ul class="whatsnew-items">
+      <li><strong>Mão do Patrono</strong><span>Autoclique permanente com melhorias de velocidade até 50 ms.</span></li>
+      <li><strong>Mid-Boss</strong><span>Confronto disponível diretamente pelo botão principal.</span></li>
+      <li><strong>Interface mais limpa</strong><span>Consórcio e Pulso removidos. Duas abas Em breve reservadas para novidades futuras.</span></li>
     </ul></section>
-    <section class="whatsnew-section"><h3>Temporadas e Arquivos</h3><ul class="whatsnew-items">
-      <li><strong>Temporadas anteriores</strong><span>Revisite emblemas de elo e estatísticas de sua jornada.</span></li>
-      <li><strong>Backups automáticos</strong><span>Cópias periódicas e ao alcançar marcos importantes.</span></li>
-      <li><strong>Exportação completa</strong><span>Salve e importe JSON ou TXT com o histórico de temporadas.</span></li>
-    </ul></section>
-    <section class="whatsnew-section"><h3>Interface e DeckLock</h3><ul class="whatsnew-items">
-      <li><strong>Visual renovado</strong><span>Menus organizados, fundos independentes e transições mais suaves.</span></li>
-      <li><strong>Mais conforto</strong><span>Melhor apresentação de investimentos, cartas e controles, também no celular.</span></li>
-      <li><strong>Correções gerais</strong><span>Compartilhamento aprimorado, melhorias de navegação e estabilidade.</span></li>
-    </ul></section>
-    <p class="whatsnew-outro">A cidade continua evoluindo. Obrigado por jogar!</p>
   </div>
-  <div class="whatsnew-foot"><button id="whatsNewOk" class="primary" type="button">Começar a jogar</button></div>
+  <div class="whatsnew-foot"><button id="whatsNewOk" class="primary" type="button">Continuar</button></div>
 </dialog>
 <dialog id="dlgNotice" aria-label="Atualização">
   <div class="set"><p id="noticeMsg">DeckLock atualizado. As configurações foram reiniciadas e um backup da versão anterior foi salvo em Arquivos.</p>
@@ -3730,7 +3717,7 @@ if(testModeButton){
 const KEY="deadlock-deck-v3";
 /* Reset único: quem tem dados salvos sem "epoch" (versões antigas) volta ao início UMA vez.
    Os dados antigos são guardados em BKEY antes. Só aumente RESET_EPOCH se quiser forçar outro reset. */
-const RESET_EPOCH=3,APP_VERSION="1.38.7",BKEY="deadlock-deck-v3:backup";
+const RESET_EPOCH=3,APP_VERSION="1.38.9",BKEY="deadlock-deck-v3:backup";
 // Reset único de estados criados antes da v1.9.4. Futuras atualizações não reiniciam
 // os dados sem uma migração explícita; o backup deve ser confirmado antes do reset.
 const RESET_BEFORE_VERSION="1.9.4",INTRO_KEY="deadlock-deck-v3:intro-hidden";
@@ -5406,7 +5393,7 @@ const WHATS_NEW_KEY="decklock:whatsnew:1.32.8";
 function showWhatsNew(force=false){
   const dlg=$("#dlgWhatsNew");
   if(dlg.open)return;
-  if(!force){try{if(localStorage.getItem(WHATS_NEW_KEY)==="1")return}catch(e){}}
+  if(!force)return; // Novidades somente por clique no botão dedicado.
   if(document.querySelector("dialog[open]"))return;
   dlg.showModal();
 }
@@ -5417,7 +5404,7 @@ $("#dlgWhatsNew").addEventListener("close",()=>{try{localStorage.setItem(WHATS_N
 function showIntro(){
   let hidden=false;try{hidden=localStorage.getItem(INTRO_KEY)==="1"}catch(e){}
   if(!hidden&&!$("#dlgIntro").open){$("#introDontShow").checked=false;$("#dlgIntro").showModal()}
-  else showWhatsNew();
+  // Não abrir as novidades automaticamente após a introdução.
 }
 function showNotice(){
   if(S.notice){
