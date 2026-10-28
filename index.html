@@ -6,7 +6,7 @@
 <title>DeckLock</title>
 <meta name="description" content="Sorteador de cartas de desafio para partidas de Deadlock, com decks editáveis.">
 <meta name="theme-color" content="#222021">
-<meta name="decklock-version" content="1.39.3">
+<meta name="decklock-version" content="1.39.5">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pt_BR">
 <meta property="og:site_name" content="DeckLock">
@@ -1228,6 +1228,10 @@ dialog.deck-editor-dialog{width:min(1180px,97vw);max-height:95vh;border-radius:1
 .deck-editor-dialog #prev .scene{width:100%;max-width:290px;margin:0 auto}
 @media(max-width:820px){.deck-editor-dialog .ed{grid-template-columns:1fr}.deck-editor-dialog .ed-side{max-height:260px;grid-template-rows:auto auto minmax(90px,1fr) auto;border-right:0;border-bottom:1px solid var(--line)}.deck-editor-dialog .ed-form{max-height:none;padding:16px;grid-template-columns:minmax(0,1fr) minmax(130px,36%);gap:12px}.deck-editor-toolbar .grow{display:none}}
 @media(max-width:500px){.deck-editor-dialog .ed-form{grid-template-columns:1fr}.deck-editor-dialog #prev{position:static;grid-row:1}.deck-editor-dialog #prev .scene{max-width:190px}.deck-editor-heading strong{font-size:20px}.deck-editor-dialog .top{padding:12px}.deck-editor-dialog .ed-side{padding:12px}}
+
+@media(max-width:700px){
+  body.souls-active #toast{top:auto!important;bottom:calc(14px + env(safe-area-inset-bottom,0px))!important;max-width:calc(100vw - 26px)!important}
+}
 </style>
 </head>
 <body>
@@ -2715,7 +2719,6 @@ textarea{width:100%;height:70px;background:var(--am-ink);color:var(--am-text);bo
 .ritual-legacy .ritual-cap{width:100%}
 /* v1.32.2 — evento temporário, e sem ocorrências de rua. */
 #streetPanel{display:none!important}
-#beatPanel[hidden]{display:none!important}
 /* v1.32.1 — Ocorrências de Rua mais compactas, sem esconder escolhas. */
 .wrap #streetPanel{padding:10px 12px!important;gap:6px}
 #streetPanel .am-panel-heading{margin:0;gap:8px;align-items:center}
@@ -3303,6 +3306,15 @@ textarea{width:100%;height:70px;background:var(--am-ink);color:var(--am-text);bo
 }
 
 
+
+/* v1.39.5 — revisão visual: estados da Loja limpos e navegação legível. */
+#il>.up.am-shop-paid>.r,#il>.up.am-shop-paid>.r em,#il>.up.am-shop-paid .coin{display:none!important}
+#il>.up.am-shop-paid{cursor:default!important}
+@media(hover:hover){#il>.up.am-shop-paid:hover{transform:none!important}}
+@media(max-width:480px){
+  .tabs{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:5px!important}
+  .tabs .tab{min-height:42px!important;padding:9px 5px!important;font-size:12px!important;white-space:nowrap!important}
+}
 </style>
 
 <div class="wrap">
@@ -3358,12 +3370,6 @@ textarea{width:100%;height:70px;background:var(--am-ink);color:var(--am-text);bo
       <p id="streetInfo" class="am-feature-desc"></p>
       <div class="am-choice-grid" id="streetOptions"></div>
     </section>
-    <div class="am-beat box" id="beatPanel" hidden aria-hidden="true" style="display:none!important">
-      <div class="am-section-title"><strong>Pulso do Patrono</strong><small>3 tentativas · ritmo acelerado · Souls elevadas</small></div>
-      <p id="beatInfo">Aguarde a próxima abertura do Pulso.</p>
-      <div class="am-beat-track"><i id="beatNeedle"></i><span class="am-beat-zone zone-outer" style="left:34%;width:32%"></span><span class="am-beat-zone zone-mid" style="left:42%;width:16%"></span><span class="am-beat-zone zone-core" style="left:48.5%;width:3%"></span></div>
-      <div class="am-beat-actions"><button type="button" id="beatStart" class="btn">Iniciar desafio</button><button type="button" id="beatTap" class="btn pri" hidden>MARCAR RITMO</button><small id="beatScore"></small></div>
-    </div>
     <div class="am-encounters">
     <div class="boss" id="bs">
       <div class="am-encounter-heading"><h3 title="30 segundos · Ataque nas aberturas do escudo · Souls e bônus">Mid-Boss</h3></div>
@@ -3376,12 +3382,6 @@ textarea{width:100%;height:70px;background:var(--am-ink);color:var(--am-text);bo
       </div>
     </div>
 
-    <section class="am-fund box" id="fundPanel" hidden aria-hidden="true" style="display:none!important">
-      <div class="am-encounter-heading"><h3 title="3 minutos · até 4 financiamentos simultâneos · lucros ampliados">Consórcio</h3></div>
-      <div class="am-encounter-state am-fund-info"><span id="fundStatus">Sem financiamento ativo</span><strong id="fundReturn"></strong></div>
-      <div class="fund-progress"><i id="fundProgressBar"></i></div><div id="fundPositions" class="am-fund-positions"></div>
-      <button type="button" class="btn" id="fundAction">Financiar operação</button>
-    </section>
     </div><!-- /am-encounters -->
     <details class="contracts" id="contractsPanel" open>
       <summary><span id="contractsHeading">Contratos</span> <span id="contractsCounter"></span></summary>
@@ -3769,7 +3769,7 @@ if(testModeButton){
 const KEY="deadlock-deck-v3";
 /* Reset único: quem tem dados salvos sem "epoch" (versões antigas) volta ao início UMA vez.
    Os dados antigos são guardados em BKEY antes. Só aumente RESET_EPOCH se quiser forçar outro reset. */
-const RESET_EPOCH=3,APP_VERSION="1.39.3",BKEY="deadlock-deck-v3:backup";
+const RESET_EPOCH=3,APP_VERSION="1.39.5",BKEY="deadlock-deck-v3:backup";
 // Reset único de estados criados antes da v1.9.4. Futuras atualizações não reiniciam
 // os dados sem uma migração explícita; o backup deve ser confirmado antes do reset.
 const RESET_BEFORE_VERSION="1.9.4",INTRO_KEY="deadlock-deck-v3:intro-hidden";
@@ -4957,7 +4957,7 @@ function renderEd(){
 function renderList(){
   const d=curD()||{cards:[]},list=$("#edList"),q=ed.q.toLowerCase();list.innerHTML="";
   const cs=d.cards.filter(c=>!q||(c.title+" "+c.cat).toLowerCase().includes(q));
-  const edCount=$("edCount");if(edCount)edCount.textContent=d.cards.length+" carta"+(d.cards.length===1?"":"s")+(q?" · "+cs.length+" encontradas":"");
+  const edCount=$("#edCount");if(edCount)edCount.textContent=d.cards.length+" carta"+(d.cards.length===1?"":"s")+(q?" · "+cs.length+" encontradas":"");
   cs.forEach(c=>{const b=el("button",c.id===ed.c?"sel":"",(c.fav?"★ ":"")+(typeof localizedExampleTitle==="function"?localizedExampleTitle(c):(c.title||"(sem título)"))+(c.off?" (fora)":""));b.onclick=()=>{ed.c=c.id;renderList();renderForm()};list.append(b)});
   if(!cs.length)list.append(el("p","empty",S.decks.length?(d.cards.length?"Nada encontrado.":"Deck vazio."):"Nenhum deck ainda."));
 }
@@ -6274,6 +6274,19 @@ function initAlmasMortas(root){
   }
   // Normalização compatível com saves antigos, incluindo dados importados.
   function ritualistOperationUnlocked(i){return i<12||rankInfo(rankSteps()).i>=5}
+  // Prêmios da Torre: concessão idempotente. Execute ANTES de salvar compras
+  // e também após normalizar/importar saves antigos.
+  function claimTowerMilestones(){
+    const earned=Math.max(0,Math.min(1000000,Math.floor((Number(S.towerLevel)||0)/250)));
+    const claimed=Math.max(0,Math.min(earned,Math.floor(Number(S.towerPlatinumClaimed)||0)));
+    const reward=earned-claimed;
+    S.towerPlatinumClaimed=earned;
+    if(reward>0){
+      const prev=S.pendingPlatinum&&typeof S.pendingPlatinum==='object'?S.pendingPlatinum:null;
+      S.pendingPlatinum={count:Math.min(1000000,Math.max(0,Math.floor(Number(prev?.count)||0))+reward),cost:Math.max(0,Number(prev?.cost)||0)};
+    }
+    return reward;
+  }
   function norm(){
     const nonneg=(v,cap)=>typeof v==="number"&&Number.isFinite(v)&&v>=0?Math.min(v,cap):0;
     S.f=nonneg(S.f,1e300);S.life=nonneg(S.life,1e300);
@@ -6350,16 +6363,7 @@ function initAlmasMortas(root){
       const count=Math.floor(nonneg(S.pendingPlatinum.count??1,1000000));
       S.pendingPlatinum=count>0?{count,cost:nonneg(S.pendingPlatinum.cost,1e18)}:null;
     }else S.pendingPlatinum=null;
-    // Um ticket Platinum a cada cinco ciclos de 50 andares (250 níveis).
-    // Registra os ciclos já premiados para evitar crédito duplicado em recarga,
-    // importação e compra de múltiplos andares; inclui progresso anterior.
-    const earnedTowerPlatinum=Math.floor(S.towerLevel/250);
-    S.towerPlatinumClaimed=Math.min(earnedTowerPlatinum,Math.floor(nonneg(S.towerPlatinumClaimed,1000000)));
-    if(earnedTowerPlatinum>S.towerPlatinumClaimed){
-      const reward=earnedTowerPlatinum-S.towerPlatinumClaimed;
-      S.pendingPlatinum={count:(S.pendingPlatinum?.count||0)+reward,cost:S.pendingPlatinum?.cost||0};
-      S.towerPlatinumClaimed=earnedTowerPlatinum;
-    }
+    claimTowerMilestones();
     S.beatNext=nonneg(S.beatNext,Date.now()+365*864e5)||Date.now()+420000;
     S.beatWins=Math.floor(nonneg(S.beatWins,1e7));S.beatPlays=Math.floor(nonneg(S.beatPlays,1e7));
     S.beatState=S.beatState&&typeof S.beatState==="object"&&Number.isFinite(S.beatState.start)&&S.beatState.start>0&&Date.now()-S.beatState.start<24000
@@ -6439,15 +6443,44 @@ function initAlmasMortas(root){
   norm();
   S.cosmetics={...(S.cosmetics||{}),...(shopLedger().cosmetics||{})};S.cosmeticSpent=Math.max(0,Number(S.cosmeticSpent)||0,Number(shopLedger().cosmeticSpent)||0);
   window.addEventListener("decklock:cosmetics",function(e){S.cosmetics={...S.cosmetics,...e.detail.cosmetics};S.cosmeticSpent=Math.max(S.cosmeticSpent,Number(e.detail.cosmeticSpent)||0)});
-  function save(verify=false){
-    S.ts=Date.now();
+  // Protege o save de sobrescritas por outra aba ainda aberta.
+  // Se houver conflito, nenhuma gravação silenciosa sobrescreve a versão nova.
+  let lastWrittenSaveStamp=0,saveConflict=false,saveWarningShown=false;
+  try{lastWrittenSaveStamp=Number(JSON.parse(localStorage.getItem(KEY)||'{}').ts)||0}catch(e){}
+  function warnSaveIssue(message){
+    if(saveWarningShown)return;
+    saveWarningShown=true;
+    toast(message);
+  }
+  window.addEventListener('storage',event=>{
+    if(event.key!==KEY||!event.newValue)return;
     try{
+      if((Number(JSON.parse(event.newValue).ts)||0)>lastWrittenSaveStamp){
+        saveConflict=true;
+        warnSaveIssue('O Almas foi atualizado em outra aba. Recarregue esta página para não sobrescrever seu progresso.');
+      }
+    }catch(e){}
+  });
+  function save(verify=false){
+    if(saveConflict)return false;
+    try{
+      const existing=localStorage.getItem(KEY);
+      if(existing){
+        const remoteStamp=Number(JSON.parse(existing)?.ts)||0;
+        if(remoteStamp>lastWrittenSaveStamp){
+          saveConflict=true;
+          warnSaveIssue('Outra aba salvou uma versão mais recente do Almas. Recarregue para continuar com esse progresso.');
+          return false;
+        }
+      }
+      S.ts=Math.max(Date.now(),lastWrittenSaveStamp+1);
       const payload=JSON.stringify(S);
       localStorage.setItem(KEY,payload);
       if(verify&&localStorage.getItem(KEY)!==payload)return false;
+      lastWrittenSaveStamp=S.ts;
       window.dispatchEvent(new Event("decklock:economy"));
       return true;
-    }catch(e){return false}
+    }catch(e){warnSaveIssue('Não foi possível salvar o Almas. Verifique o armazenamento do navegador.');return false}
   }
   // Sons procedurais: nenhum arquivo externo; preferencia fica no save do clicker.
   let soulAudio=null, lastClickTone=0;
@@ -6678,7 +6711,7 @@ function initAlmasMortas(root){
   const reachedGlobalCap=(mult=gm())=>mult>=GLOBAL_MULT_CAP-1e-9;
   function limitText(key){
     const pack={
-      'pt-BR':{global:'Bônus permanente',favor:'Favor neste Ritual',reached:'TETO ATINGIDO',max:'MÁXIMO ATINGIDO',note:'Favor adicional ainda pode comprar Bênçãos, mas não aumenta o bônus global após o teto.'},
+      'pt-BR':{global:'Bônus permanente',favor:'Favor cosmético neste Ritual',reached:'TETO ATINGIDO',max:'MÁXIMO ATINGIDO',note:'O Favor continua disponível apenas para personalizações do DeckLock.'},
       en:{global:'Permanent bonus',favor:'Favor this Ritual',reached:'CAP REACHED',max:'MAX REACHED',note:'More Favor can still buy Blessings, but will not raise the global bonus after its cap.'},
       es:{global:'Bono permanente',favor:'Favor de este Ritual',reached:'LÍMITE ALCANZADO',max:'MÁXIMO ALCANZADO',note:'El Favor adicional aún permite comprar bendiciones, pero no aumenta el bono global.'},
       fr:{global:'Bonus permanent',favor:'Faveur de ce Rituel',reached:'PLAFOND ATTEINT',max:'MAXIMUM ATTEINT',note:'La Faveur supplémentaire sert toujours aux bénédictions, mais ne renforce plus le bonus global.'},
@@ -6694,12 +6727,12 @@ function initAlmasMortas(root){
     global.querySelector('.cap-track i').style.width=Math.max(0,Math.min(100,(mult-1)/(GLOBAL_MULT_CAP-1)*100))+'%';
     global.querySelector('.limit-state').textContent=globalMax?'Teto permanente atingido':'Teto permanente: x3,00 · cresce entre Rituais';
     global.classList.toggle('is-capped',globalMax);
-    favor.querySelector('.limit-label').textContent="Melhorias recebidas apenas neste Ritual";
+    favor.querySelector('.limit-label').textContent="Favor cosmético (DeckLock)";
     favor.querySelector('.limit-value').textContent=String(gain);
     favor.querySelector('.cap-track i').style.width=Math.max(0,Math.min(100,gain/FAVOR_RITUAL_CAP*100))+'%';
-    favor.querySelector('.limit-state').textContent='+5 por Ritual';
+    favor.querySelector('.limit-state').textContent='Usado apenas para personalizações';
     favor.classList.toggle('is-capped',favorMax);
-    $('globalCapNote').textContent='O Legado é preservado nas próximas runs. O máximo de +5 Favor vale por Ritual, não para o Favor acumulado.';
+    $('globalCapNote').textContent='O Legado e as melhorias automáticas persistem entre Rituais. O Favor recebido é usado apenas em personalizações do DeckLock.';
     $('globalCapNote').hidden=false;
   }
   function masteryLevel(x){let lvl=0;for(let i=1;i<MASTERY_TARGETS.length;i++)if(x>=MASTERY_TARGETS[i])lvl=i;return lvl}
@@ -6841,9 +6874,10 @@ function initAlmasMortas(root){
         }else break;
       }
       S.f=available;
+      claimTowerMilestones(); // prêmio creditado na mesma transação da construção
     });
     if(ok){
-      // transact chama norm(), creditando cada marco de 250 níveis uma vez.
+      // A recompensa já foi persistida com a compra.
       const gainedPlatinum=Math.max(0,(S.towerPlatinumClaimed||0)-platinumBefore);
       drawAll();
       if(gainedPlatinum)toast("Torre do Patrono: +"+gainedPlatinum+" PLATINUM por "+(gainedPlatinum*5)+" ciclos concluídos!");
@@ -7061,40 +7095,6 @@ function initAlmasMortas(root){
       claimContract(index);
     }
   }
-  // Consórcio: até 4 posições independentes. Prêmios multiplicam o depósito.
-  function fundPrice(){return Math.max(120,Math.min(ritualTarget()*.22,Math.ceil(Math.max(1,cps())*80)))}
-  function fundPayout(position){
-    const complete=Math.max(0,S.contractClaims-position.claims);
-    const rate=Math.min(12,6+complete*.65);
-    return Math.floor(position.deposit*rate);
-  }
-  function drawFund(){return;
-    const now=Date.now(),funds=S.funds||(S.funds=[]),list=$("fundPositions"),btn=$("fundAction");
-    list.replaceChildren();
-    const active=funds.filter(x=>now<x.due),ready=funds.filter(x=>now>=x.due);
-    $("fundStatus").textContent=funds.length+"/4 financiamentos · "+ready.length+" prontos";
-    $("fundReturn").textContent="Retorno de 6× a 12×";
-    $("fundProgressBar").style.width=funds.length?(100*funds.reduce((t,f)=>t+Math.min(1,Math.max(0,(now-f.start)/180000)),0)/funds.length)+"%":"0%";
-    funds.forEach((f,i)=>{
-      const row=document.createElement("div");row.className="am-fund-position";
-      const info=document.createElement("span");info.textContent="#"+(i+1)+" · "+fmt(fundPayout(f))+" Souls · "+(now>=f.due?"Disponível":Math.ceil((f.due-now)/1000)+" s");
-      const claim=document.createElement("button");claim.type="button";claim.className="btn";claim.textContent="Resgatar";claim.disabled=now<f.due;
-      claim.onclick=()=>{
-        if(Date.now()<f.due||!S.funds.includes(f))return;
-        if(transact(()=>{S.funds.splice(S.funds.indexOf(f),1);S.fundCompleted++;add(fundPayout(f))})){toast("Consórcio resgatado: "+fmt(fundPayout(f))+" Souls");drawAll()}
-      };
-      row.append(info,claim);list.append(row);
-    });
-    const cost=fundPrice();btn.textContent="Financiar +1 · "+fmt(cost)+" Souls";
-    btn.disabled=funds.length>=4||S.f<cost||now<S.fundReadyAt;
-  }
-  $("fundAction").addEventListener("click",()=>{return;
-    const cost=fundPrice(),now=Date.now();
-    if((S.funds||[]).length>=4||S.f<cost||now<S.fundReadyAt)return;
-    if(transact(()=>{S.f-=cost;S.funds.push({deposit:cost,start:now,due:now+180000,claims:S.contractClaims})})){
-      toast("Novo financiamento iniciado · 3 min · retorno mínimo 6×");soulTone("gold");drawAll()
-    }
-  });
   function drawContracts(){
     const list=$("contractsList"), panel=$("contractsPanel");
     $("contractsHeading").textContent=ct("title");
@@ -7229,7 +7229,7 @@ function initAlmasMortas(root){
     if(S.pendingReward)return tx("won");
     if(!boss.on&&Date.now()>=S.bossT)return tx("bossReady");
     const ritualState=ritualEligibility();
-    if(ritualState.ready)return tx("ritualReady")+" · +"+ritualState.gain+" Favor";
+    if(ritualState.ready)return tx("ritualReady")+" · melhorias automáticas";
     // Uma meta só é útil quando está próxima: escolher pela menor espera estimada
     // entre uma operação nova e o marco mais barato das operações já adquiridas.
     let goal=null;
@@ -7248,7 +7248,7 @@ function initAlmasMortas(root){
     if(goal)return goal.label+(goal.missing?" · "+tx("missing")+" "+fmt(goal.missing)+" Souls":" · "+tx("ready"));
     return tx("ritualReady")+": "+fmt(Math.max(0,ritualTarget()-S.records.runSouls))+" Souls";
   }
-  const GUIDE_TEXT={welcome:"Bem-vindo à Segunda Era. Toque no emblema para coletar Souls. Conclua contratos, financie operações e faça Rituais para ganhar Favor e subir de elo. Você pode rever os guias pelo botão i.",p:"COLETA: clique no emblema, conclua contratos, desafie o Mid-Boss. Invista em Domínio e aperfeiçoe suas operações.",a:"DOMÍNIO: compre níveis para ganhar Souls/s. Os investimentos surgem conforme você produz Souls; marque uma operação para aplicar um PLATINUM permanente.",r:"LOJA: itens de Arma aumentam o clique, Vitalidade melhora a produção offline e Espírito fortalece a renda. Os itens reiniciam após cada Ritual.",l:"RITUAL: ao cumprir as metas, reinicie a run para ganhar Favor e progredir no elo. Após o Ritual, escolha uma Bênção e uma Tática.",t:"TORRE: invista quantas Souls quiser em etapas permanentes. O custo de cada nova etapa aumenta e a construção sobrevive ao Ritual.",g:"CONSTELAÇÃO: no Eternus, estrelas liberam nós permanentes por categoria. Para ativá-los, use Souls e Favor.",firstInvestment:"Você desbloqueou seu primeiro investimento! Comprar níveis aumenta a renda automática. Mais adiante, o PLATINUM dobra permanentemente a produção de uma operação."};
+  const GUIDE_TEXT={welcome:"Bem-vindo à Segunda Era. Toque no emblema para coletar Souls, complete contratos e faça Rituais para obter melhorias automáticas e subir de elo. Você pode rever os guias pelo botão i.",p:"COLETA: clique no emblema, conclua contratos e desafie o Mid-Boss. A Mão do Patrono coleta automaticamente, mas não inicia o confronto.",a:"DOMÍNIO: compre níveis para ganhar Souls/s. Os investimentos surgem conforme você produz Souls; marque uma operação para aplicar um PLATINUM permanente.",r:"LOJA: itens de Arma aumentam o clique, Vitalidade melhora a produção offline e Espírito fortalece a renda. Os itens reiniciam após cada Ritual.",l:"RITUAL: ao cumprir as metas, reinicie a run para avançar no elo e receber melhorias permanentes automaticamente. O Favor adquirido é usado apenas para personalizações do DeckLock.",t:"TORRE: pague um andar, compre 50 ou invista todas as Souls. O progresso é permanente e cada 250 andares rendem um ticket Platinum.",g:"TORRE: invista Souls para construir andares permanentes. A cada 250 andares, receba um Platinum.",firstInvestment:"Você desbloqueou seu primeiro investimento! Comprar níveis aumenta a renda automática. Mais adiante, o PLATINUM dobra permanentemente a produção de uma operação."};
   const GUIDE_TITLES={welcome:"Uma nova jornada",p:"Coleta de Souls",a:"Domínio da Cidade",r:"A Loja",l:"O Ritual do Patrono",t:"A Torre do Patrono",g:"Constelação Eternus",firstInvestment:"Primeiro investimento"};
   let priorGuideFocus=null,currentGuideId="";
   function showGameGuide(id){
@@ -7606,82 +7606,21 @@ function initAlmasMortas(root){
       r.b.classList.toggle("ready",canBuy);
       // Não desabilitar o botão comprado: o title precisa funcionar no hover.
       // purchaseEcho já bloqueia uma segunda aquisição.
+      const paid=echoUnlocked?eco:own;
+      // Comprado: a cor e a borda identificam o estado. Não exibir
+      // checkmark, ícone monetário, preço nem "Adquirido" no cartão.
       r.b.disabled=false;
-      r.b.setAttribute("aria-disabled",String(echoUnlocked&&eco));
+      r.b.classList.toggle("am-shop-paid",paid);
+      r.b.setAttribute("aria-disabled",String(paid||(!echoUnlocked&&lock)));
+      r.b.setAttribute("aria-label",it[0]+(paid?" — efeito ativo":" — "+(lock?"bloqueado":"preço "+fmt(price)+" Souls")));
+      r.b.querySelector(".r").hidden=paid;
       if(r.echoSeal){r.echoSeal.hidden=!(eco||echoUnlocked);r.echoSeal.textContent=eco?"MELHORADO":"MELHORAR"}
-      r.n.textContent=echoUnlocked?(eco?"ADQUIRIDO":fmt(price)):(own?"✓":fmt(price));
+      r.n.textContent=paid?"":fmt(price);
       r.s.textContent="";
       const effect=r.b.querySelector(".d");if(effect)effect.textContent=it[2];
-      r.b.title=it[0]+" · "+it[2]+(echoUnlocked?" · Melhorado permanente de "+(echoValue(id)*100).toFixed(1)+"% · "+(eco?"Já melhorado":fmt(price)+" Souls"):" · "+(eco?"Melhoria permanente ativa · ":"")+(own?"Adquirido":lock?"Bloqueado":affordable?"Disponível":"Faltam "+fmt(it[1]-S.f)+" Souls"));
+      r.b.title=it[0]+" · "+it[2]+(echoUnlocked?" · Melhoria permanente de "+(echoValue(id)*100).toFixed(1)+"% · "+(eco?"Efeito ativo":fmt(price)+" Souls"):" · "+(own?"Efeito ativo":lock?"Bloqueado":affordable?"Disponível":"Faltam "+fmt(it[1]-S.f)+" Souls"));
     });
   }
-  const BEAT_LENGTH=3,BEAT_COOLDOWN=7*60000,BEAT_SWEEP=1350,BEAT_TAP_GAP=230;
-  // A cada marca o ponteiro acelera ~6%, sem saltar na transição de velocidade.
-  const beatSweepFor=hits=>BEAT_SWEEP*Math.pow(.77,Math.min(BEAT_LENGTH-1,hits));
-  function beatPhase(now=Date.now(),game=S.beatState){
-    if(!game)return 0;
-    const start=game.phaseStarted??game.start,offset=game.phaseOffset??0;
-    if(now<game.start)return 0;
-    const unit=(now-start)/beatSweepFor(game.hits)+offset;
-    return ((unit%1)+1)%1;
-  }
-  function beatNeedlePercent(now=Date.now(),game=S.beatState){
-    if(!game)return 0;
-    const unit=beatPhase(now,game);
-    const ping=unit<.5?unit*2:2-unit*2;
-    return 4+ping*92;
-  }
-  function beatScoreFor(percent){
-    const d=Math.abs(percent-50);
-    if(d<=1.6)return 3;
-    if(d<=8)return 2;
-    if(d<=16)return 1;
-    return 0;
-  }
-  function beatFinish(){
-    const state=S.beatState;if(!state)return;
-    const score=state.scored,perfect=score>=8,good=score>=5;
-    const quality=perfect?1:good?.78:Math.max(.35,score/9);
-    const amount=Math.max(300,Math.floor(Math.min(ritualTarget()*.25,Math.max(cps()*360,clickVal()*460))*quality));
-    S.beatState=null;S.beatPlays++;if(perfect)S.beatWins++;
-    add(amount);toast((perfect?"Pulso perfeito! ":good?"Pulso forte! ":"Pulso concluído: ")+score+" pts · +"+fmt(amount)+" Souls");
-    soulTone(perfect?"gold":"contract");syncAchievements();save();drawAll();
-  }
-  function drawBeat(){return;
-    const now=Date.now(),game=S.beatState;
-    $("beatPanel").hidden=!game && (S.beatNext>now || !!S.postRitualPhase);
-    $("beatStart").hidden=!!game;$("beatTap").hidden=!game;
-    if(!game){
-      const wait=Math.max(0,S.beatNext-now);
-      $("beatStart").disabled=wait>0||!!S.postRitualPhase;
-      $("beatInfo").textContent=wait>0?"Próximo Pulso em "+Math.ceil(wait/1000)+" s":"Pronto. O ponteiro vai e volta sem gastar tentativas até o clique. Mire as zonas brilhantes.";
-      $("beatScore").textContent="Recorde: "+S.beatWins+" vitórias perfeitas";
-      $("beatNeedle").style.left="4%";return;
-    }
-    const percent=beatNeedlePercent(now,game);
-    $("beatNeedle").style.left=percent+"%";
-    $("beatInfo").textContent="Clique quando o ponteiro atravessar as zonas. Centro = bônus maior.";
-    $("beatScore").textContent="Pontos: "+game.scored+" · Marca "+(game.hits+1)+"/"+BEAT_LENGTH+" · ritmo "+Math.round(100*(BEAT_SWEEP/beatSweepFor(game.hits)))+"%";
-    if(game.hits>=BEAT_LENGTH)beatFinish();
-  }
-  $("beatStart").addEventListener("click",()=>{return;
-    if(S.beatState||S.beatNext>Date.now())return;
-    const now=Date.now();S.beatState={start:now+250,phaseStarted:now+250,phaseOffset:0,hits:0,scored:0,lastTap:0};S.beatNext=now+BEAT_COOLDOWN;
-    if(!save(true)){S.beatState=null;return}drawBeat();
-    const beatLoop=()=>{if(!S.beatState)return;drawBeat();if(S.beatState)requestAnimationFrame(beatLoop)};
-    requestAnimationFrame(beatLoop);
-  });
-  $("beatTap").addEventListener("click",()=>{return;
-    const game=S.beatState;if(!game)return;
-    const now=Date.now();if(now<game.start||now-(game.lastTap||0)<BEAT_TAP_GAP)return;
-    const points=beatScoreFor(beatNeedlePercent(now,game));
-    // Congela a fase exata sob o clique antes de trocar a velocidade.
-    const phase=beatPhase(now,game);
-    game.lastTap=now;game.hits++;game.scored+=points;
-    game.phaseStarted=now;game.phaseOffset=phase;
-    if(points>1)soulTone("gold"); else if(points===1)soulTone("collect");
-    drawBeat();
-  });
   function drawBoss(){
     var now=Date.now(),on=boss.on,ready=!on&&now>=S.bossT;$("bs").hidden=!(on||ready);
     $("hpw").hidden=false;$("hpw").classList.toggle("boss-recharge",!on);$("bgo").hidden=true;
@@ -7746,10 +7685,12 @@ function initAlmasMortas(root){
   }
   function ritualSnapshot(gain){
     return {seconds:Math.max(1,Math.floor((Date.now()-S.records.runStart)/1000)),
-      souls:S.records.runSouls,peakCps:Math.max(S.records.runPeakCps,cps()),favor:Math.max(0,gain)};
+      souls:S.records.runSouls,peakCps:Math.max(S.records.runPeakCps,cps()),favor:Math.max(0,gain),
+      perksExpected:Math.min(3,Math.max(1,gain),PRK.filter((x,i)=>S.perk[i]<x[2]).length)};
   }
   function ritualMetricRows(run,completed=false){
-    return [[rt("duration"),timeLabel(run.seconds)],[rt("souls"),fmt(run.souls)],[rt("peak"),fmt(run.peakCps)+" Souls/s"],[rt(completed?"received":"favor"),"+"+fmt(run.favor)]];
+    const perks=Number.isFinite(run.perksExpected)?Math.max(0,run.perksExpected):Math.min(3,Math.max(0,run.favor||0));
+    return [[rt("duration"),timeLabel(run.seconds)],[rt("souls"),fmt(run.souls)],[rt("peak"),fmt(run.peakCps)+" Souls/s"],[rt(completed?"received":"favor"),"+"+fmt(perks)]];
   }
   function ritualMetricGrid(target,run,completed=false){
     target.replaceChildren();
@@ -7833,7 +7774,7 @@ function initAlmasMortas(root){
     $("ritualPreviewBonus").append(document.createTextNode("Evolução prevista do Legado após este Ritual: "),strong);
     drawBalanceCaps(gain);
     ritualCompare($("ritualPreviewCompare"),run,previous);
-    $("ritualPreviewWarning").textContent="O Ritual reinicia Souls, operações e itens; seus ganhos permanentes continuam."+(S.fund?" Atenção: um financiamento ativo será encerrado sem retorno.":"");
+    $("ritualPreviewWarning").textContent="O Ritual reinicia Souls, operações e itens comuns; Torre, Platinum, Mão do Patrono e melhorias permanentes continuam.";
     if(runView==="analytics")drawRunAnalytics();
   }
   function fillRitualResult(report){
@@ -7849,7 +7790,7 @@ function initAlmasMortas(root){
     const footer=document.createElement("small");footer.className="ritual-reset-warning";footer.textContent=rt("newRun");container.append(footer);
   }
   const RITUAL_CHECK_TEXT={
-    "pt-BR":{ready:"Ritual disponível: você receberá +{gain} Favor. Souls, operações e itens serão reiniciados.",waiting:"Faltam {missing} Souls nesta run para liberar o próximo Ritual (meta: {target}).",reward:"Você precisa escolher a recompensa pendente do Mid-Boss antes do Ritual.",claim:"Escolher recompensa do Mid-Boss",start:"Concluir Ritual",title:"Confirmar Ritual",question:"Deseja reiniciar esta run? Souls disponíveis, operações e itens serão zerados; elo, Favor, Bênçãos, maestria e conquistas serão preservados.",gain:"+{gain} Favor · Próximo avanço: {rank}",cancel:"Cancelar",confirm:"Confirmar Ritual",newStatus:"O Ritual ainda não está disponível. Confira o requisito exibido abaixo.",saveError:"Não foi possível salvar o Ritual. Verifique o espaço de armazenamento do navegador."},
+    "pt-BR":{ready:"Ritual disponível: você ganhará melhorias permanentes automáticas e +{gain} Favor cosmético. Souls, operações e itens comuns serão reiniciados.",waiting:"Faltam {missing} Souls nesta run para liberar o próximo Ritual (meta: {target}).",reward:"Você precisa escolher a recompensa pendente do Mid-Boss antes do Ritual.",claim:"Escolher recompensa do Mid-Boss",start:"Concluir Ritual",title:"Confirmar Ritual",question:"Deseja reiniciar esta run? Souls, operações e itens comuns serão reiniciados; Torre, Platinum, Mão do Patrono e melhorias permanentes serão preservados.",gain:"Melhorias automáticas · +{gain} Favor cosmético · Próximo avanço: {rank}",cancel:"Cancelar",confirm:"Confirmar Ritual",newStatus:"O Ritual ainda não está disponível. Confira o requisito exibido abaixo.",saveError:"Não foi possível salvar o Ritual. Verifique o espaço de armazenamento do navegador."},
     en:{ready:"Ritual ready: you will receive +{gain} Favor. Souls, operations and items will reset.",waiting:"Earn {missing} more Souls during this run to unlock the next Ritual (target: {target}).",reward:"Choose your pending Mid-Boss reward before performing a Ritual.",claim:"Claim Mid-Boss reward",start:"Perform Ritual",title:"Confirm Ritual",question:"Reset this run? Available Souls, operations and items reset; rank, Favor, Blessings, mastery and achievements remain.",gain:"+{gain} Favor · Next step: {rank}",cancel:"Cancel",confirm:"Confirm Ritual",newStatus:"Ritual is not ready yet. Check the requirements below.",saveError:"Could not save the Ritual. Check your browser storage."},
     es:{ready:"Ritual disponible: recibirás +{gain} Favor. Souls, operaciones y objetos se reiniciarán.",waiting:"Faltan {missing} Souls de esta partida para el próximo ritual (meta: {target}).",reward:"Elige la recompensa pendiente del Mid-Boss antes del ritual.",claim:"Elegir recompensa del Mid-Boss",start:"Completar ritual",title:"Confirmar ritual",question:"¿Reiniciar esta partida? Se reiniciarán las Souls disponibles, operaciones y objetos; se conservarán el rango, Favor, bendiciones, maestría y logros.",gain:"+{gain} Favor · Próximo avance: {rank}",cancel:"Cancelar",confirm:"Confirmar ritual",newStatus:"El ritual aún no está disponible. Revisa los requisitos.",saveError:"No se pudo guardar el ritual. Comprueba el almacenamiento del navegador."},
     fr:{ready:"Rituel disponible : +{gain} Faveur. Les Souls, opérations et objets seront réinitialisés.",waiting:"Il manque {missing} Souls pendant cette partie pour le prochain rituel (objectif : {target}).",reward:"Choisissez la récompense du Mid-Boss en attente avant le rituel.",claim:"Choisir la récompense du Mid-Boss",start:"Accomplir le rituel",title:"Confirmer le rituel",question:"Réinitialiser cette partie ? Les Souls, opérations et objets repartent de zéro ; le rang, la Faveur, les bénédictions, la maîtrise et les succès restent.",gain:"+{gain} Faveur · Prochaine étape : {rank}",cancel:"Annuler",confirm:"Confirmer le rituel",newStatus:"Rituel indisponible. Consultez les conditions ci-dessous.",saveError:"Impossible de sauvegarder le rituel. Vérifiez le stockage du navigateur."},
@@ -7860,10 +7801,10 @@ function initAlmasMortas(root){
     return (dict[key]||key).replace(/\{(\w+)\}/g,(_,k)=>fields[k]??"");
   };
   const BALANCE_GUIDE={
-    "pt-BR":{p:["Coleta","Clique no elo, conclua contratos e desafie o Mid-Boss. A produção também avança sozinha."],a:["Domínio","Gaste Souls em investimentos para aumentar Souls/s. Caixas rendem caches extras; Sinner melhora cliques com limite."],r:["Loja","Arma: cliques · Vitalidade: offline · Espírito: produção."],l:["Ritual","Ao atingir a meta de Souls e níveis, reinicie a run, receba melhorias e avance uma divisão."],g:["Legado","Invista na Torre, grave Ecos e evolua a Constelação Eternus."],levels:"Compre mais {missing} níveis no Domínio (mínimo: {target}).",rule:"Requer {target} Souls nesta run e {levels} níveis comprados. Melhorias automáticas: até 3 níveis a cada Ritual."},
-    en:{p:["Collection","Click the emblem, complete contracts and fight the Mid-Boss. Production also runs automatically."],a:["Domain","Invest Souls for passive Souls/s. Crate Routes find extra caches; Sinner offers limited click bonuses."],r:["Shop","Weapon: clicks · Vitality: offline · Spirit: production."],l:["Ritual","Reach the run's Souls goal and buy the required levels. Each Ritual raises one rank; Favor persists."],g:["Legacy","Fund the Tower, inscribe Item Echoes and expand Eternus Constellation."],levels:"Buy {missing} more Domain levels (minimum: {target}).",rule:"Requires {target} Souls this run and {levels} purchased levels. Favor: +1 at goal, +3 at 10×, +5 at 100×."},
-    es:{p:["Recolección","Pulsa el emblema, cumple contratos y vence al Mid-Boss. También hay producción automática."],a:["Dominio","Invierte Souls para ganar Souls/s. Las cajas dan botín extra; Sinner potencia clics con un límite."],r:["Tienda","Arma: clics · Vitalidad: sin conexión · Espíritu: producción."],l:["Ritual","Alcanza la meta de la partida y compra los niveles necesarios. Cada Ritual sube un rango; conserva Favor."],g:["Legado","Construye la Torre, graba Ecos y mejora la Constelación Eternus."],levels:"Compra {missing} niveles más en Dominio (mínimo: {target}).",rule:"Requiere {target} Souls en esta partida y {levels} niveles. Favor: +1 en la meta, +3 a 10×, +5 a 100×."},
-    fr:{p:["Collecte","Cliquez sur l'emblème, remplissez des contrats et battez le Mid-Boss. La production continue seule."],a:["Domaine","Investissez pour des Souls/s. Les caisses donnent des bonus; Sinner renforce modérément les clics."],r:["Boutique","Arme : clics · Vitalité : hors ligne · Esprit : production."],l:["Rituel","Atteignez le seuil de Souls de la partie et achetez les niveaux requis. Chaque Rituel monte le rang."],g:["Héritage","Financez la Tour, enregistrez des Échos et progressez dans la Constellation Eternus."],levels:"Achetez {missing} niveaux de plus au Domaine (minimum : {target}).",rule:"Nécessite {target} Souls cette partie et {levels} niveaux. Faveur : +1 au seuil, +3 à 10×, +5 à 100×."},
+    "pt-BR":{p:["Coleta","Clique no emblema, conclua contratos e desafie o Mid-Boss. A produção também avança sozinha."],a:["Domínio","Gaste Souls em investimentos para aumentar Souls/s. Caixas rendem caches extras; Sinner melhora cliques com limite."],r:["Loja","Arma: cliques · Vitalidade: offline · Espírito: produção."],l:["Ritual","Ao atingir a meta de Souls e níveis, reinicie a run, receba melhorias e avance uma divisão."],g:["Torre","Construa andares e receba Platinum a cada 250 níveis."],levels:"Compre mais {missing} níveis no Domínio (mínimo: {target}).",rule:"Requer {target} Souls nesta run e {levels} níveis comprados. Melhorias automáticas: até 3 níveis a cada Ritual."},
+    en:{p:["Collection","Click the emblem, complete contracts and fight the Mid-Boss. Production also runs automatically."],a:["Domain","Invest Souls for passive Souls/s. Crate Routes find extra caches; Sinner offers limited click bonuses."],r:["Shop","Weapon: clicks · Vitality: offline · Spirit: production."],l:["Ritual","Reach the run's Souls goal and buy the required levels. Each Ritual raises one rank; Favor persists."],g:["Legacy","Build the Tower and gain Platinum every 250 floors."],levels:"Buy {missing} more Domain levels (minimum: {target}).",rule:"Requires {target} Souls this run and {levels} purchased levels. Favor: +1 at goal, +3 at 10×, +5 at 100×."},
+    es:{p:["Recolección","Pulsa el emblema, cumple contratos y vence al Mid-Boss. También hay producción automática."],a:["Dominio","Invierte Souls para ganar Souls/s. Las cajas dan botín extra; Sinner potencia clics con un límite."],r:["Tienda","Arma: clics · Vitalidad: sin conexión · Espíritu: producción."],l:["Ritual","Alcanza la meta de la partida y compra los niveles necesarios. Cada Ritual sube un rango; conserva Favor."],g:["Legado","Construye la Torre y recibe Platinum cada 250 pisos."],levels:"Compra {missing} niveles más en Dominio (mínimo: {target}).",rule:"Requiere {target} Souls en esta partida y {levels} niveles. Favor: +1 en la meta, +3 a 10×, +5 a 100×."},
+    fr:{p:["Collecte","Cliquez sur l'emblème, remplissez des contrats et battez le Mid-Boss. La production continue seule."],a:["Domaine","Investissez pour des Souls/s. Les caisses donnent des bonus; Sinner renforce modérément les clics."],r:["Boutique","Arme : clics · Vitalité : hors ligne · Esprit : production."],l:["Rituel","Atteignez le seuil de Souls de la partie et achetez les niveaux requis. Chaque Rituel monte le rang."],g:["Héritage","Développez la Tour et gagnez un Platinum tous les 250 étages."],levels:"Achetez {missing} niveaux de plus au Domaine (minimum : {target}).",rule:"Nécessite {target} Souls cette partie et {levels} niveaux. Faveur : +1 au seuil, +3 à 10×, +5 à 100×."},
     de:{p:["Sammeln","Klicke das Abzeichen an, erfülle Aufträge und besiege den Mid-Boss. Die Produktion läuft auch automatisch."],a:["Gebiet","Investiere Souls für Souls/s. Kisten geben Boni; Sinner bietet begrenzte Klickvorteile."],r:["Shop","Waffen: Klicks · Vitalität: offline · Geist: Produktion."],l:["Ritual","Erreiche das Souls-Ziel pro Durchlauf und kaufe die nötigen Stufen. Jedes Ritual erhöht den Rang."],levels:"Kaufe noch {missing} Gebietsstufen (Minimum: {target}).",rule:"Erfordert {target} Souls in diesem Durchlauf und {levels} Stufen. Gunst: +1 am Ziel, +3 bei 10×, +5 bei 100×."}
   };
   function ritualInstruction(key,values={}){const guide=BALANCE_GUIDE[soulLang]||BALANCE_GUIDE["pt-BR"];return guide[key].replace(/\{(.*?)\}/g,(_,k)=>values[k]??"")}
@@ -7901,35 +7842,7 @@ function initAlmasMortas(root){
 
   function drawLeg(){
     var gain=pts(),avail=Math.max(0,S.legacy-S.spent-(S.cosmeticSpent||0));
-    const ritualDetails={
-      "pt-BR":{"favor":"Favor do Patrono:","earned":S.legacy===1?"ponto":"pontos","grants":"garantindo", "bonus":"de bônus global", "claim":"Concluir o Ritual concede", "points":gain===1?"ponto":"pontos", "reset":"de Favor, mas reinicia Souls, operações e itens.", "next":"Próximo ponto de Favor ao atingir", "lifetime":"Souls obtidas nesta run."},
-      "en":{"favor":"Patron Favor:","earned":S.legacy===1?"point":"points","grants":"granting", "bonus":"global bonus", "claim":"Performing a Ritual grants", "points":gain===1?"point":"points", "reset":"of Favor, but resets Souls, operations and items.", "next":"Next Favor point at", "lifetime":"Souls earned this run."},
-      "es":{"favor":"Favor del Patrón:","earned":S.legacy===1?"punto":"puntos","grants":"otorgando", "bonus":"de bonificación global", "claim":"Completar el ritual otorga", "points":gain===1?"punto":"puntos", "reset":"de Favor, pero reinicia almas, operaciones y objetos.", "next":"Próximo punto de Favor al alcanzar", "lifetime":"Souls obtenidas en esta partida."},
-      "fr":{"favor":"Faveur du Patron :","earned":S.legacy===1?"point":"points","grants":"octroyant", "bonus":"de bonus global", "claim":"Le rituel accorde", "points":gain===1?"point":"points", "reset":"de Faveur, mais réinitialise les âmes, opérations et objets.", "next":"Prochain point de Faveur à", "lifetime":"Souls obtenues pendant cette partie."},
-      "de":{"favor":"Patron-Gunst:","earned":S.legacy===1?"Punkt":"Punkte","grants":"gewährt", "bonus":"globalen Bonus", "claim":"Das Ritual gewährt", "points":gain===1?"Punkt":"Punkte", "reset":"Gunst, setzt aber Souls, Operationen und Items zurück.", "next":"Nächster Gunstpunkt bei", "lifetime":"Souls in diesem Durchlauf."}
-    };const l=ritualDetails[soulLang]||ritualDetails["pt-BR"];
-    // Prevê também os bônus das conquistas permanentes desbloqueadas pelo próprio Ritual.
-    const bonusAfter=ritualGlobalAfter(gain);
-    const nextThreshold=ritualTarget()*(gain>=5?100:gain===3?100:gain===1?10:1);
-    const futurePoints=gain>=5?0:Math.max(0,nextThreshold-S.records.runSouls);
-    const passive=cps();
-    const ritualExtras={
-      "pt-BR":{total:"Bônus global após o Ritual:",current:"atual",next:"futuro",more:"Faltam",toNext:"Souls nesta run para o próximo ponto",estimate:"na produção atual",history:"Rituais registrados:",best:"Maior ganho em um Ritual:",last:"Último Ritual:",hours:"Tempo estimado"},
-      en:{total:"Global bonus after Ritual:",current:"current",next:"after",more:"Remaining",toNext:"Souls this run for next point",estimate:"at current production",history:"Recorded Rituals:",best:"Best single Ritual gain:",last:"Last Ritual:",hours:"Estimated time"},
-      es:{total:"Bono global tras el ritual:",current:"actual",next:"futuro",more:"Faltan",toNext:"Souls de esta partida para el siguiente punto",estimate:"con la producción actual",history:"Rituales registrados:",best:"Mayor ganancia en un ritual:",last:"Último ritual:",hours:"Tiempo estimado"},
-      fr:{total:"Bonus global après le rituel :",current:"actuel",next:"futur",more:"Reste",toNext:"Souls de cette partie pour le prochain point",estimate:"à la production actuelle",history:"Rituels enregistrés :",best:"Meilleur gain par rituel :",last:"Dernier rituel :",hours:"Temps estimé"},
-      de:{total:"Globalbonus nach dem Ritual:",current:"aktuell",next:"danach",more:"Fehlen noch",toNext:"Souls dieses Durchlaufs für den nächsten Punkt",estimate:"bei aktueller Produktion",history:"Gespeicherte Rituale:",best:"Größter Ritual-Gewinn:",last:"Letztes Ritual:",hours:"Geschätzte Zeit"}
-    };
-    const x=ritualExtras[soulLang]||ritualExtras["pt-BR"];
-    const bonusNow=gm();
-    const ritualDetailText=l.favor+" <b>"+S.legacy+"</b> "+l.earned+" acumulados entre Rituais. O Legado Permanente atual é x"+gm().toFixed(2)+" (também inclui Mid-Bosses e conquistas). "+
-      (gain>=1?l.claim+" +"+gain+" "+l.points+" "+l.reset:l.next+" "+fmt(nextThreshold)+" "+l.lifetime)+
-      "<br>"+x.total+" <b>x"+bonusNow.toFixed(2)+" → x"+bonusAfter.toFixed(2)+"</b> ("+x.current+" → "+x.next+")."+
-      "<br>"+ritualInstruction("rule",{target:fmt(ritualTarget()),levels:fmt(ritualLevelsNeeded())})+
-      "<br>"+(gain>=5?({"pt-BR":"Favor máximo atingido.",en:"Maximum Favor for this run reached: +5.",es:"Favor máximo de esta partida: +5.",fr:"Faveur maximale de cette partie : +5.",de:"Maximale Gunst in diesem Durchlauf: +5."}[soulLang]||"Favor máximo atingido."):x.more+" <b>"+fmt(futurePoints)+"</b> "+x.toNext+(passive>0?" · "+x.hours+" ~"+timeLabel(futurePoints/passive)+" ("+x.estimate+")":"")+".")+
-      (S.rituals>0?"<br>"+x.history+" "+S.rituals+" · "+x.best+" "+S.bestRitualGain+" · "+x.last+" +"+S.lastRitualGain:"");
     const ritualDetailsNode=$("lg");
-    const detailLabel={"pt-BR":"Detalhes do Favor",en:"Favor details",es:"Detalles del Favor",fr:"Détails de la Faveur",de:"Gunst-Details"}[soulLang]||"Detalhes do Favor";
     // Preserva o <details> e seu foco/estado durante as atualizações periódicas.
     if(!ritualDetailsNode.querySelector(".favor-highlight")){
       ritualDetailsNode.innerHTML="<div class='favor-highlight'><span></span><strong></strong><small></small></div><details class='ritual-extra'><summary></summary><div class='ritual-extra-body'></div></details>";
@@ -7939,16 +7852,16 @@ function initAlmasMortas(root){
     highlight.querySelector("strong").textContent=String(S.perk.reduce((a,b)=>a+b,0));
     highlight.querySelector("small").textContent="Acumulável";
     ritualDetailsNode.querySelector(".ritual-extra summary").textContent="Detalhes dos bônus";
-    ritualDetailsNode.querySelector(".ritual-extra-body").textContent="Ao concluir um Ritual, você recebe de 1 a 3 níveis de Bênçãos permanentes, sem precisar escolher ou gastar Favor.";
+    ritualDetailsNode.querySelector(".ritual-extra-body").textContent="Cada Ritual distribui automaticamente de 1 a 3 melhorias permanentes. O Favor obtido serve somente para cosméticos do DeckLock.";
     drawRitualPreview(gain);
     drawRitualEligibility();
-    $("lp").textContent="Melhorias automáticas: cada Ritual fortalece algumas Bênçãos.";
-    $("ritualFavorChip").textContent=fmt(avail)+" Favor";
-    $("favorMenuBalance").textContent=fmt(avail)+" disponível";
+    $("lp").textContent="Melhorias automáticas a cada Ritual, sem escolha manual.";
+    $("ritualFavorChip").textContent=fmt(avail)+" Favor cosmético";
+    $("favorMenuBalance").textContent=fmt(avail)+" para cosméticos";
     // Atualiza só quando os níveis ou o saldo mudam; evita recriar botões
     // durante uma compra e preserva detalhes de conquistas que estão abertos.
     $("pl").replaceChildren();
-    $("lp").textContent="As melhorias são distribuídas automaticamente depois de cada Ritual.";
+    $("lp").textContent="As melhorias permanentes são distribuídas automaticamente após cada Ritual.";
     drawAffinityShortcut();
     const achievementKey=[...S.achievements,soulLang].join("|");
     if($("ac").dataset.renderKey!==achievementKey){
@@ -8102,11 +8015,52 @@ function initAlmasMortas(root){
   $("seasonDetailDone").addEventListener("click",closeSeasonDetail);
   $("seasonDetail").addEventListener("click",event=>{if(event.target===$("seasonDetail"))closeSeasonDetail()});
   $("seasonDetail").addEventListener("keydown",event=>{if(event.key==="Escape"){event.preventDefault();closeSeasonDetail()}});
-  let autoOrbLast=Date.now();
+  let autoOrbLast=Date.now(),autoOrbLastEffect=0,autoOrbLastSave=Date.now();
+  // Converte ticks não executados em segundo plano em cliques econômicos,
+  // sem milhares de elementos visuais nem milhares de gravações no storage.
+  function collectMissedAutoClicks(count,now){
+    count=Math.max(0,Math.min(1728000,Math.floor(count))); // até 24 horas a 50 ms
+    if(!count)return;
+    const start=combo.count||0,cap=COMBO_CAP,base=clickVal();
+    const rising=Math.max(0,Math.min(count,cap-start));
+    const ramp=(rising+.02*(rising*(start-1)+rising*(rising+1)/2));
+    const flat=(count-rising)*(1+.02*(cap-1));
+    const amount=base*(ramp+flat);
+    const previousClicks=S.clicks;
+    add(amount);
+    S.clicks+=count;S.records.runClicks+=count;
+    if(S.own[3]>0){
+      const tributes=Math.floor(S.clicks/12)-Math.floor(previousClicks/12);
+      if(tributes>0)add(tributes*Math.min(base*(1+.02*(cap-1))*.10,cps()*.12+5));
+    }
+    combo.count=Math.min(cap,start+count);combo.last=now;
+    S.records.bestCombo=Math.max(S.records.bestCombo,combo.count);
+    S.records.bestClick=Math.max(S.records.bestClick,base*(1+.02*(combo.count-1)));
+    // Um Mid-Boss já aberto manualmente ainda recebe dano automático.
+    if(boss.on){
+      boss.hp-=amount*bossClickMultiplier();
+      if(bossClickMultiplier()>1){
+        const breaks=Math.floor(((boss.openHits||0)+count)/BOSS_BALANCE.breakHits);
+        boss.hp-=breaks*boss.max*BOSS_BALANCE.breakFraction;
+        boss.openHits=((boss.openHits||0)+count)%BOSS_BALANCE.breakHits;
+      }else boss.openHits=0;
+    }
+  }
   setInterval(()=>{
-    const now=Date.now();if(!S.autoOrb||now-autoOrbLast<autoOrbInterval()||!document.body.classList.contains("souls-active"))return;
-    if(S.postRitualPhase||!$("rankPromotion").hidden||!$("ritualConfirmOverlay").hidden||!$("platinumWarning").hidden)return;
-    autoOrbLast=now;const orb=$("orb");orb.classList.remove("am-auto-spark");void orb.offsetWidth;orb.classList.add("am-auto-spark");orb.click();
+    const now=Date.now(),enabled=S.autoOrb&&document.body.classList.contains("souls-active")&&
+      !S.postRitualPhase&&$("rankPromotion").hidden&&$("ritualConfirmOverlay").hidden&&$("platinumWarning").hidden;
+    if(!enabled){autoOrbLast=now;return}
+    const interval=autoOrbInterval(),elapsed=now-autoOrbLast,passes=Math.floor(elapsed/interval);
+    if(passes<1)return;
+    autoOrbLast=now-(elapsed%interval);
+    // O clique automático não emite evento de clique do jogador.
+    $("orb").click();
+    if(passes>1)collectMissedAutoClicks(passes-1,now);
+    if(now-autoOrbLastEffect>=170&&!document.hidden){
+      const orb=$("orb");orb.classList.remove("am-auto-spark");void orb.offsetWidth;orb.classList.add("am-auto-spark");
+      autoOrbLastEffect=now;
+    }
+    if(now-autoOrbLastSave>=2000){autoOrbLastSave=now;save()}
   },25);
   let ritualPane="";
   function openRitualPane(kind){
@@ -8123,26 +8077,36 @@ function initAlmasMortas(root){
   root.querySelectorAll("#qs .btn").forEach(function(b){b.addEventListener("click",function(){Q=b.dataset.q==="max"?"max":+b.dataset.q;drawAl()})});
 
   $("orb").addEventListener("click",function(e){
-    if(!boss.on&&Date.now()>=S.bossT)startBossFromOrb();
+    const automatic=!e.isTrusted;
+    const showFeedback=!automatic||(!document.hidden&&Date.now()-autoOrbLastEffect>=170);
+    if(e.isTrusted&&!boss.on&&Date.now()>=S.bossT)startBossFromOrb();
     const now=Date.now();combo.count=now-combo.last<=COMBO_GRACE?Math.min(combo.count+1,COMBO_CAP):1;combo.last=now;
     var v=clickVal()*(1+.02*Math.max(0,Math.min(COMBO_CAP,combo.count)-1));add(v);S.clicks++;S.records.runClicks++;
-    if(S.own[3]>0&&S.clicks%12===0){const tribute=Math.min(v*.10,cps()*.12+5);add(tribute);soulTone("sacrifice");showSoulBurst("sacrifice", "+"+fmt(tribute));}
+    if(S.own[3]>0&&S.clicks%12===0){const tribute=Math.min(v*.10,cps()*.12+5);add(tribute);if(!automatic){soulTone("sacrifice");showSoulBurst("sacrifice", "+"+fmt(tribute))}}
     S.records.bestCombo=Math.max(S.records.bestCombo,combo.count);S.records.bestClick=Math.max(S.records.bestClick,v);
-    soulTone("collect");if(boss.on){
+    if(!automatic)soulTone("collect");if(boss.on){
       const exposed=bossClickMultiplier()>1;
       boss.hp-=v*bossClickMultiplier();
       if(exposed){boss.openHits=(boss.openHits||0)+1;
-        if(boss.openHits>=BOSS_BALANCE.breakHits){boss.hp-=boss.max*BOSS_BALANCE.breakFraction;boss.openHits=0;soulTone("milestone");showSoulBurst("boss","QUEBRA!")}
+        if(boss.openHits>=BOSS_BALANCE.breakHits){boss.hp-=boss.max*BOSS_BALANCE.breakFraction;boss.openHits=0;if(!automatic){soulTone("milestone");showSoulBurst("boss","QUEBRA!")}}
       } else boss.openHits=0;
     }
-    if([10,25,50,100].includes(combo.count))soulTone("purchase");
-    if(combo.count===50)comboSpark(1); if(combo.count===100)comboSpark(2);
-    var st=$("stage"),r=st.getBoundingClientRect(),x=e.clientX?e.clientX-r.left:r.width/2,y=e.clientX?e.clientY-r.top:r.height/2;
-    var p=document.createElement("span");p.className="pop";p.textContent="+"+fmt(v);p.style.left=(x-14)+"px";p.style.top=(y-20)+"px";
-    st.appendChild(p);setTimeout(function(){p.remove()},900);
-    if(!window.matchMedia("(prefers-reduced-motion: reduce)").matches)ringClick(x,y);
-    drawHead();
-    if(S.clicks%8===0)save();
+    if(!automatic&&[10,25,50,100].includes(combo.count))soulTone("purchase");
+    if(!automatic&&combo.count===50)comboSpark(1);
+    if(!automatic&&combo.count===100)comboSpark(2);
+    if(showFeedback){
+      const st=$("stage"),r=st.getBoundingClientRect();
+      const x=e.clientX?e.clientX-r.left:r.width/2,y=e.clientX?e.clientY-r.top:r.height/2;
+      if(!automatic){
+        const p=document.createElement("span");p.className="pop";p.textContent="+"+fmt(v);
+        p.style.left=(x-14)+"px";p.style.top=(y-20)+"px";
+        st.appendChild(p);setTimeout(()=>p.remove(),900);
+        if(!window.matchMedia("(prefers-reduced-motion: reduce)").matches)ringClick(x,y);
+      }
+      drawHead();
+      if(automatic)autoOrbLastEffect=now;
+    }
+    if(!automatic&&S.clicks%8===0)save();
   });
 
   function startBossFromOrb(){
@@ -8333,7 +8297,7 @@ function initAlmasMortas(root){
     var o=payload?.format==="almas-backup-v3"||payload?.format==="almas-backup-v2"?payload.save:payload;
       if(!o||typeof o!=="object"||Array.isArray(o)||!Number.isFinite(o.f)||o.f<0||!Array.isArray(o.own)||!Array.isArray(o.items))throw 0;
       // Um código importado também passa pela migração e validação.
-      const validKeys=["rankFormat","itemSchema","unlockedOps","tickets","pendingPlatinum","ticketBoughtRun","ticketPriceAnchor","towerLevel","towerProgress","towerStageCost","towerHistory","towerPlatinumClaimed","echoOwned","echoEquipped","constellation","beatNext","beatState","beatWins","beatPlays","extraStats","tutorialSeen","f","life","own","items","legacy","spent","perk","boss","bossT","stance","clicks","ts","soundOn","cosmetics","cosmeticSpent","achievements","rituals","bestRitualGain","lastRitualGain","events","ritualPath","nextPath","rewardBoost","pendingReward","contracts","contractStats","contractClaims","contractHistory","contractBoost","rankCredit","masteryXp","records","cacheT","doctrinesOwned","doctrineSpent","doctrineActive","doctrineRefunded","tactic","tacticChangedAt","booster","boosterReadyAt","streetNext","streetPending","streetCount","streetOffers","streetLastPick","streetEffect","fund","funds","autoOrb","lastAutoPerks","fundReadyAt","fundCompleted","postRitualPhase","postBlessingChosen","brawlNext","brawl","brawlWins","brawlMatches","almasCardReadyAt","almasCardLast","almasCardResult","almasCardBuff","heroState"];
+      const validKeys=["rankFormat","itemSchema","unlockedOps","tickets","pendingPlatinum","ticketBoughtRun","ticketPriceAnchor","towerLevel","towerProgress","towerStageCost","towerHistory","towerPlatinumClaimed","echoOwned","echoEquipped","constellation","beatNext","beatState","beatWins","beatPlays","extraStats","tutorialSeen","f","life","own","items","legacy","spent","perk","boss","bossT","stance","clicks","ts","soundOn","cosmetics","cosmeticSpent","achievements","rituals","bestRitualGain","lastRitualGain","events","ritualPath","nextPath","rewardBoost","pendingReward","contracts","contractStats","contractClaims","contractHistory","contractBoost","rankCredit","masteryXp","records","cacheT","doctrinesOwned","doctrineSpent","doctrineActive","doctrineRefunded","tactic","tacticChangedAt","booster","boosterReadyAt","streetNext","streetPending","streetCount","streetOffers","streetLastPick","streetEffect","fund","funds","autoOrb","autoOrbLevel","lastAutoPerks","fundReadyAt","fundCompleted","postRitualPhase","postBlessingChosen","brawlNext","brawl","brawlWins","brawlMatches","almasCardReadyAt","almasCardLast","almasCardResult","almasCardBuff","heroState"];
       const imported={};for(const k of validKeys)if(Object.prototype.hasOwnProperty.call(o,k))imported[k]=o[k];
       S={...S,...imported,rankCredit:imported.rankCredit??null,rankFormat:imported.rankFormat??1,itemSchema:imported.itemSchema??1,unlockedOps:imported.unlockedOps??null,tickets:imported.tickets??null,pendingPlatinum:imported.pendingPlatinum??null,ticketBoughtRun:imported.ticketBoughtRun??0,ticketPriceAnchor:imported.ticketPriceAnchor??null,beatNext:imported.beatNext??Date.now()+420000,beatState:imported.beatState??null,beatWins:imported.beatWins??0,beatPlays:imported.beatPlays??0,extraStats:imported.extraStats??null,tutorialSeen:imported.tutorialSeen??{},masteryXp:imported.masteryXp??null,records:imported.records??null,contracts:imported.contracts??[],contractStats:imported.contractStats??{purchases:0},contractClaims:imported.contractClaims??0,contractHistory:imported.contractHistory??[],contractBoost:imported.contractBoost??null,doctrinesOwned:imported.doctrinesOwned??[],doctrineSpent:imported.doctrineSpent??null,doctrineActive:imported.doctrineActive??"none",doctrineRefunded:imported.doctrineRefunded??false,tactic:imported.tactic??"none",tacticChangedAt:imported.tacticChangedAt??0,booster:imported.booster??null,boosterReadyAt:imported.boosterReadyAt??0,streetNext:imported.streetNext??Date.now()+240000,streetPending:imported.streetPending??false,streetCount:imported.streetCount??null,streetOffers:imported.streetOffers??[],streetLastPick:imported.streetLastPick??"",streetEffect:imported.streetEffect??null,fund:imported.fund??null,funds:imported.funds??[],autoOrb:imported.autoOrb??false,autoOrbLevel:imported.autoOrbLevel??0,lastAutoPerks:imported.lastAutoPerks??[],fundReadyAt:imported.fundReadyAt??0,fundCompleted:imported.fundCompleted??0,postRitualPhase:imported.postRitualPhase??"",postBlessingChosen:imported.postBlessingChosen??false,brawlNext:imported.brawlNext??Date.now()+600000,brawl:imported.brawl??null,brawlWins:imported.brawlWins??0,brawlMatches:imported.brawlMatches??0,heroState:imported.heroState??null};norm();ensureContracts();combo.count=0;
       S.cosmetics={...shopData().cosmetics,...(S.cosmetics||{})};
