@@ -3,10 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>DeckLock</title>
-<meta name="description" content="Sorteador de cartas de desafio para partidas de Deadlock, com decks editáveis.">
+<title>DeckLock · Almas</title>
+<meta name="description" content="DeckLock: desafios e decks para Deadlock. Almas: jogo incremental com Rituais, Torre e progressão permanente.">
+<meta name="application-name" content="DeckLock · Almas">
+<meta name="color-scheme" content="dark light">
 <meta name="theme-color" content="#222021">
-<meta name="decklock-version" content="1.40.3">
+<meta name="decklock-version" content="1.41.3">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pt_BR">
 <meta property="og:site_name" content="DeckLock">
@@ -1216,6 +1218,52 @@ dialog.deck-editor-dialog{width:min(1180px,97vw);max-height:95vh;border-radius:1
 @media(max-width:700px){
   body.souls-active #toast{top:auto!important;bottom:calc(14px + env(safe-area-inset-bottom,0px))!important;max-width:calc(100vw - 26px)!important}
 }
+
+
+/* v1.41.2 — tela inicial independente, só com os dois produtos atuais. */
+#siteHome[hidden],#workspace[hidden]{display:none!important}
+body.is-home{background:#181d1c;color:#e8e6d9}
+body.is-home header{background:#181d1c;border-bottom-color:#35443e}
+body.is-home .footer-shortcuts,body.is-home #mobileDraw,body.is-home #bSiteTest,body.is-home #bEdit,body.is-home #bFiles,body.is-home #bSet,body.is-home #bFs{display:none!important}
+.site-home{position:relative;isolation:isolate;flex:1;overflow:hidden;width:100%;background:radial-gradient(circle at 73% 15%,rgba(102,125,103,.14),transparent 37%),#181d1c;color:#e9e5d6}
+.site-home .home-glow{position:absolute;width:58vw;height:58vw;left:-36vw;top:9%;border-radius:50%;background:radial-gradient(circle,#9c805c13,transparent 70%);pointer-events:none}
+.home-inner{width:min(1220px,calc(100% - 52px));margin:0 auto;position:relative}
+.home-hero{display:grid;grid-template-columns:minmax(0,1.02fr) minmax(300px,.88fr);gap:clamp(24px,5vw,80px);align-items:center;padding:clamp(42px,7vw,92px) 0 60px}
+.home-lead{max-width:620px}
+.home-kicker{display:flex;align-items:center;gap:10px;font:800 10px/1.4 system-ui,sans-serif;letter-spacing:.21em;color:#a9bcb1}
+.home-kicker-dot{width:8px;height:8px;border-radius:50%;background:#c9b98f;box-shadow:0 0 14px #c9b98f55}
+.home-lead h1{margin:22px 0 22px;color:#f1ebdc;font:500 clamp(39px,5vw,72px)/1.07 Georgia,'Times New Roman',serif;letter-spacing:-.045em;text-wrap:balance}
+.home-lead h1 em{color:#cfb68c;font-weight:400;font-style:normal}
+.home-lead>p{max-width:490px;margin:0;color:#b0bcb3;font:400 15px/1.75 system-ui,sans-serif}
+.home-hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:33px}
+.home-btn{display:flex;justify-content:space-between;align-items:center;min-width:180px;gap:25px;padding:14px 18px;border-radius:5px;font:750 12px/1.25 system-ui,sans-serif;letter-spacing:.045em;min-height:52px}
+.home-btn-accent{color:#1c2724;background:#d4c3a1;border-color:#d4c3a1}.home-btn-accent:hover{background:#e9d7b4;border-color:#e9d7b4}
+.home-btn-outline{background:transparent;border:1px solid #667269;color:#ebe7da}.home-btn-outline:hover{background:#ffffff0d;border-color:#c4b99c}
+.home-miniline{margin-top:27px;display:flex;align-items:center;gap:12px;color:#829489;font:600 10px/1.3 system-ui,sans-serif;letter-spacing:.02em;flex-wrap:wrap}.home-miniline i{height:3px;width:3px;background:#84978d;border-radius:50%}
+.home-feature-art{min-height:410px;aspect-ratio:1.13;background:radial-gradient(circle at 51% 45%,#3d5044 0,#29382f 40%,#1c2823 81%);border:1px solid #596459;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:20px 28px 65px #0004}
+.home-feature-art:before{position:absolute;inset:10px;content:"";border:1px solid #9c9b7650;pointer-events:none}
+.home-feature-art:after{position:absolute;inset:0;content:"";background:repeating-linear-gradient(0deg,transparent 0 5px,#ffffff04 5px 6px);pointer-events:none}
+.home-orbit{position:absolute;border:1px solid #b9a67b55;border-radius:50%;width:73%;aspect-ratio:1;transform:rotate(-22deg)}.home-orbit-a{width:86%;border-style:dashed;animation:home-slow-spin 85s linear infinite}.home-orbit-b{width:58%;border-color:#cbb58e33}
+@keyframes home-slow-spin{to{transform:rotate(338deg)}}
+.home-art-title{position:absolute;top:35px;left:33px;font:700 12px/1.5 Georgia,serif;letter-spacing:.2em;color:#e3ddc8}.home-art-title small{font-size:9px;letter-spacing:.18em;color:#a5b3a6}
+.home-sigil{height:190px;width:190px;border-radius:50%;border:1px solid #b5a77d85;box-shadow:0 0 0 12px #b5a77d0c,0 0 0 36px #b5a77d0a,inset 0 0 45px #c3a77320;display:grid;place-items:center;position:relative}.home-sigil:before,.home-sigil:after{content:"";position:absolute;width:150%;height:1px;background:linear-gradient(90deg,transparent,#bfad8380,transparent)}.home-sigil:after{transform:rotate(90deg)}.home-sigil span{font-size:90px;line-height:1;color:#e5d2a4;text-shadow:0 0 42px #e2bf8955}
+.home-art-bottom{position:absolute;inset:auto 30px 27px;display:flex;justify-content:space-between;align-items:end;color:#d4d0b9;font:700 23px/1.1 Georgia,serif;letter-spacing:.12em}.home-art-bottom b{font:700 9px/1.4 system-ui,sans-serif;color:#9fae9f;letter-spacing:.2em}.home-art-index{font:700 10px system-ui,sans-serif;color:#b9b99d}
+.home-divider{display:flex;align-items:center;gap:16px;color:#91a093;font:800 10px/1.4 system-ui,sans-serif;letter-spacing:.16em;margin-bottom:20px}.home-divider i{height:1px;background:#425047;flex:1}
+.home-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.home-choice{position:relative;display:flex;flex-direction:column;align-items:stretch;text-align:left;padding:22px 24px 23px;gap:0;min-height:278px;background:#222d29;border:1px solid #48594f;border-radius:7px;color:#e7e4d5;transition:border-color .15s,background .15s,transform .15s}
+.home-choice:hover{border-color:#c7b78d;background:#293a31;transform:translateY(-3px)}
+.home-choice-deck{background:#2b302c}.home-choice-deck:hover{background:#343b35}
+.home-choice-top{display:flex;justify-content:space-between;align-items:center;color:#aebbb1;font:800 10px/1.3 system-ui,sans-serif;letter-spacing:.13em}
+.home-choice-top>span:last-child{font-size:18px;font-weight:400}
+.home-choice strong{font:500 32px/1.1 Georgia,serif;letter-spacing:-.03em;margin:18px 0 8px;color:#eae5d4}
+.home-choice-description{max-width:390px;color:#abb8ac;font:400 13px/1.6 system-ui,sans-serif}
+.home-choice-link{margin-top:auto;padding-top:25px;color:#decca7;font:750 11px/1.3 system-ui,sans-serif;display:flex;gap:10px;align-items:center}
+.home-choice-illustration{position:absolute;right:37px;top:62px;display:flex;align-items:center;transform:rotate(11deg);opacity:.65}.home-choice-illustration i{display:block;width:49px;height:67px;border:1px solid #cdbd938a;background:linear-gradient(145deg,#6b6854,#373c31);border-radius:4px;box-shadow:0 6px 10px #0004}.home-choice-illustration i:nth-child(2){transform:translateX(-25px) rotate(-12deg)}.home-choice-illustration i:nth-child(3){transform:translateX(-51px) rotate(9deg)}
+.home-illustration-almas i{width:44px;height:44px;border-radius:50%;background:radial-gradient(circle,#dacba199,#6b816c66 32%,#243a33 70%);box-shadow:0 0 24px #c9b68430}
+.home-footer{padding:32px 0 35px;display:flex;justify-content:space-between;gap:12px;color:#84958c;font:650 10px/1.5 system-ui,sans-serif;letter-spacing:.1em}.home-footer-sep{color:#bea985}
+@media(max-width:850px){.home-hero{grid-template-columns:1fr;gap:27px;padding:44px 0 35px}.home-feature-art{min-height:240px;aspect-ratio:1.8}.home-sigil{transform:scale(.68)}.home-lead h1{max-width:650px}.home-art-bottom{font-size:17px}}
+@media(max-width:600px){.home-inner{width:calc(100% - 30px)}.home-hero{padding-top:30px}.home-lead h1{font-size:clamp(35px,10vw,55px)}.home-lead>p{font-size:13px}.home-kicker{font-size:9px}.home-btn{flex:1;min-width:145px;gap:8px}.home-miniline{gap:9px}.home-feature-art{min-height:225px;aspect-ratio:1.55}.home-art-title{top:22px;left:22px}.home-art-bottom{left:22px;right:22px;bottom:22px}.home-choices{grid-template-columns:1fr}.home-choice{min-height:235px;padding:19px}.home-choice-illustration{right:8px;opacity:.4}.home-footer{font-size:9px;flex-wrap:wrap}.site-tabs{max-width:100%;gap:2px;padding:3px}.site-tab{padding:8px 9px;font-size:11px}}
+@media(prefers-reduced-motion:reduce){.home-orbit{animation:none}.home-choice{transition:none}}
 </style>
 </head>
 <body>
@@ -1229,8 +1277,9 @@ dialog.deck-editor-dialog{width:min(1180px,97vw);max-height:95vh;border-radius:1
     <button id="bShop" type="button" hidden aria-hidden="true" tabindex="-1"></button>
   </div>
   <span id="title" hidden>DeckLock</span>
-  <nav class="site-tabs" aria-label="Modos do site">
+  <nav class="site-tabs" aria-label="Navegação principal">
     <div class="mode-actions">
+      <button class="site-tab" id="tabInicio" type="button" aria-controls="siteHome" aria-pressed="false" title="Página inicial"><span>Início</span></button>
       <button class="site-tab" id="tabAlmasMortas" type="button" aria-controls="soulView" aria-pressed="false" title="Abrir Almas à esquerda"><span class="site-rank-chip" aria-hidden="true"><img id="siteRankArt" alt=""></span><span>Almas</span></button>
       <button class="site-tab on" id="tabSorteador" type="button" aria-controls="main" aria-pressed="true" title="Centralizar o DeckLock"><span>DeckLock</span></button>
     </div>
@@ -1251,6 +1300,37 @@ dialog.deck-editor-dialog{width:min(1180px,97vw);max-height:95vh;border-radius:1
     <button class="ibtn" id="bFs" aria-label="Tela cheia" aria-pressed="false" data-tip="Tela cheia (F)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
   </div>
 </header>
+
+
+<section id="siteHome" class="site-home" aria-labelledby="homeTitle" hidden>
+  <div class="home-glow" aria-hidden="true"></div>
+  <div class="home-inner">
+    <div class="home-hero">
+      <div class="home-lead">
+        <div class="home-kicker"><span class="home-kicker-dot" aria-hidden="true"></span> DEADLOCK · EXPERIÊNCIAS INDEPENDENTES</div>
+        <h1 id="homeTitle">Duas formas de jogar.<br><em>Uma cidade para explorar.</em></h1>
+        <p>Desafios inesperados para suas partidas ou uma jornada incremental de Souls, Rituais e conquistas permanentes.</p>
+        <div class="home-hero-actions">
+          <button type="button" id="homeStartAlmas" class="home-btn home-btn-accent">Jogar Almas <span aria-hidden="true">↗</span></button>
+          <button type="button" id="homeStartDeck" class="home-btn home-btn-outline">Abrir DeckLock <span aria-hidden="true">↗</span></button>
+        </div>
+        <div class="home-miniline"><span>Sem cadastro</span><i aria-hidden="true"></i><span>Progresso local</span><i aria-hidden="true"></i><span>Um único arquivo</span></div>
+      </div>
+      <div class="home-feature-art" aria-hidden="true">
+        <div class="home-orbit home-orbit-a"></div><div class="home-orbit home-orbit-b"></div>
+        <div class="home-art-title">A CIDADE<br><small>NUNCA DORME</small></div>
+        <div class="home-sigil"><span>✦</span></div>
+        <div class="home-art-bottom"><span>ALMAS<br><b>O PACTO CONTINUA</b></span><span class="home-art-index">01 — 02</span></div>
+      </div>
+    </div>
+    <div class="home-divider"><span>ESCOLHA SUA EXPERIÊNCIA</span><i></i><span>01 / 02</span></div>
+    <div class="home-choices">
+      <button class="home-choice home-choice-deck" type="button" id="homeDeckCard"><span class="home-choice-top"><span>01 · DESAFIOS</span><span aria-hidden="true">↗</span></span><span class="home-choice-illustration" aria-hidden="true"><i></i><i></i><i></i></span><strong>DeckLock</strong><span class="home-choice-description">Crie decks, sorteie cartas e transforme suas partidas em novos desafios.</span><span class="home-choice-link">Abrir sorteador <span aria-hidden="true">→</span></span></button>
+      <button class="home-choice home-choice-almas" type="button" id="homeAlmasCard"><span class="home-choice-top"><span>02 · INCREMENTAL</span><span aria-hidden="true">↗</span></span><span class="home-choice-illustration home-illustration-almas" aria-hidden="true"><i></i><i></i><i></i></span><strong>Almas</strong><span class="home-choice-description">Colete Souls, domine a cidade, realize Rituais e erga a Torre do Patrono.</span><span class="home-choice-link">Entrar no Almas <span aria-hidden="true">→</span></span></button>
+    </div>
+    <div class="home-footer"><span>DECKLOCK <span class="home-footer-sep">/</span> ALMAS</span><span>PROJETO INDEPENDENTE · NÃO OFICIAL</span></div>
+  </div>
+</section>
 
 <div id="workspace" class="workspace">
 <main id="main" class="mode-surface" aria-label="Sorteador DeckLock">
@@ -3314,6 +3394,18 @@ textarea{width:100%;height:70px;background:var(--am-ink);color:var(--am-text);bo
 #towerWorld .am-tower-simple-floor{box-sizing:border-box!important}
 @media(max-width:600px){#towerWorld .am-tower-actions{grid-template-columns:repeat(2,minmax(0,1fr))}
   #towerWorld .am-tower-actions .btn:last-child{grid-column:1/-1}}
+
+/* v1.41.2 — marcos permanentes e novos itens com mesmas proporções da loja. */
+.am-tower-rewards{display:grid;gap:9px;border-top:1px solid var(--am-line);padding-top:12px;margin-top:4px}
+.am-tower-rewards-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.am-tower-rewards-head strong{font:750 12px/1.3 var(--am-font-ui);color:var(--am-text)}
+.am-tower-rewards-head small{font:600 10px/1.3 var(--am-font-ui);color:var(--am-muted)}
+.am-tower-reward-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.am-tower-reward-grid>div{display:flex;justify-content:space-between;gap:8px;align-items:center;border:1px solid var(--am-line);border-radius:7px;background:var(--am-surface);padding:9px 10px}
+.am-tower-reward-grid span{font:600 10px/1.3 var(--am-font-ui);color:var(--am-muted)}
+.am-tower-reward-grid strong{font:750 12px/1.2 var(--am-font-ui);color:var(--am-brass);white-space:nowrap}
+#il>.up.am-extra-shop-item{border-style:solid}
+@media(max-width:540px){.am-tower-reward-grid{grid-template-columns:1fr}}
 </style>
 
 <div class="wrap">
@@ -3446,7 +3538,16 @@ textarea{width:100%;height:70px;background:var(--am-ink);color:var(--am-text);bo
         <div class="am-legacy-track am-tower-progress"><i id="towerBar"></i></div>
         <small id="towerProgress">—</small>
         <div class="am-tower-actions"><button type="button" class="btn" id="towerPay">Pagar andar</button><button type="button" class="btn" id="tower50">Comprar 50 andares</button><button type="button" class="btn pri" id="towerAll">Gastar todas as Souls</button></div>
-        <small class="am-tower-footnote">Pagar andar conclui um nível; Comprar 50 compra os próximos 50 níveis pelo custo progressivo. Gastar todas investe todo o saldo. Depósitos persistem após o Ritual.</small>
+        <div class="am-tower-rewards" aria-label="Marcos permanentes da Torre">
+          <div class="am-tower-rewards-head"><strong>Marcos da Torre</strong><small id="towerNextReward"></small></div>
+          <div class="am-tower-reward-grid">
+            <div><span>A cada 25 · clique</span><strong id="towerRewardClick">+0%</strong></div>
+            <div><span>A cada 50 · produção</span><strong id="towerRewardProduction">+0%</strong></div>
+            <div><span>A cada 100 · offline</span><strong id="towerRewardOffline">+0%</strong></div>
+            <div><span>A cada 250 · Platinum</span><strong id="towerRewardPlatinum">0</strong></div>
+          </div>
+        </div>
+        <small class="am-tower-footnote">Depósitos e recompensas persistem após o Ritual.</small>
       </div>
     </div>
 
@@ -3597,25 +3698,25 @@ textarea{width:100%;height:70px;background:var(--am-ink);color:var(--am-text);bo
 
 </template>
 
-<footer>Projeto de fã, sem vínculo com a Valve. Deadlock é marca da Valve Corporation.</footer>
+<footer>
+  <span>Projeto de fã, sem vínculo com a Valve. Deadlock é marca da Valve Corporation.</span>
+</footer>
 <button id="bFsExit" class="fsx" aria-label="Sair da tela cheia">✕ Sair</button>
 <div id="live" class="sr" role="status" aria-live="polite" aria-atomic="true"></div>
 <div id="ver"></div>
 <dialog id="dlgWhatsNew" aria-labelledby="whatsNewTitle">
-  <div class="whatsnew-top"><div><small>DECKLOCK & ALMAS · ATUALIZAÇÃO 1.39.9</small><strong id="whatsNewTitle">Novidades</strong></div><button class="whatsnew-close" id="whatsNewClose" type="button" aria-label="Fechar novidades">×</button></div>
+  <div class="whatsnew-top"><div><small>DECKLOCK &amp; ALMAS · 1.41.2</small><strong id="whatsNewTitle">Novidades</strong></div><button class="whatsnew-close" id="whatsNewClose" type="button" aria-label="Fechar novidades">×</button></div>
   <div class="whatsnew-content">
-    <p class="whatsnew-lead">Melhorias de acabamento e desempenho do Almas.</p>
-    <section class="whatsnew-section"><h3>Loja</h3><ul class="whatsnew-items">
-      <li><strong>18 ícones de Deadlock</strong><span>Recortes dos itens originais em Arma, Vitalidade e Espírito.</span></li>
-      <li><strong>Visual dos itens</strong><span>Ícones integrados aos cartões, inclusive os Melhorados.</span></li>
+    <p class="whatsnew-lead">Novos itens e mais marcos de progresso.</p>
+    <section class="whatsnew-section"><h3>Almas</h3><ul class="whatsnew-items">
+      <li><strong>Torre</strong><span>Recompensas permanentes a cada 25, 50 e 100 andares. Platinum permanece a cada 250.</span></li>
+      <li><strong>Loja</strong><span>Nove novos itens, três em cada categoria.</span></li>
     </ul></section>
-    <section class="whatsnew-section"><h3>Refinamentos</h3><ul class="whatsnew-items">
-      <li><strong>Coleta</strong><span>Brilho progressivo da esfera conforme o combo aumenta.</span></li>
-      <li><strong>Torre</strong><span>Controles de compra alinhados e preços informados ao passar o cursor.</span></li>
-      <li><strong>Desempenho</strong><span>Verificações do autoclique menos frequentes, sem reduzir sua velocidade.</span></li>
+    <section class="whatsnew-section"><h3>Site</h3><ul class="whatsnew-items">
+      <li><strong>Página inicial</strong><span>Nova entrada para DeckLock e Almas, tudo no mesmo index.html.</span></li>
     </ul></section>
   </div>
-  <div class="whatsnew-foot"><button id="whatsNewOk" class="primary" type="button">Continuar</button></div>
+  <div class="whatsnew-foot"><button id="whatsNewOk" class="primary" type="button">Fechar</button></div>
 </dialog>
 <dialog id="dlgNotice" aria-label="Atualização">
   <div class="set"><p id="noticeMsg">DeckLock atualizado. As configurações foram reiniciadas e um backup da versão anterior foi salvo em Arquivos.</p>
@@ -3769,7 +3870,7 @@ if(testModeButton){
 const KEY="deadlock-deck-v3";
 /* Reset único: quem tem dados salvos sem "epoch" (versões antigas) volta ao início UMA vez.
    Os dados antigos são guardados em BKEY antes. Só aumente RESET_EPOCH se quiser forçar outro reset. */
-const RESET_EPOCH=3,APP_VERSION="1.40.3",BKEY="deadlock-deck-v3:backup";
+const RESET_EPOCH=3,APP_VERSION="1.41.3",BKEY="deadlock-deck-v3:backup";
 // Reset único de estados criados antes da v1.9.4. Futuras atualizações não reiniciam
 // os dados sem uma migração explícita; o backup deve ser confirmado antes do reset.
 const RESET_BEFORE_VERSION="1.9.4",INTRO_KEY="deadlock-deck-v3:intro-hidden";
@@ -4416,7 +4517,8 @@ function snapshot(){
   return{table:table.map(g=>({name:g.name,deck:g.deck,cards:[...g.cards]})),used:cp,last:[...lastIds],hist:S.hist.slice(),sess:S.sess.draws.slice(),fin:S.fin?{...S.fin}:null,cur:curEntry,questIds:[],up:!!document.querySelector("#table .card.up")};
 }
 async function draw(){
-  if(inAlmasDeckMode()){await drawAlmasCard();return}
+  // A aba lateral "Em breve" permanece vazia e não faz sorteios.
+  if(document.getElementById("workspace")?.classList.contains("almas-deck-mode"))return;
   if(busy)return;
   const ds=sel();
   if(!ds.length){
@@ -5526,20 +5628,6 @@ document.addEventListener("keydown",e=>{
   else if(/^[1-8]$/.test(k))setCount(+k);
 });
 applyCfg();syncTitle();syncCount();renderDeckChips();renderChips();showBacks();renderHist();renderQuests();
-async function bootstrap(){
-  try{
-    if(localStorage.getItem(KEY))return;
-    const r=await fetch("decks.json",{cache:"no-store"});if(!r.ok)return;
-    const j=await r.json();if(!Array.isArray(j.decks)||!j.decks.length||localStorage.getItem(KEY)||ed.dirty||busy)return;
-    // Não deixar um decks.json da versão antiga sobrescrever as cartas padrão novas
-    // que já acompanham este index.html. Arquivos personalizados continuam aceitos.
-    const legacyGroup=j.decks.find(d=>d&&d.id==="g"&&Array.isArray(d.cards));
-    if(legacyGroup&&legacyGroup.cards.some(c=>c.id==="g2"&&c.title==="Sem arma")&&
-       legacyGroup.cards.some(c=>c.id==="g4"&&c.title==="Só passivos"))return;
-    applyPayload(j);syncCount();refreshAll();renderHist();save();
-  }catch(e){}
-}
-bootstrap();
 if(S.mode!=="free"){S.mode="free";S.fin=null;if(S.sess)S.sess.mode="free";save();renderMeta()}
 $("#modeSel").onchange=e=>setMode(e.target.value);
 $("#quickToggle").onchange=e=>{
@@ -5604,7 +5692,7 @@ document.addEventListener("visibilitychange",()=>{if(!document.hidden)void check
 $("#ver").textContent="v"+APP_VERSION;
 if(resetBackupFailed){
   setTimeout(()=>toast("Não foi possível salvar o backup automático. Seus dados antigos foram mantidos. Exporte-os em Arquivos antes de continuar.",null,null,12000),300);
-}else showNotice();
+}else if(!document.getElementById("siteHome"))showNotice();
 </script>
 <script>
 /* DeckLock v1.9.5: traduções apenas na interface; dados pessoais continuam intactos. */
@@ -6120,9 +6208,71 @@ function initAlmasMortas(root){
   SOUL_LANGS["Controle o território ao redor do covil para ampliar a coleta."]=["Control the lair territory to expand Soul collection.", "Controla el territorio de la guarida para aumentar la recolección.", "Contrôlez les alentours du repaire pour récolter davantage.", "Kontrolliere das Höhlengebiet für zusätzliche Souls."];
   var CAT=["Arma · coleta manual","Vitalidade · coleta offline","Espírito · produção automática"];
   var ITM=[
-    [["Extended Magazine",600,"Cliques x1,5"],["Spirit Shredder",7500,"Cliques x1,5"],["Spirit Rend",90000,"Cliques x2"],["Silencer",1.1e6,"Cliques x2"],["Burst Fire",12e6,"Cliques x1,5"],["Glass Cannon",135e6,"Cliques x1,5"]],
-    [["Extra Health",900,"+10% offline e +4 h de limite"],["Spirit Lifesteal",11000,"+10% offline e +4 h de limite"],["Spirit Resilience",130000,"+10% offline e +4 h de limite"],["Colossus",1.5e6,"+10% offline e +4 h de limite"],["Fortitude",17e6,"+10% offline e +4 h de limite"],["Unstoppable",185e6,"+10% offline e +4 h de limite"]],
+    [["Extended Magazine",600,"Cliques x1,5"],["Spirit Shredder",10000,"Cliques x1,5"],["Spirit Rend",230000,"Cliques x2"],["Silencer",8e6,"Cliques x2"],["Burst Fire",160000,"Cliques x1,5"],["Glass Cannon",135e6,"Cliques x1,5"]],
+    [["Extra Health",900,"+10% offline e +4 h de limite"],["Spirit Lifesteal",11000,"+10% offline e +4 h de limite"],["Spirit Resilience",130000,"+10% offline e +4 h de limite"],["Colossus",3.2e6,"+10% offline e +4 h de limite"],["Fortitude",320000,"+10% offline e +4 h de limite"],["Unstoppable",185e6,"+10% offline e +4 h de limite"]],
     [["Extra Spirit",1200,"Produção x1,25"],["Improved Spirit",15000,"Produção x1,25"],["Spirit Snatch",170000,"Produção x1,25"],["Spirit Burn",2e6,"Produção x1,25"],["Boundless Spirit",24e6,"Produção x1,25"],["Mystic Reverb",270e6,"Produção x1,25"]]];
+  var ALMAS_EXTRA_ITEMS=[["Close Quarters",1450,"Cliques x1,18",0,1.18],
+["Headshot Booster",2100,"Cliques x1,22",0,1.22],
+["Sharpshooter",420000,"Cliques x1,27",0,1.27],
+["Extra Regen",1400,"Produção +6% · offline +2 h",1,1.06],
+["Reactive Barrier",21000,"Produção +7% · offline +2 h",1,1.07],
+["Metal Skin",620000,"Produção +8% · offline +2 h",1,1.08],
+["Mystic Burst",2200,"Produção x1,12",2,1.12],
+["Quicksilver Reload",35000,"Produção x1,14",2,1.14],
+["Superior Cooldown",400000,"Produção x1,16",2,1.16]];
+  // UI order is independent of the original identifiers used by persisted saves.
+  // A base item retains id=(category*6+index) and an extra keeps its legacy index.
+  // Price order is native to Almas; tier metadata mirrors Deadlock's 800/1600/3200/6400 catalog.
+  const SHOP_DEADLOCK_ORDER=[
+    [{base:0,tier:1},{extra:0,tier:1},{extra:1,tier:1},
+     {base:1,tier:2},{base:4,tier:3},{base:2,tier:3},{extra:2,tier:3},
+     {base:3,tier:4},{base:5,tier:4}],
+    [{base:6,tier:1},{extra:3,tier:1},{base:7,tier:2},{extra:4,tier:2},
+     {base:8,tier:3},{base:10,tier:3},{extra:5,tier:3},
+     {base:9,tier:4},{base:11,tier:4}],
+    [{base:12,tier:1},{extra:6,tier:1},{base:13,tier:2},{extra:7,tier:2},
+     {base:14,tier:3},{extra:8,tier:3},{base:15,tier:4},
+     {base:16,tier:4},{base:17,tier:4}]
+  ];
+  const SHOP_TRAITS={
+    "Extended Magazine":"+2% clique com combo 20+",
+    "Close Quarters":"+3% clique no começo do combo",
+    "Headshot Booster":"+3% clique com combo 40+",
+    "Spirit Shredder":"+4% dano no Mid-Boss",
+    "Burst Fire":"+3% clique com combo 60+",
+    "Spirit Rend":"+2% clique com combo 50+",
+    "Sharpshooter":"+4% clique com combo 90+",
+    "Silencer":"+5% dano no Mid-Boss",
+    "Glass Cannon":"+5% clique com combo 110+",
+    "Extra Health":"+1 h de limite offline",
+    "Extra Regen":"+2% eficiência offline",
+    "Spirit Lifesteal":"+1% ganho por clique",
+    "Reactive Barrier":"+2% eficiência offline",
+    "Spirit Resilience":"+2% eficiência offline",
+    "Fortitude":"+1 h de limite offline",
+    "Metal Skin":"+2% eficiência offline",
+    "Colossus":"+3% produção automática",
+    "Unstoppable":"+2 h de limite offline",
+    "Extra Spirit":"+2% produção automática",
+    "Mystic Burst":"+2% produção no Mid-Boss",
+    "Improved Spirit":"+2% produção automática",
+    "Quicksilver Reload":"+2% ganho por clique",
+    "Spirit Snatch":"+2% ganho por clique",
+    "Superior Cooldown":"−5% recarga do Mid-Boss",
+    "Spirit Burn":"+2% produção com combo 60+",
+    "Boundless Spirit":"+3% produção automática",
+    "Mystic Reverb":"+4% produção no Mid-Boss"
+  };
+  const shopEffectText=(name,base)=>base+(SHOP_TRAITS[name]?" · "+SHOP_TRAITS[name]:"");
+  var ALMAS_EXTRA_ART=["data:image/webp;base64,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",
+"data:image/webp;base64,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",
+"data:image/webp;base64,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",
+"data:image/webp;base64,UklGRkoFAABXRUJQVlA4ID4FAADQHACdASpkAGgAPlUmj0UjoiEW2q0AOAVEsQQ4AMPcUP7d1xIqPQ83HylM1fM+yD1ANwB51XoW9AD/gdRPvHX7geirQS/MvWi4r9ffhdiP2oDPS+w8Dpi0Rr8wTlIig/VaLFdF1Orgm45EZOCsM6jNNSDg+klNo11pe1UwzBEpCupNRS5YhY8Cb9+Y+OWlHGxfxVUegfe9Z++HS2hnbN6HKbEprjv7/zrvQjByvfEf6wSKxcmX+sXxWWVYSH+h+PNoNrzkk4QQbDGmlW0u1PpVIYbIaCvl7QQWk29nbaZtOrshp7lOKh3GLOSt13BLAAD+x3LHmTlXwLPCKJ6JTNrKx7SsVgMZtf+2e5jwM93hd8qsmuhw8SScDSazrobNyQeom2Ozcdu7QmA/lx8avMxYZ3J/R8BhOO9UtgP4PrGBUXoFA0WMsMWnPvC2dHlseD8JgyVQOw6Aszpu58eMkshNvBmiWYlTYEkA6+pIWd1CzhyJKFsBWV2E2EeHN2cci26k2XHgn/SfdWFFEw9PK4VdTHKZRX4DwNA5jNEuHM2k9UIgkuywIEFusQ3bO3awnHPr+oZt3AI6Q34sFnqSFE+JFP0Jw5QFXZxKJ7jbovAULpNMSS0ZV6U3dKVkQOKS5S0AU7HKbR04D/8ctU6Dpvfzj93JlblgQFSJ1XDjhTyCK6AdKK29ICKRf0lM3he2KVtNPSH0G2+N1yRjxVwGiUf+/4dM0CDmOJ5eg0XFG3GtaSlpPC79yw8eQB2Rx1q4FpOOyA3htSJuMacj9LzSdMLS0Xer+lRztwP5qz61w6jwWhkH6BPabpxnQ+JvkrkZ8PYJNaFpvXeySg2xSEmDbV2n6FbsJXTHASoPazIZM4k0b6EYGLuUs3SgTMxytMtgryEMH/xuM273qU+3s441SAOSLbpSuHanWx3Ay7kkJpYeJd1ALaHVEFGf0ExdFJMO1fG4T+cCBb/2fnB/kSP9CwNtLuI9D4UcCcsJz/K/tDxTgYsYXOCxrgNpIc6lCzKJAqL5Ck5D7YsjCwvFlQm7+e1jlfUwfj457SRzp9ibsZHTOz3GDgRrP2B+uY2i6eewW+4mtTJtEt/mIvqrziz9xNGC4XHwPtNLy+2g/ubWkRsj7UaCGGM99Hl9ezZChT6eX2XpDxJIerZ2FJhFsWTWN7j+M9KJgiwqaiHOC/LTmr+9kut7Eo4Z1q0n18rCthADLZqNEox1TO0aNOUMK0+NDlrYwM3IX8uTtuhUrcHiS7B9vRjH7PnXMxkqOKJLY3Cog3+NSbC+eR+r658ysCvKgQPfdIYffTc4bJuzAx9KrAvohJ280RIwQJ02clm6WOy2FD74t49vsBrsC4++bjmUAivDRQyUGs5n2kMN3RHJnrtGceoW6c+4ZDS0EUR/vY4cnzqsed8YFhsOZJDHkK+C36ZZGgR8D9vzoTpzGbotuHKaDgsu1lpot/KOQyAM+ga5X5i/YEozXraC5Ypof/8eTgCOtPK09TKauuxrwz20ZxQjxkEfO1b0Y6Ld+2cZMoFrOahrk1GM7b7wWLnc2/ERi3+1EBpin8fClbAaG0GTCATIQ4V+z01jiYNa3ykB6/sQPFWY5xv0unZv23Ksb8z3SdBcBkHmTDFE5avuuh9aw/5PX+tmhBQo0Qi977wmoFP0ZBAZBS4/kPjE+0KGAx3n0D0rDM5Iu+MnI/2IGj5a//zDqaCAoEK8hxlpujMAlcXbLBgPGgnqUylw4MlIqYvP5gZy0sg1zq+0nVryQBjwiACacDp3AF9NKw2IhRwZAAAA",
+"data:image/webp;base64,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",
+"data:image/webp;base64,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",
+"data:image/webp;base64,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",
+"data:image/webp;base64,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",
+"data:image/webp;base64,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"];
   // Recortes dos próprios itens nas capturas de tela enviadas; incorporados para uso offline.
   var ALMAS_SHOP_ART=[
   "data:image/webp;base64,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",
@@ -6175,7 +6325,7 @@ function initAlmasMortas(root){
     while(result.length<3){const choices=pool.filter(c=>!result.includes(c.id));result.push(choices[Math.floor(Math.random()*choices.length)].id)}
     return result;
   }
-  var S={f:0,life:0,own:Array(GEN.length).fill(0),items:[],legacy:0,spent:0,perk:Array(PRK.length).fill(0),boss:0,bossT:Date.now()+120000,stance:0,clicks:0,ts:Date.now(),rituals:0,bestRitualGain:0,lastRitualGain:0,rewardBoost:null,pendingReward:null,contracts:[],contractStats:{purchases:0},contractClaims:0,contractHistory:[],contractBoost:null,rankCredit:null,rankFormat:1,tutorialSeen:null,masteryXp:null,records:null,unlockedOps:null,tickets:null,pendingPlatinum:null,ticketBoughtRun:0,ticketPriceAnchor:null,towerLevel:0,towerProgress:0,towerStageCost:null,towerHistory:[],towerPlatinumClaimed:0,echoOwned:[],echoEquipped:[],constellation:[0,0,0],beatNext:Date.now()+420000,beatState:null,beatWins:0,beatPlays:0,extraStats:null,itemSchema:1,cacheT:Date.now()+45000,doctrinesOwned:[],doctrineSpent:0,doctrineActive:"none",doctrineRefunded:true,tactic:"none",tacticChangedAt:0,booster:null,boosterReadyAt:0,streetNext:Date.now()+240000,streetPending:false,streetCount:0,streetOffers:[],streetLastPick:"",streetEffect:null,fund:null,funds:[],autoOrb:false,autoOrbLevel:0,lastAutoPerks:[],fundReadyAt:0,fundCompleted:0,postRitualPhase:"",postBlessingChosen:false,brawlNext:Date.now()+600000,brawl:null,brawlWins:0,brawlMatches:0,heroState:null};
+  var S={f:0,life:0,own:Array(GEN.length).fill(0),items:[],extraItems:[],legacy:0,spent:0,perk:Array(PRK.length).fill(0),boss:0,bossT:Date.now()+120000,stance:0,clicks:0,ts:Date.now(),rituals:0,bestRitualGain:0,lastRitualGain:0,rewardBoost:null,pendingReward:null,contracts:[],contractStats:{purchases:0},contractClaims:0,contractHistory:[],contractBoost:null,rankCredit:null,rankFormat:1,tutorialSeen:null,masteryXp:null,records:null,unlockedOps:null,tickets:null,pendingPlatinum:null,ticketBoughtRun:0,ticketPriceAnchor:null,towerLevel:0,towerProgress:0,towerStageCost:null,towerHistory:[],towerPlatinumClaimed:0,echoOwned:[],echoEquipped:[],constellation:[0,0,0],beatNext:Date.now()+420000,beatState:null,beatWins:0,beatPlays:0,extraStats:null,itemSchema:1,cacheT:Date.now()+45000,doctrinesOwned:[],doctrineSpent:0,doctrineActive:"none",doctrineRefunded:true,tactic:"none",tacticChangedAt:0,booster:null,boosterReadyAt:0,streetNext:Date.now()+240000,streetPending:false,streetCount:0,streetOffers:[],streetLastPick:"",streetEffect:null,fund:null,funds:[],autoOrb:false,autoOrbLevel:0,lastAutoPerks:[],fundReadyAt:0,fundCompleted:0,postRitualPhase:"",postBlessingChosen:false,brawlNext:Date.now()+600000,brawl:null,brawlWins:0,brawlMatches:0,heroState:null};
   // Habilitar no endereço: ?almas-dev=1. A partida real nunca é usada pelo console.
   const ALMAS_DEV = new URLSearchParams(window.location.search).get("almas-dev")==="1" || window.__almasDevMode===true;
   var KEY=ALMAS_DEV?"almasmortas_v1_dev":"almasmortas_v1";
@@ -6346,6 +6496,7 @@ function initAlmasMortas(root){
     S.items=Array.isArray(S.items)?S.items.map(Boolean):[];
     if(S.itemSchema!==2){const before=S.items.slice();S.items=Array.from({length:18},(_,id)=>id%6<4?!!before[Math.floor(id/6)*4+id%6]:false);S.itemSchema=2;}
     S.items=S.items.slice(0,18);while(S.items.length<18)S.items.push(false);
+    S.extraItems=Array.from({length:ALMAS_EXTRA_ITEMS.length},(_,i)=>S.extraItems?.[i]===true);
     // v1.36: progress across rituals, including imports and legacy saves.
     S.towerLevel=Math.floor(nonneg(S.towerLevel,1000000));
     S.towerProgress=nonneg(S.towerProgress,1e300);
@@ -6459,7 +6610,7 @@ function initAlmasMortas(root){
   }
   try{var raw=localStorage.getItem(KEY);if(raw){var p=JSON.parse(raw);if(p&&typeof p==="object"&&!Array.isArray(p)&&Number.isFinite(p.f)&&p.f>=0){
     // Não copiar propriedades inesperadas nem __proto__ de importações corrompidas.
-    for(const k of ["rankFormat","itemSchema","unlockedOps","tickets","pendingPlatinum","ticketBoughtRun","ticketPriceAnchor","towerLevel","towerProgress","towerStageCost","towerHistory","towerPlatinumClaimed","echoOwned","echoEquipped","constellation","beatNext","beatState","beatWins","beatPlays","extraStats","tutorialSeen","f","life","own","items","legacy","spent","perk","boss","bossT","stance","clicks","ts","soundOn","cosmetics","cosmeticSpent","achievements","rituals","bestRitualGain","lastRitualGain","events","ritualPath","nextPath","rewardBoost","pendingReward","contracts","contractStats","contractClaims","contractHistory","contractBoost","rankCredit","masteryXp","records","cacheT","doctrinesOwned","doctrineSpent","doctrineActive","doctrineRefunded","tactic","tacticChangedAt","booster","boosterReadyAt","streetNext","streetPending","streetCount","streetOffers","streetLastPick","streetEffect","fund","funds","autoOrb","autoOrbLevel","lastAutoPerks","fundReadyAt","fundCompleted","postRitualPhase","postBlessingChosen","brawlNext","brawl","brawlWins","brawlMatches","almasCardReadyAt","almasCardLast","almasCardResult","almasCardBuff","heroState"])
+    for(const k of ["rankFormat","itemSchema","unlockedOps","tickets","pendingPlatinum","ticketBoughtRun","ticketPriceAnchor","towerLevel","towerProgress","towerStageCost","towerHistory","towerPlatinumClaimed","echoOwned","echoEquipped","constellation","beatNext","beatState","beatWins","beatPlays","extraStats","tutorialSeen","f","life","own","items","extraItems","legacy","spent","perk","boss","bossT","stance","clicks","ts","soundOn","cosmetics","cosmeticSpent","achievements","rituals","bestRitualGain","lastRitualGain","events","ritualPath","nextPath","rewardBoost","pendingReward","contracts","contractStats","contractClaims","contractHistory","contractBoost","rankCredit","masteryXp","records","cacheT","doctrinesOwned","doctrineSpent","doctrineActive","doctrineRefunded","tactic","tacticChangedAt","booster","boosterReadyAt","streetNext","streetPending","streetCount","streetOffers","streetLastPick","streetEffect","fund","funds","autoOrb","autoOrbLevel","lastAutoPerks","fundReadyAt","fundCompleted","postRitualPhase","postBlessingChosen","brawlNext","brawl","brawlWins","brawlMatches","almasCardReadyAt","almasCardLast","almasCardResult","almasCardBuff","heroState"])
       if(Object.prototype.hasOwnProperty.call(p,k))S[k]=p[k];
   }}}catch(e){}
   norm();
@@ -6793,6 +6944,52 @@ function initAlmasMortas(root){
     return Math.min(1e298,Math.max(1,Math.ceil(cost)));
   };
   function legacyTowerMult(){return 1+.017*Math.log2(1+S.towerLevel)}
+  // Recompensas permanentes automáticas, sem resgate ou estado extra no save.
+  function towerRewards(){return {click:Math.floor(S.towerLevel/25),production:Math.floor(S.towerLevel/50),offline:Math.floor(S.towerLevel/100)}}
+  function towerClickRewardMult(){return 1+Math.min(250,Math.floor(S.towerLevel/25))*.002}
+  function towerProductionRewardMult(){return 1+Math.min(200,Math.floor(S.towerLevel/50))*.0035}
+  function towerOfflineRewardMult(){return 1+Math.min(100,Math.floor(S.towerLevel/100))*.005}
+  function shopEntryOwned(entry){return entry.base!==undefined?!!S.items[entry.base]:!!S.extraItems[entry.extra]}
+  function shopEntryUnlocked(ci,pos){return pos===0||shopEntryOwned(SHOP_DEADLOCK_ORDER[ci][pos-1])}
+  function shopOwned(name){
+    for(let ci=0;ci<ITM.length;ci++)for(let t=0;t<ITM[ci].length;t++)if(ITM[ci][t][0]===name)return !!S.items[ci*6+t];
+    const idx=ALMAS_EXTRA_ITEMS.findIndex(it=>it[0]===name);
+    return idx>=0&&!!S.extraItems[idx];
+  }
+  var shopComboCount=0,shopComboLast=0;
+  function shopComboCurrent(){return shopComboLast&&Date.now()-shopComboLast<=2800?shopComboCount:0}
+  function shopClickTraitMult(){
+    const count=shopComboCurrent();
+    return 1+(shopOwned("Extended Magazine")&&count>=20?.02:0)
+      +(shopOwned("Close Quarters")&&count<=30?.03:0)
+      +(shopOwned("Headshot Booster")&&count>=40?.03:0)
+      +(shopOwned("Burst Fire")&&count>=60?.03:0)
+      +(shopOwned("Spirit Rend")&&count>=50?.02:0)
+      +(shopOwned("Sharpshooter")&&count>=90?.04:0)
+      +(shopOwned("Glass Cannon")&&count>=110?.05:0)
+      +(shopOwned("Spirit Lifesteal")?.01:0)
+      +(shopOwned("Quicksilver Reload")?.02:0)
+      +(shopOwned("Spirit Snatch")?.02:0);
+  }
+  function shopProductionTraitMult(){
+    return 1+(shopOwned("Extra Spirit")?.02:0)
+      +(shopOwned("Improved Spirit")?.02:0)
+      +(shopOwned("Colossus")?.03:0)
+      +(shopOwned("Boundless Spirit")?.03:0)
+      +(shopOwned("Spirit Burn")&&shopComboCurrent()>=60?.02:0)
+      +(shopOwned("Mystic Burst")&&boss.on?.02:0)
+      +(shopOwned("Mystic Reverb")&&boss.on?.04:0);
+  }
+  function shopOfflineTraitMult(){
+    return 1+(shopOwned("Extra Regen")?.02:0)
+      +(shopOwned("Reactive Barrier")?.02:0)
+      +(shopOwned("Spirit Resilience")?.02:0)
+      +(shopOwned("Metal Skin")?.02:0);
+  }
+  function shopOfflineExtraHours(){return (shopOwned("Extra Health")?1:0)+(shopOwned("Fortitude")?1:0)+(shopOwned("Unstoppable")?2:0)}
+  function shopBossDamageMult(){return 1+(shopOwned("Spirit Shredder")?.04:0)+(shopOwned("Silencer")?.05:0)}
+  function shopBossCooldownMult(){return shopOwned("Superior Cooldown")?.95:1}
+  function extraCategoryMult(cat){return ALMAS_EXTRA_ITEMS.reduce((m,it,i)=>m*(it[3]===cat&&S.extraItems[i]?it[4]:1),1)}
   function echoValue(i){return [0.02,0.025,0.03,0.035,0.04,0.045][i%6]}
   function echoCategoryBonus(category){return S.echoOwned.reduce((m,owned,i)=>m+(owned&&Math.floor(i/6)===category?echoValue(i):0),0)}
   function legacyGunMult(){return 1+echoCategoryBonus(0)}
@@ -6810,6 +7007,11 @@ function initAlmasMortas(root){
     const cost=towerCost(),left=Math.max(0,cost-S.towerProgress),pct=Math.max(0,Math.min(1,S.towerProgress/cost));
     $("towerTier").textContent="Nv. "+fmt(S.towerLevel);
     $("towerBonus").textContent="+"+((legacyTowerMult()-1)*100).toFixed(2).replace(".",",")+"%";
+    $("towerRewardClick").textContent="+"+((towerClickRewardMult()-1)*100).toFixed(1).replace(".",",")+"%";
+    $("towerRewardProduction").textContent="+"+((towerProductionRewardMult()-1)*100).toFixed(1).replace(".",",")+"%";
+    $("towerRewardOffline").textContent="+"+((towerOfflineRewardMult()-1)*100).toFixed(1).replace(".",",")+"%";
+    $("towerRewardPlatinum").textContent=String(Math.floor(S.towerLevel/250));
+    $("towerNextReward").textContent="Próximo marco: andar "+((Math.floor(S.towerLevel/25)+1)*25);
     $("towerNeed").textContent=fmt(cost)+" Souls";
     $("towerProgress").textContent=fmt(S.towerProgress)+" / "+fmt(cost)+" · faltam "+fmt(left);
     $("towerPercent").textContent=(pct*100).toFixed(1).replace(".",",")+"%";
@@ -6926,7 +7128,7 @@ function initAlmasMortas(root){
   function platinumCoverageBonus(){
     return 1 + .0075 * Math.min(16,S.tickets.filter(level=>level>=1).length);
   }
-  function pMul(levels=S.own){var m=gm()*legacyTowerMult()*legacySpiritMult()*heroProductionMult()*platinumCoverageBonus()*(1+.1*S.perk[2])*(1+.025*S.perk[5])*operationSynergy(levels);for(var t=0;t<6;t++)if(S.items[12+t])m*=1.25;if(rewardActive("auto"))m*=BOSS_BALANCE.autoMult;if(contractBoostActive("auto"))m*=1.15;if(extActive(S.booster,"production"))m*=1.12;if(extActive(S.streetEffect,"production"))m*=1.15;if(cardBonusActive("auto"))m*=1.10;return m}
+  function pMul(levels=S.own){var m=gm()*legacyTowerMult()*towerProductionRewardMult()*shopProductionTraitMult()*extraCategoryMult(1)*extraCategoryMult(2)*legacySpiritMult()*heroProductionMult()*platinumCoverageBonus()*(1+.1*S.perk[2])*(1+.025*S.perk[5])*operationSynergy(levels);for(var t=0;t<6;t++)if(S.items[12+t])m*=1.25;if(rewardActive("auto"))m*=BOSS_BALANCE.autoMult;if(contractBoostActive("auto"))m*=1.15;if(extActive(S.booster,"production"))m*=1.12;if(extActive(S.streetEffect,"production"))m*=1.15;if(cardBonusActive("auto"))m*=1.10;return m}
   function cpsFor(levels,xps=S.masteryXp){let value=0;for(let i=0;i<GEN.length;i++)value+=levels[i]*GEN[i][3]*gMul(i,levels[i],xps[i]);return value*pMul(levels)*1.30}
   // Contribuição por operação: mesma expressão usada por cpsFor, inclusive os bônus globais.
   // Somar todos os valores equivale a cps() (salvo arredondamento da interface).
@@ -6935,7 +7137,7 @@ function initAlmasMortas(root){
     return levels[i]*GEN[i][3]*gMul(i,levels[i],xps[i])*pMul(levels)*1.30;
   }
   function cps(){return cpsFor(S.own)}
-  function cMul(){var m=gm()*legacyTowerMult()*legacyGunMult()*heroClickMult()*(1+.18*S.perk[1]);for(var t=0;t<6;t++)if(S.items[t])m*=WM[t];if(rewardActive("click"))m*=BOSS_BALANCE.clickMult;if(contractBoostActive("click"))m*=1.25;if(buff.t>0)m*=4;if(cardBonusActive("click"))m*=1.15;if(extActive(S.streetEffect,"click"))m*=1.20;return m}
+  function cMul(){var m=gm()*legacyTowerMult()*towerClickRewardMult()*shopClickTraitMult()*extraCategoryMult(0)*legacyGunMult()*heroClickMult()*(1+.18*S.perk[1]);for(var t=0;t<6;t++)if(S.items[t])m*=WM[t];if(rewardActive("click"))m*=BOSS_BALANCE.clickMult;if(contractBoostActive("click"))m*=1.25;if(buff.t>0)m*=4;if(cardBonusActive("click"))m*=1.15;if(extActive(S.streetEffect,"click"))m*=1.20;return m}
   function clickVal(){
     // Production-derived clicks are added *after* manual multipliers, avoiding runaway feedback.
     // Even a fast player cannot convert more than ~35% of passive Souls/s through clicks.
@@ -7353,20 +7555,34 @@ function initAlmasMortas(root){
     const seal=document.createElement("span");seal.className="am-ticket-seal";seal.textContent="PLATINUM";seal.hidden=true;seal.setAttribute("aria-hidden","true");gR[i].b.append(seal);gR[i].seal=seal;const info=document.createElement("span");info.className="am-op-info";info.textContent="ⓘ";info.setAttribute("aria-label","Informações do investimento");gR[i].b.append(info);gR[i].info=info;
     if(i===2||i===3)$("specialOps").appendChild(gR[i].b);
   });
+  const extraShopRows=[];
   CAT.forEach(function(c,ci){
-    var h=document.createElement("div");h.className="cat";h.textContent=c;$("il").appendChild(h);
-    ITM[ci].forEach(function(it,t){var id=ci*6+t;iR[id]=row($("il"),it[0],it[2],function(){
-      if(canEchoShop()){purchaseEcho(id);return;}
-      if(S.items[id]||(t>0&&!S.items[id-1]))return;
-      if(S.f<it[1]){toast("Souls insuficientes.");return}
-      S.f-=it[1];S.items[id]=true;S.extraStats.items++;
-      toast(it[0]+" · "+pt("after"));save();drawAll()});iR[id].b.dataset.shopCategory=ci===0?"gun":ci===2?"spirit":"vitality";
-      const artwork=document.createElement("img");
-      artwork.className="am-item-art";artwork.src=ALMAS_SHOP_ART[id];
-      artwork.alt="";artwork.loading="lazy";artwork.decoding="async";
-      artwork.setAttribute("aria-hidden","true");
-      iR[id].b.firstElementChild.prepend(artwork);
-            const ecoSeal=document.createElement("span");ecoSeal.className="am-echo-seal";ecoSeal.textContent="MELHORADO";ecoSeal.hidden=true;iR[id].b.append(ecoSeal);iR[id].echoSeal=ecoSeal;});
+    const heading=document.createElement("div");heading.className="cat";heading.textContent=c;
+    $("il").append(heading);
+    SHOP_DEADLOCK_ORDER[ci].forEach((entry,pos)=>{
+      const base=entry.base!==undefined,id=base?entry.base:entry.extra;
+      const it=base?ITM[ci][id%6]:ALMAS_EXTRA_ITEMS[id];
+      const itemName=it[0],effect=shopEffectText(itemName,it[2]);
+      const r=row($("il"),itemName,effect,()=>{
+        if(base&&canEchoShop()){purchaseEcho(id);return}
+        if((base?S.items[id]:S.extraItems[id])||!shopEntryUnlocked(ci,pos))return;
+        if(S.f<it[1]){toast("Souls insuficientes.");return}
+        if(transact(()=>{S.f-=it[1];if(base)S.items[id]=true;else S.extraItems[id]=true;S.extraStats.items++})){
+          toast(itemName+" · efeito ativo");drawAll();
+        }
+      });
+      r.b.dataset.shopCategory=ci===0?"gun":ci===2?"spirit":"vitality";
+      r.b.dataset.deadlockTier=String(entry.tier);
+      const artwork=document.createElement("img");artwork.className="am-item-art";
+      artwork.src=base?ALMAS_SHOP_ART[id]:ALMAS_EXTRA_ART[id];
+      artwork.alt="";artwork.loading="lazy";artwork.decoding="async";artwork.setAttribute("aria-hidden","true");
+      r.b.firstElementChild.prepend(artwork);
+      if(base){
+        iR[id]=r;
+        const seal=document.createElement("span");seal.className="am-echo-seal";
+        seal.textContent="MELHORADO";seal.hidden=true;r.b.append(seal);r.echoSeal=seal;
+      }else{r.b.classList.add("am-extra-shop-item");extraShopRows[id]=r}
+    });
   });
 
   function nextObjective(){
@@ -7672,13 +7888,26 @@ function initAlmasMortas(root){
   }
   function drawIt(){
     drawAutoOrb();
+    ALMAS_EXTRA_ITEMS.forEach((it,k)=>{
+      const r=extraShopRows[k];if(!r)return;
+      const ci=it[3],position=SHOP_DEADLOCK_ORDER[ci].findIndex(e=>e.extra===k);
+      const bought=!!S.extraItems[k],accessible=shopEntryUnlocked(ci,position),affordable=S.f>=it[1];
+      r.b.classList.toggle("done",bought);r.b.classList.toggle("am-shop-paid",bought);
+      r.b.classList.toggle("lock",!accessible&&!bought);r.b.classList.toggle("ready",!bought&&accessible&&affordable);
+      r.b.classList.toggle("no",!bought&&(!accessible||!affordable));
+      r.b.querySelector(".r").hidden=bought;r.n.textContent=bought?"":fmt(it[1]);r.s.textContent="";
+      r.b.setAttribute("aria-disabled",String(bought||!accessible));
+      r.b.title=it[0]+" · Deadlock T"+SHOP_DEADLOCK_ORDER[ci][position].tier+" · "+shopEffectText(it[0],it[2])+" · "+(bought?"Efeito ativo":!accessible?"Requer o item anterior":fmt(it[1])+" Souls");
+    });
     const ritualist=rankInfo(rankSteps()).i>=5;
     const echoBuyMode=canEchoShop();
     $("amAutoItemsRow").hidden=!ritualist;
     autoItemsToggle.checked=!!S.autoItems;
     $("il").classList.toggle("am-echo-buying",echoBuyMode);
     iR.forEach(function(r,id){
-      const ci=Math.floor(id/6),t=id%6,it=ITM[ci][t],own=S.items[id],lock=t>0&&!S.items[id-1];
+      const ci=Math.floor(id/6),t=id%6,it=ITM[ci][t],own=S.items[id];
+      const shopPos=SHOP_DEADLOCK_ORDER[ci].findIndex(e=>e.base===id);
+      const lock=!shopEntryUnlocked(ci,shopPos);
       const eco=!!S.echoOwned[id],echoUnlocked=echoBuyMode;
       const price=echoUnlocked?echoCost(id):it[1];
       const affordable=S.f>=price;
@@ -7702,8 +7931,8 @@ function initAlmasMortas(root){
       if(r.echoSeal){r.echoSeal.hidden=!(eco||echoUnlocked);r.echoSeal.textContent=eco?"MELHORADO":"MELHORAR"}
       r.n.textContent=paid?"":fmt(price);
       r.s.textContent="";
-      const effect=r.b.querySelector(".d");if(effect)effect.textContent=it[2];
-      r.b.title=it[0]+" · "+it[2]+(echoUnlocked?" · Melhoria permanente de "+(echoValue(id)*100).toFixed(1)+"% · "+(eco?"Efeito ativo":fmt(price)+" Souls"):" · "+(own?"Efeito ativo":lock?"Bloqueado":affordable?"Disponível":"Faltam "+fmt(it[1]-S.f)+" Souls"));
+      const effect=r.b.querySelector(".d");if(effect)effect.textContent=shopEffectText(it[0],it[2]);
+      r.b.title=it[0]+" · Deadlock T"+SHOP_DEADLOCK_ORDER[ci][shopPos].tier+" · "+shopEffectText(it[0],it[2])+(echoUnlocked?" · Melhoria permanente de "+(echoValue(id)*100).toFixed(1)+"% · "+(eco?"Efeito ativo":fmt(price)+" Souls"):" · "+(own?"Efeito ativo":lock?"Bloqueado":affordable?"Disponível":"Faltam "+fmt(it[1]-S.f)+" Souls"));
     });
   }
   function drawBoss(){
@@ -7956,7 +8185,7 @@ function initAlmasMortas(root){
         name.textContent=translated?.[0]||a[0];desc.textContent=translated?.[1]||a[1];mark.className="ach-mark";mark.textContent=on?"✓":"○";head.append(name,mark);entry.append(head,desc);$("ac").append(entry)});
     }
     $("achievementsCount").textContent=ACH.filter(a=>S.achievements.includes(a[0])).length+" / "+ACH.length;
-    $("sx").innerHTML="Souls acumuladas: "+fmt(S.life)+"<br>Cliques: "+fmt(S.clicks)+" · Mid-Bosses derrotados: "+S.boss+"<br>Multiplicador global: x"+gm().toFixed(2).replace(".",soulLang==="en"?".":",")+" / x"+globalMultCap().toFixed(2).replace(".",soulLang==="en"?".":",")+(reachedGlobalCap()?" · "+limitText('reached'):"")+" · Eficiência offline: "+Math.round(offEff()*100)+"% por até "+(8+4*vit())+" h";
+    $("sx").innerHTML="Souls acumuladas: "+fmt(S.life)+"<br>Cliques: "+fmt(S.clicks)+" · Mid-Bosses derrotados: "+S.boss+"<br>Multiplicador global: x"+gm().toFixed(2).replace(".",soulLang==="en"?".":",")+" / x"+globalMultCap().toFixed(2).replace(".",soulLang==="en"?".":",")+(reachedGlobalCap()?" · "+limitText('reached'):"")+" · Eficiência offline: "+Math.round(offEff()*100)+"% por até "+(8+4*vit()+2*S.extraItems.slice(3,6).filter(Boolean).length+shopOfflineExtraHours())+" h";
     drawRecords();
   }
   function drawRecords(){
@@ -7972,7 +8201,7 @@ function initAlmasMortas(root){
     items.forEach(([key,value])=>{const row=document.createElement("div"),label=document.createElement("small"),number=document.createElement("b");
       row.className="record";label.textContent=key;number.textContent=value;row.append(label,number);list.append(row)});
   }
-  function offEff(){return Math.min(1,(.5+.05*S.perk[4]+.1*vit())*legacyVitalMult())}
+  function offEff(){return Math.min(1,(.5+.05*S.perk[4]+.1*vit())*legacyVitalMult()*shopOfflineTraitMult())*towerOfflineRewardMult()}
   function drawAffinityShortcut(){}
   // Domínio e Loja compartilham a própria instância do jogo, sem duplicar estado.
   let almasSideEnabled=false,almasSideTab="a";
@@ -8118,12 +8347,12 @@ function initAlmasMortas(root){
       const tributes=Math.floor(S.clicks/12)-Math.floor(previousClicks/12);
       if(tributes>0)add(tributes*Math.min(base*(1+.02*(cap-1))*.10,cps()*.12+5));
     }
-    combo.count=Math.min(cap,start+count);combo.last=now;
+    combo.count=Math.min(cap,start+count);combo.last=now;shopComboCount=combo.count;shopComboLast=now;
     S.records.bestCombo=Math.max(S.records.bestCombo,combo.count);
     S.records.bestClick=Math.max(S.records.bestClick,base*(1+.02*(combo.count-1)));
     // Um Mid-Boss já aberto manualmente ainda recebe dano automático.
     if(boss.on){
-      boss.hp-=amount*bossClickMultiplier();
+      boss.hp-=amount*bossClickMultiplier()*shopBossDamageMult();
       if(bossClickMultiplier()>1){
         const breaks=Math.floor(((boss.openHits||0)+count)/BOSS_BALANCE.breakHits);
         boss.hp-=breaks*boss.max*BOSS_BALANCE.breakFraction;
@@ -8165,13 +8394,13 @@ function initAlmasMortas(root){
     const automatic=!e.isTrusted;
     const showFeedback=!automatic||(!document.hidden&&Date.now()-autoOrbLastEffect>=170);
     if(e.isTrusted&&!boss.on&&Date.now()>=S.bossT)startBossFromOrb();
-    const now=Date.now();combo.count=now-combo.last<=COMBO_GRACE?Math.min(combo.count+1,COMBO_CAP):1;combo.last=now;
+    const now=Date.now();combo.count=now-combo.last<=COMBO_GRACE?Math.min(combo.count+1,COMBO_CAP):1;combo.last=now;shopComboCount=combo.count;shopComboLast=now;
     var v=clickVal()*(1+.02*Math.max(0,Math.min(COMBO_CAP,combo.count)-1));add(v);S.clicks++;S.records.runClicks++;
     if(S.own[3]>0&&S.clicks%12===0){const tribute=Math.min(v*.10,cps()*.12+5);add(tribute);if(!automatic){soulTone("sacrifice");showSoulBurst("sacrifice", "+"+fmt(tribute))}}
     S.records.bestCombo=Math.max(S.records.bestCombo,combo.count);S.records.bestClick=Math.max(S.records.bestClick,v);
     if(!automatic)soulTone("collect");if(boss.on){
       const exposed=bossClickMultiplier()>1;
-      boss.hp-=v*bossClickMultiplier();
+      boss.hp-=v*bossClickMultiplier()*shopBossDamageMult();
       if(exposed){boss.openHits=(boss.openHits||0)+1;
         if(boss.openHits>=BOSS_BALANCE.breakHits){boss.hp-=boss.max*BOSS_BALANCE.breakFraction;boss.openHits=0;if(!automatic){soulTone("milestone");showSoulBurst("boss","QUEBRA!")}}
       } else boss.openHits=0;
@@ -8217,10 +8446,10 @@ function initAlmasMortas(root){
     boss.on=false;
     if(win){
       const urnBonus=1+Math.min(.25,.008*Math.sqrt(Math.max(0,S.own[5])));
-      const r=Math.max(cps()*BOSS_BALANCE.baseSeconds,bossBaseClick()*BOSS_BALANCE.manualClicks)*urnBonus*(1+.03*S.perk[7]);add(r);S.boss++;S.bossT=Date.now()+3e5;S.bossCooldownMs=3e5;S.bossLastWon=true;
+      const r=Math.max(cps()*BOSS_BALANCE.baseSeconds,bossBaseClick()*BOSS_BALANCE.manualClicks)*urnBonus*(1+.03*S.perk[7]);add(r);S.boss++;S.bossT=Date.now()+3e5*shopBossCooldownMult();S.bossCooldownMs=3e5*shopBossCooldownMult();S.bossLastWon=true;
       S.pendingReward={base:r};S.records.runBossWins++;logEvent("boss",r);soulTone("gold");showSoulBurst("boss","✦");
       chooseBossReward(["auto","click","souls"][Math.floor(Math.random()*3)],true);
-    }else{S.bossT=Date.now()+15e4;S.bossCooldownMs=15e4;S.bossLastWon=false;logEvent("bossFail");toast("O Mid-Boss resistiu. Ele volta em breve.")}
+    }else{S.bossT=Date.now()+15e4*shopBossCooldownMult();S.bossCooldownMs=15e4*shopBossCooldownMult();S.bossLastWon=false;logEvent("bossFail");toast("O Mid-Boss resistiu. Ele volta em breve.")}
     save();drawAll();
   }
   function chooseBossReward(key,automatic=false){
@@ -8361,7 +8590,7 @@ function initAlmasMortas(root){
     S.contracts=[]; // renova os contratos para a renda da nova run, preservando os concluídos.
     S.tactic="none";S.tacticChangedAt=0;
     soulTone("ritual");S.f=500*S.perk[0];logEvent("ritual",g);
-    S.own=Array(GEN.length).fill(0);S.items=[];S.itemSchema=2;S.ticketBoughtRun=0;S.ticketPriceAnchor=null;S.beatState=null;S.cacheT=Date.now()+45000;norm();ensureContracts();
+    S.own=Array(GEN.length).fill(0);S.items=[];S.extraItems=[];S.itemSchema=2;S.ticketBoughtRun=0;S.ticketPriceAnchor=null;S.beatState=null;S.cacheT=Date.now()+45000;norm();ensureContracts();
     buff.t=0;combo.count=0;boss.on=false;S.bossT=Date.now()+120000;
     const justUnlocked=syncAchievements();justUnlocked.forEach(name=>logEvent("achievement",0,name));
     if(!save(true)){
@@ -8382,7 +8611,7 @@ function initAlmasMortas(root){
     var o=payload?.format==="almas-backup-v3"||payload?.format==="almas-backup-v2"?payload.save:payload;
       if(!o||typeof o!=="object"||Array.isArray(o)||!Number.isFinite(o.f)||o.f<0||!Array.isArray(o.own)||!Array.isArray(o.items))throw 0;
       // Um código importado também passa pela migração e validação.
-      const validKeys=["rankFormat","itemSchema","unlockedOps","tickets","pendingPlatinum","ticketBoughtRun","ticketPriceAnchor","towerLevel","towerProgress","towerStageCost","towerHistory","towerPlatinumClaimed","echoOwned","echoEquipped","constellation","beatNext","beatState","beatWins","beatPlays","extraStats","tutorialSeen","f","life","own","items","legacy","spent","perk","boss","bossT","stance","clicks","ts","soundOn","cosmetics","cosmeticSpent","achievements","rituals","bestRitualGain","lastRitualGain","events","ritualPath","nextPath","rewardBoost","pendingReward","contracts","contractStats","contractClaims","contractHistory","contractBoost","rankCredit","masteryXp","records","cacheT","doctrinesOwned","doctrineSpent","doctrineActive","doctrineRefunded","tactic","tacticChangedAt","booster","boosterReadyAt","streetNext","streetPending","streetCount","streetOffers","streetLastPick","streetEffect","fund","funds","autoOrb","autoOrbLevel","lastAutoPerks","fundReadyAt","fundCompleted","postRitualPhase","postBlessingChosen","brawlNext","brawl","brawlWins","brawlMatches","almasCardReadyAt","almasCardLast","almasCardResult","almasCardBuff","heroState"];
+      const validKeys=["rankFormat","itemSchema","unlockedOps","tickets","pendingPlatinum","ticketBoughtRun","ticketPriceAnchor","towerLevel","towerProgress","towerStageCost","towerHistory","towerPlatinumClaimed","echoOwned","echoEquipped","constellation","beatNext","beatState","beatWins","beatPlays","extraStats","tutorialSeen","f","life","own","items","extraItems","legacy","spent","perk","boss","bossT","stance","clicks","ts","soundOn","cosmetics","cosmeticSpent","achievements","rituals","bestRitualGain","lastRitualGain","events","ritualPath","nextPath","rewardBoost","pendingReward","contracts","contractStats","contractClaims","contractHistory","contractBoost","rankCredit","masteryXp","records","cacheT","doctrinesOwned","doctrineSpent","doctrineActive","doctrineRefunded","tactic","tacticChangedAt","booster","boosterReadyAt","streetNext","streetPending","streetCount","streetOffers","streetLastPick","streetEffect","fund","funds","autoOrb","autoOrbLevel","lastAutoPerks","fundReadyAt","fundCompleted","postRitualPhase","postBlessingChosen","brawlNext","brawl","brawlWins","brawlMatches","almasCardReadyAt","almasCardLast","almasCardResult","almasCardBuff","heroState"];
       const imported={};for(const k of validKeys)if(Object.prototype.hasOwnProperty.call(o,k))imported[k]=o[k];
       S={...S,...imported,rankCredit:imported.rankCredit??null,rankFormat:imported.rankFormat??1,itemSchema:imported.itemSchema??1,unlockedOps:imported.unlockedOps??null,tickets:imported.tickets??null,pendingPlatinum:imported.pendingPlatinum??null,ticketBoughtRun:imported.ticketBoughtRun??0,ticketPriceAnchor:imported.ticketPriceAnchor??null,beatNext:imported.beatNext??Date.now()+420000,beatState:imported.beatState??null,beatWins:imported.beatWins??0,beatPlays:imported.beatPlays??0,extraStats:imported.extraStats??null,tutorialSeen:imported.tutorialSeen??{},masteryXp:imported.masteryXp??null,records:imported.records??null,contracts:imported.contracts??[],contractStats:imported.contractStats??{purchases:0},contractClaims:imported.contractClaims??0,contractHistory:imported.contractHistory??[],contractBoost:imported.contractBoost??null,doctrinesOwned:imported.doctrinesOwned??[],doctrineSpent:imported.doctrineSpent??null,doctrineActive:imported.doctrineActive??"none",doctrineRefunded:imported.doctrineRefunded??false,tactic:imported.tactic??"none",tacticChangedAt:imported.tacticChangedAt??0,booster:imported.booster??null,boosterReadyAt:imported.boosterReadyAt??0,streetNext:imported.streetNext??Date.now()+240000,streetPending:imported.streetPending??false,streetCount:imported.streetCount??null,streetOffers:imported.streetOffers??[],streetLastPick:imported.streetLastPick??"",streetEffect:imported.streetEffect??null,fund:imported.fund??null,funds:imported.funds??[],autoOrb:imported.autoOrb??false,autoOrbLevel:imported.autoOrbLevel??0,lastAutoPerks:imported.lastAutoPerks??[],fundReadyAt:imported.fundReadyAt??0,fundCompleted:imported.fundCompleted??0,postRitualPhase:imported.postRitualPhase??"",postBlessingChosen:imported.postBlessingChosen??false,brawlNext:imported.brawlNext??Date.now()+600000,brawl:imported.brawl??null,brawlWins:imported.brawlWins??0,brawlMatches:imported.brawlMatches??0,heroState:imported.heroState??null};norm();ensureContracts();combo.count=0;
       S.cosmetics={...shopData().cosmetics,...(S.cosmetics||{})};
@@ -8425,7 +8654,7 @@ function initAlmasMortas(root){
   // Uma única fonte de tempo evita lacunas quando navegadores suspendem abas.
   // O ganho offline é limitado e tem eficiência reduzida, como antes.
   function awardOffline(ms){
-    var secs=Math.max(0,Math.min(ms,(8+4*vit())*36e5))/1000;
+    var secs=Math.max(0,Math.min(ms,(8+4*vit()+2*S.extraItems.slice(3,6).filter(Boolean).length+shopOfflineExtraHours())*36e5))/1000;
     // Base sem os buffs ativos no instante atual; depois somamos a duração exata
     // de cada bônus durante o intervalo offline, inclusive quando se sobrepõem.
     let production=cps();
@@ -8666,6 +8895,8 @@ if(n%50===0)save();
 
 }
 (function(){
+  const homeTab=document.getElementById("tabInicio");
+  const homeView=document.getElementById("siteHome");
   const sortTab=document.getElementById("tabSorteador");
   const soulsTab=document.getElementById("tabAlmasMortas");
   const deckMain=document.getElementById("main");
@@ -8675,9 +8906,12 @@ if(n%50===0)save();
   const mount=document.getElementById("soulMount");
   const desktop=matchMedia("(min-width: 1050px)");
   let started=false;
-  let mode="deck";
+  let mode="home";
   function applyLayout(){
-    const souls=mode==="souls",split=desktop.matches;
+    const home=mode==="home",souls=mode==="souls",split=desktop.matches;
+    homeView.hidden=!home;
+    workspace.hidden=home;
+    document.body.classList.toggle("is-home",home);
     // Nas telas largas, ambos os módulos ficam disponíveis. No celular, alternam.
     workspace.classList.toggle("dual",souls&&split);
     const tracking=!!S.cfg.track&&!souls;
@@ -8686,12 +8920,14 @@ if(n%50===0)save();
     trackingView.hidden=!tracking;
     trackingView.setAttribute("aria-hidden",String(!tracking));
     document.body.classList.toggle("souls-active",souls);
-    deckMain.hidden=souls&&!split;
-    soulView.hidden=!split&&!souls;
+    deckMain.hidden=home||(souls&&!split);
+    soulView.hidden=home||(!split&&!souls);
     soulView.setAttribute("aria-hidden",String(!souls));
-    sortTab.classList.toggle("on",!souls);
+    homeTab.classList.toggle("on",home);
+    homeTab.setAttribute("aria-pressed",String(home));
+    sortTab.classList.toggle("on",mode==="deck");
     soulsTab.classList.toggle("on",souls);
-    sortTab.setAttribute("aria-pressed",String(!souls));
+    sortTab.setAttribute("aria-pressed",String(mode==="deck"));
     soulsTab.setAttribute("aria-pressed",String(souls));
     if(souls){
       document.body.classList.remove("show-mobile-draw");
@@ -8731,12 +8967,15 @@ if(n%50===0)save();
     if(typeof fit==="function")fit();
   }
   function openTab(name){
-    if(name!=="deck"&&name!=="souls")return;
+    if(!["home","deck","souls"].includes(name))return;
     if(name==="souls"&&document.body.classList.contains("fs")&&typeof toggleFs==="function")toggleFs();
     mode=name;
     applyLayout();
     try{sessionStorage.setItem("decklock:section",name)}catch(e){}
   }
+  homeTab.addEventListener("click",()=>openTab("home"));
+  for(const id of ["homeStartAlmas","homeAlmasCard"])document.getElementById(id).addEventListener("click",()=>openTab("souls"));
+  for(const id of ["homeStartDeck","homeDeckCard"])document.getElementById(id).addEventListener("click",()=>openTab("deck"));
   sortTab.addEventListener("click",()=>openTab("deck"));
   soulsTab.addEventListener("click",()=>openTab("souls"));
   for(const btn of [sortTab,soulsTab]){
@@ -8749,10 +8988,22 @@ if(n%50===0)save();
   }
   if(desktop.addEventListener)desktop.addEventListener("change",applyLayout);
   else desktop.addListener(applyLayout);
-  let initial="deck";
-  try{if(sessionStorage.getItem("decklock:section")==="souls")initial="souls"}catch(e){}
-  openTab(initial);
+  openTab("home");
 })();
+
+</script>
+<script>
+/* Distribuição independente: desativa caches de um lançamento PWA anterior.
+   Não altera localStorage, sessionStorage, saves ou downloads do jogador. */
+if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+  navigator.serviceWorker.getRegistrations().then(list=>{
+    list.filter(r=>r.scope.startsWith(location.origin+'/')).forEach(r=>{
+      if ((r.active?.scriptURL||'').endsWith('/sw.js')) r.unregister().catch(()=>{});
+    });
+  }).catch(()=>{});
+  if ('caches' in window) caches.keys().then(keys=>Promise.all(keys
+    .filter(k=>k.startsWith('decklock-shell-')).map(k=>caches.delete(k)))).catch(()=>{});
+}
 </script>
 </body>
 </html>
