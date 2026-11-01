@@ -8,7 +8,7 @@
 <meta name="application-name" content="DeckLock · Almas">
 <meta name="color-scheme" content="dark light">
 <meta name="theme-color" content="#222021">
-<meta name="decklock-version" content="1.46.0">
+<meta name="decklock-version" content="1.47.0">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pt_BR">
 <meta property="og:site_name" content="DeckLock">
@@ -3127,10 +3127,6 @@ textarea{width:100%;height:70px;background:var(--am-ink);color:var(--am-text);bo
 .am-encounters .am-encounter-heading h3{font:700 13px/1.25 var(--am-font-ui)!important}
 .am-encounters .am-encounter-state{min-height:0!important;margin:0!important;font-size:11px!important}
 .am-encounters .btn{min-height:30px!important;padding:5px 9px!important;font-size:11px!important}
-.am-autobuy-row{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin:6px 0 9px;padding:7px 10px;border:1px solid var(--am-ui-edge);border-radius:8px;color:var(--am-text);font:700 11px/1.3 var(--am-font-ui);cursor:pointer}
-.am-autobuy-row[hidden]{display:none!important}
-.am-autobuy-row input{accent-color:var(--am-brass);width:15px;height:15px}
-.am-autobuy-row small{font-size:10px;color:var(--am-muted);font-weight:500}
 @media(prefers-reduced-motion:reduce){.am-op-spinner{animation:none!important;border-color:var(--am-soul)!important}}
 
 /* v1.35.1: selos sem sobreposição, acabamento prata e indicador ligado à produção. */
@@ -3629,6 +3625,15 @@ progress{appearance:none;-webkit-appearance:none;height:5px;overflow:hidden;bord
 
 
 .dev-launcher{left:auto!important;right:14px!important}
+.am-shop-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.am-shop-heading>div{flex:1;min-width:180px}
+.am-shop-heading #amBuyShopNow{flex:none;min-height:40px;padding:9px 13px;border:1px solid var(--am-brass);border-radius:8px;background:color-mix(in srgb,var(--am-brass) 12%,var(--am-raised));color:var(--am-brass);font:750 12px/1.3 var(--am-font-ui);cursor:pointer}
+.am-shop-heading #amBuyShopNow:hover:not(:disabled){background:color-mix(in srgb,var(--am-brass) 23%,var(--am-raised))}
+.am-shop-heading #amBuyShopNow:focus-visible{outline:2px solid var(--am-brass);outline-offset:3px}
+.am-shop-heading #amBuyShopNow:disabled{opacity:.45;cursor:not-allowed}
+#shopPurchaseFeedback{min-height:1.5em;margin:0 0 10px;color:var(--am-muted);font:500 11px/1.5 var(--am-font-ui)}
+@media(max-width:480px){.am-shop-heading #amBuyShopNow{width:100%}}
+
 </style>
 
 <div class="wrap">
@@ -3737,7 +3742,7 @@ progress{appearance:none;-webkit-appearance:none;height:5px;overflow:hidden;bord
       <div class="platinum-purchase"><div><small>Preço por Platinum</small><strong id="ticketShopPrice">—</strong></div><button class="btn pri" type="button" id="ticketBuy">Comprar Platinum</button></div>
       <div class="platinum-shop-footer"><small id="ticketShopBalance"></small><small id="ticketShopHint"></small><small id="ticketCoverageHint" class="am-ticket-coverage"></small><button class="btn" id="ticketOwnedButton" type="button" hidden>Usar Platinum</button></div>
     </section>
-    <div class="am-base-shop" aria-label="Itens e melhorias permanentes da run"><label id="amAutoItemsRow" class="am-autobuy-row" hidden><input type="checkbox" id="amAutoItems"> Compra automática <small>Arma → Espírito → Vitalidade</small></label><div class="shop-section-head"><h3>Itens e melhorias</h3><p id="shopUpgradeHint"></p></div><div id="il"></div></div>
+    <div class="am-base-shop" aria-label="Itens e melhorias permanentes da run"><div class="shop-section-head am-shop-heading"><div><h3>Itens e melhorias</h3><p id="shopUpgradeHint"></p></div><button type="button" id="amBuyShopNow" title="Compra uma vez com o saldo atual. Prioriza itens, depois melhorias; Arma → Espírito → Vitalidade.">Comprar disponíveis</button></div><p id="shopPurchaseFeedback" role="status" aria-live="polite"></p><div id="il"></div></div>
   </section>
 
 
@@ -3920,8 +3925,8 @@ progress{appearance:none;-webkit-appearance:none;height:5px;overflow:hidden;bord
 <div id="live" class="sr" role="status" aria-live="polite" aria-atomic="true"></div>
 <div id="ver"></div>
 <dialog id="dlgWhatsNew" class="utility-dialog" aria-labelledby="whatsNewTitle">
- <div class="utility-heading"><div><small>ATUALIZAÇÃO · 1.46.0</small><h2 id="whatsNewTitle">Novidades</h2><p>Interface e navegação refinadas.</p></div><button class="utility-close" id="whatsNewClose" type="button" aria-label="Fechar novidades">Fechar</button></div>
- <div class="whatsnew-content"><section class="whatsnew-section"><h3>Navegação consistente</h3><ul class="whatsnew-items"><li><strong>Menu acessível</strong><span>As ações do cabeçalho abrem acima dos painéis, com suporte a toque e teclado.</span></li><li><strong>Avisos à esquerda</strong><span>As notificações agora aparecem no canto inferior esquerdo.</span></li><li><strong>Português brasileiro</strong><span>Seletor e traduções para outros idiomas removidos. Compra automática usa o mesmo vocabulário do site.</span></li></ul></section><section class="whatsnew-section"><h3>Mid-Boss</h3><ul class="whatsnew-items"><li><strong>Bônus aleatório</strong><span>A vitória aplica uma das três recompensas automaticamente, sem abrir uma escolha.</span></li><li><strong>Progresso preservado</strong><span>Recompensas pendentes de versões anteriores são resolvidas automaticamente.</span></li><li><strong>Sorteio persistente</strong><span>O resultado é salvo antes de ser aplicado, evitando duplicação ao recarregar.</span></li></ul></section></div>
+ <div class="utility-heading"><div><small>ATUALIZAÇÃO · 1.47.0</small><h2 id="whatsNewTitle">Novidades</h2><p>Interface e navegação refinadas.</p></div><button class="utility-close" id="whatsNewClose" type="button" aria-label="Fechar novidades">Fechar</button></div>
+ <div class="whatsnew-content"><section class="whatsnew-section"><h3>Compras no seu ritmo</h3><ul class="whatsnew-items"><li><strong>Comprar disponíveis</strong><span>Um clique compra os itens e melhorias liberados que couberem no saldo. As compras param ao terminar a ação.</span></li><li><strong>Sem compra contínua</strong><span>O controle automático da Loja foi removido, inclusive de salvamentos antigos.</span></li><li><strong>Saldo e progressão</strong><span>Cada compra desconta seu preço atual e respeita os pré-requisitos. O resultado aparece abaixo do botão.</span></li></ul></section></div>
  <div class="utility-footer"><small>DeckLock · Almas</small><button id="whatsNewOk" class="utility-primary" type="button">Entendi</button></div>
 </dialog>
 <dialog id="dlgNotice" aria-label="Atualização">
@@ -4098,7 +4103,7 @@ exitTest.addEventListener("click",()=>{const url=new URL(location.href);url.sear
 const KEY="deadlock-deck-v3";
 /* Reset único: quem tem dados salvos sem "epoch" (versões antigas) volta ao início UMA vez.
    Os dados antigos são guardados em BKEY antes. Só aumente RESET_EPOCH se quiser forçar outro reset. */
-const RESET_EPOCH=3,APP_VERSION="1.46.0",BKEY="deadlock-deck-v3:backup";
+const RESET_EPOCH=3,APP_VERSION="1.47.0",BKEY="deadlock-deck-v3:backup";
 // Reset único de estados criados antes da v1.9.4. Futuras atualizações não reiniciam
 // os dados sem uma migração explícita; o backup deve ser confirmado antes do reset.
 const RESET_BEFORE_VERSION="1.9.4",INTRO_KEY="deadlock-deck-v3:intro-hidden";
@@ -5865,7 +5870,7 @@ function renderFiles(){
 window.addEventListener("load",()=>setTimeout(()=>soulBackup("retorno",true),1200),{once:true});
 $("#bFiles").onclick=()=>{renderFiles();$("#dlgF").showModal()};
 $("#bFClose").onclick=()=>$("#dlgF").close();
-const WHATS_NEW_KEY="decklock:whatsnew:1.46.0";
+const WHATS_NEW_KEY="decklock:whatsnew:1.47.0";
 function showWhatsNew(force=false){
   const dlg=$("#dlgWhatsNew");
   if(dlg.open)return;
@@ -6550,7 +6555,7 @@ function initAlmasMortas(root){
     S.cacheT=typeof S.cacheT==="number"&&Number.isFinite(S.cacheT)&&S.cacheT>0?Math.min(S.cacheT,Date.now()+45000):Date.now()+45000;
     S.achievements=Array.isArray(S.achievements)?[...new Set(S.achievements.filter(v=>typeof v==="string").slice(0,60))]:[];
     S.events=Array.isArray(S.events)?S.events.filter(e=>e&&typeof e==="object"&&["boss","bossFail","ritual","gold","fervor","achievement","milestone","offline","bossChoice","cache","patron","brawl","brawlFail"].includes(e.kind)&&typeof e.at==="number"&&Number.isFinite(e.at)&&e.at>0&&e.at<8.64e15).slice(0,12).map(e=>({kind:e.kind,at:e.at,amount:typeof e.amount==="number"&&Number.isFinite(e.amount)&&e.amount>=0?Math.min(e.amount,1e300):0,label:typeof e.label==="string"?e.label.slice(0,90):""})):[];
-    S.soundOn=S.soundOn!==false;S.autoItems=S.autoItems===true;S.bossCooldownMs=nonneg(S.bossCooldownMs,300000)||120000;S.bossLastWon=S.bossLastWon===true;
+    S.soundOn=S.soundOn!==false;delete S.autoItems;S.bossCooldownMs=nonneg(S.bossCooldownMs,300000)||120000;S.bossLastWon=S.bossLastWon===true;
     if(!S.cosmetics||typeof S.cosmetics!=="object"||Array.isArray(S.cosmetics))S.cosmetics={};
     S.cosmeticSpent=nonneg(S.cosmeticSpent,1e12);
     S.doctrinesOwned=Array.isArray(S.doctrinesOwned)?[...new Set(S.doctrinesOwned.filter(k=>["scout","fighter","broker","hunter","night"].includes(k)))]:[];
@@ -6606,7 +6611,7 @@ function initAlmasMortas(root){
   }
   try{var raw=localStorage.getItem(KEY);if(raw){var p=JSON.parse(raw);if(p&&typeof p==="object"&&!Array.isArray(p)&&Number.isFinite(p.f)&&p.f>=0){
     // Não copiar propriedades inesperadas nem __proto__ de importações corrompidas.
-    for(const k of ["autoItems","bossCooldownMs","bossLastWon","rankFormat","itemSchema","unlockedOps","tickets","pendingPlatinum","ticketBoughtRun","ticketPriceAnchor","towerLevel","towerProgress","towerStageCost","towerHistory","towerPlatinumClaimed","echoOwned","extraEchoOwned","echoEquipped","constellation","beatNext","beatState","beatWins","beatPlays","extraStats","tutorialSeen","f","life","own","items","extraItems","legacy","spent","perk","boss","bossT","stance","clicks","ts","soundOn","cosmetics","cosmeticSpent","achievements","rituals","bestRitualGain","lastRitualGain","events","ritualPath","nextPath","rewardBoost","pendingReward","contracts","contractStats","contractClaims","contractHistory","contractBoost","rankCredit","masteryXp","records","cacheT","doctrinesOwned","doctrineSpent","doctrineActive","doctrineRefunded","tactic","tacticChangedAt","booster","boosterReadyAt","streetNext","streetPending","streetCount","streetOffers","streetLastPick","streetEffect","fund","funds","autoOrb","autoOrbLevel","lastAutoPerks","fundReadyAt","fundCompleted","postRitualPhase","postBlessingChosen","brawlNext","brawl","brawlWins","brawlMatches","almasCardReadyAt","almasCardLast","almasCardResult","almasCardBuff","heroState"])
+    for(const k of ["bossCooldownMs","bossLastWon","rankFormat","itemSchema","unlockedOps","tickets","pendingPlatinum","ticketBoughtRun","ticketPriceAnchor","towerLevel","towerProgress","towerStageCost","towerHistory","towerPlatinumClaimed","echoOwned","extraEchoOwned","echoEquipped","constellation","beatNext","beatState","beatWins","beatPlays","extraStats","tutorialSeen","f","life","own","items","extraItems","legacy","spent","perk","boss","bossT","stance","clicks","ts","soundOn","cosmetics","cosmeticSpent","achievements","rituals","bestRitualGain","lastRitualGain","events","ritualPath","nextPath","rewardBoost","pendingReward","contracts","contractStats","contractClaims","contractHistory","contractBoost","rankCredit","masteryXp","records","cacheT","doctrinesOwned","doctrineSpent","doctrineActive","doctrineRefunded","tactic","tacticChangedAt","booster","boosterReadyAt","streetNext","streetPending","streetCount","streetOffers","streetLastPick","streetEffect","fund","funds","autoOrb","autoOrbLevel","lastAutoPerks","fundReadyAt","fundCompleted","postRitualPhase","postBlessingChosen","brawlNext","brawl","brawlWins","brawlMatches","almasCardReadyAt","almasCardLast","almasCardResult","almasCardBuff","heroState"])
       if(Object.prototype.hasOwnProperty.call(p,k))S[k]=p[k];
   }}}catch(e){}
   norm();
@@ -7862,23 +7867,58 @@ function initAlmasMortas(root){
     }
   });
   let masteryRenderKey="";
-  S.autoItems=!!S.autoItems;
-  const autoItemsToggle=$("amAutoItems");
-  autoItemsToggle.checked=S.autoItems;
-  autoItemsToggle.addEventListener("change",()=>{S.autoItems=autoItemsToggle.checked;save();drawIt()});
-  function autoBuyItems(){
-    if(!S.autoItems||rankInfo(rankSteps()).i<5||saveConflict)return false;
+  // Compra pontual: somente este clique pode gastar o saldo da Loja.
+  function shopPurchaseCandidates(){
+    const candidates=[];
     for(const ci of [0,2,1]){
-      const pos=SHOP_DEADLOCK_ORDER[ci].findIndex(entry=>!shopEntryOwned(entry));
-      if(pos<0||!shopEntryUnlocked(ci,pos))continue;
-      const entry=SHOP_DEADLOCK_ORDER[ci][pos],base=entry.base!==undefined;
-      const it=base?ITM[ci][entry.base%6]:ALMAS_EXTRA_ITEMS[entry.extra];
-      if(S.f<it[1])continue;
-      const ok=transact(()=>{S.f-=it[1];if(base)S.items[entry.base]=true;else S.extraItems[entry.extra]=true;S.extraStats.items++});
-      if(ok)drawAll();return ok;
+      SHOP_DEADLOCK_ORDER[ci].forEach((entry,pos)=>{
+        const base=entry.base!==undefined,id=base?entry.base:entry.extra;
+        if(!shopEntryOwned(entry)&&shopEntryUnlocked(ci,pos)){
+          const item=base?ITM[ci][id%6]:ALMAS_EXTRA_ITEMS[id];
+          candidates.push({id,base,upgrade:false,price:item[1]});
+        }
+      });
     }
-    return false;
+    if(canEchoShop()){
+      for(const ci of [0,2,1])for(const entry of SHOP_DEADLOCK_ORDER[ci]){
+        const base=entry.base!==undefined,id=base?entry.base:entry.extra;
+        if(shopEntryOwned(entry)&&!(base?S.echoOwned[id]:S.extraEchoOwned[id]))
+          candidates.push({id,base,upgrade:true,price:echoCost(id,!base)});
+      }
+    }
+    return candidates;
   }
+  function nextShopPurchase(){
+    return shopPurchaseCandidates().find(p=>Number.isFinite(p.price)&&p.price>0&&p.price<=S.f);
+  }
+  function buyShopNow(){
+    if(saveConflict||!nextShopPurchase())return false;
+    let items=0,upgrades=0,spent=0;
+    const committed=transact(()=>{
+      // Recalcular após cada compra respeita a sequência e o preço progressivo.
+      for(let step=0;step<54;step++){
+        const purchase=nextShopPurchase();if(!purchase)break;
+        const {id,base,upgrade,price}=purchase;
+        S.f=Math.max(0,S.f-price);spent+=price;
+        if(upgrade){
+          (base?S.echoOwned:S.extraEchoOwned)[id]=true;
+          if(base)S.echoEquipped=[...new Set([...S.echoEquipped,id])];
+          upgrades++;
+        }else{
+          (base?S.items:S.extraItems)[id]=true;
+          S.extraStats.items++;items++;
+        }
+      }
+    });
+    if(!committed)return false;
+    const parts=[];
+    if(items)parts.push(items+(items===1?" item comprado":" itens comprados"));
+    if(upgrades)parts.push(upgrades+(upgrades===1?" melhoria ativada":" melhorias ativadas"));
+    $("shopPurchaseFeedback").textContent=parts.join(" · ")+" · −"+fmt(spent)+" Souls";
+    soulTone(upgrades?"milestone":"purchase");drawAll();return true;
+  }
+  $("amBuyShopNow").addEventListener("click",buyShopNow);
+
   const AUTO_ORB_COST=5e12;
   const AUTO_ORB_CAP=24;
   function autoOrbInterval(){return Math.max(50,Math.round(1200*Math.pow(50/1200,S.autoOrbLevel/AUTO_ORB_CAP)))}
@@ -7909,8 +7949,7 @@ function initAlmasMortas(root){
   function drawIt(){
     drawAutoOrb();
     const echoMode=canEchoShop();
-    $("amAutoItemsRow").hidden=rankInfo(rankSteps()).i<5;
-    autoItemsToggle.checked=!!S.autoItems;
+    $("amBuyShopNow").disabled=saveConflict||!nextShopPurchase();
     $("shopUpgradeHint").textContent=echoMode?"Melhorias permanentes disponíveis nos itens comprados.":"Melhorias permanentes: alcance Ritualista e compre os 18 itens originais.";
     $("il").classList.toggle("am-echo-buying",echoMode);
     SHOP_DEADLOCK_ORDER.forEach((entries,ci)=>entries.forEach((entry,pos)=>{
@@ -8723,7 +8762,7 @@ function initAlmasMortas(root){
     if(document.hidden)return;
     if(S.pendingReward&&!saveConflict&&Date.now()>=nextBossRewardRetry)resolvePendingBossReward();
     settleElapsed(Date.now());
-    n++;if(!devPaused&&n%10===0){autoBuyItems();S.records.bestCps=Math.max(S.records.bestCps,cps());recordRunSample();
+    n++;if(!devPaused&&n%10===0){S.records.bestCps=Math.max(S.records.bestCps,cps());recordRunSample();
       // Nenhuma nova Ocorrência de Rua é gerada.
     }    if(Date.now()-lastSoulBackupTick>=5*60*1000){lastSoulBackupTick=Date.now();save(true);window.dispatchEvent(new CustomEvent("almas:backup",{detail:{reason:"rotina"}}))}
 if(n%50===0)save();
